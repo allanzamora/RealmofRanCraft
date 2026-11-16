@@ -57,6 +57,7 @@ function updateEnemies(dt) {
     if (e.state === 'dead') {
       e.deadT += dt;
       if (c.g.visible) { c.mv = 0; animateChar(c, dt, 0); }
+      if (e.world && e.deadT > 3.3) continue;   // world boss never respawns (removed by updateWorldBoss)
       if (e.deadT > 3.2 && c.g.visible) { c.g.visible = false; e.respawnT = rand(RESPAWN_TIME[0], RESPAWN_TIME[1]) * (T.boss ? 6 : 1); }
       if (!c.g.visible) {
         e.respawnT -= dt;
@@ -157,7 +158,21 @@ function bossSkills(e, dt, d) {
   var T = e.T, pick = T.skills[randInt(0, T.skills.length - 1)], bx = e.pos.x, bz = e.pos.z, SN = T.skillNames || { slam: 'Candy Slam!', gifts: 'Gift Bombs!', nova: 'Frost Nova!' };
   e.skT = rand(4, 7); startAnim(e.c, 'attack', 0.9);
   function hitIf(x, z, r, mul) { if (!P.dead && Math.hypot(P.pos.x - x, P.pos.z - z) <= r) damagePlayer(e, mul); }
-  if (pick === 'slam') {
+  if (pick === 'leap') {          // Dark Swordman: jumps high into the air and crashes down on where you stood
+    var tx = P.pos.x, tz = P.pos.z, sx0 = e.pos.x, sz0 = e.pos.z, LT = 1.2, RAD = 10, holder = new THREE.Object3D();
+    e.skT = rand(3.5, 5.5); e.stun = LT + 0.1; faceTo(e.c, tx, tz, 1, 100);
+    spawnText(SN.leap, e.pos, 'fl info', 9); ringFx(tx, tz, RAD, 0xff2222, LT); ringFx(tx, tz, RAD * 0.5, 0xffaa00, LT);
+    fxList.push({ t: 0, dur: LT, obj: holder, shared: true, update: function (k) {
+      if (e.state === 'dead') return;
+      e.pos.x = lerp(sx0, tx, k); e.pos.z = lerp(sz0, tz, k); e.pos.y = Math.sin(k * Math.PI) * 14;
+      if (k >= 1) e.pos.y = 0;
+    } });
+    schedule(LT, function () {
+      if (e.state === 'dead') return; e.pos.y = 0; startAnim(e.c, 'attack', 0.6);
+      ringFx(tx, tz, RAD, 0xffffff, 0.5); ringFx(tx, tz, RAD * 1.4, 0xff2222, 0.8); pillarFx(tx, tz, 0xff2222); burst(new THREE.Vector3(tx, 0.6, tz), 0xff4a2a, 40, 9, 6); sfx('quake');
+      hitIf(tx, tz, RAD, 1.5);
+    });
+  } else if (pick === 'slam') {
     spawnText(SN.slam, e.pos, 'fl info', 9); ringFx(bx, bz, 11, 0xff3030, 1.0);
     schedule(1.0, function () { if (e.state === 'dead') return; ringFx(bx, bz, 11, 0xffffff, 0.4); burst(new THREE.Vector3(bx, 0.5, bz), 0xff3030, 24, 6, 3); hitIf(bx, bz, 11, 2.2); });
   } else if (pick === 'gifts') {
@@ -171,4 +186,37 @@ function bossSkills(e, dt, d) {
     spawnText(SN.nova, e.pos, 'fl info', 9); ringFx(bx, bz, 18, 0x8ad8ff, 1.4);
     schedule(1.4, function () { if (e.state === 'dead') return; ringFx(bx, bz, 18, 0xffffff, 0.5); burst(new THREE.Vector3(bx, 0.5, bz), 0x8ad8ff, 30, 8, 3); hitIf(bx, bz, 18, 1.5); });
   }
+}
+
+/* ---------- World boss manager: Dark Swordman shows up at random times in a random normal map ---------- */
+var WB = { map: null, t: 240, life: 0, e: null };   // first appearance ~4 minutes after launch
+var wbAlertT = null;
+function bossAlert(sub) {
+  var el = $('boss-alert'); if (!el) return; $('ba-sub').textContent = sub; el.className = 'show'; clearTimeout(wbAlertT);
+  wbAlertT = setTimeout(function () { el.className = ''; }, 7000);
+}
+function wbMaps() { return MAPS.filter(function (m) { return !m.arena && !m.boss && !m.bossR; }); }
+function wbSpawn(m) {
+  var e = makeEnemy('darksword', m.safeR + 30, m.R - 30); e.world = true; WB.e = e;
+  log('Dark Swordman lurks somewhere in ' + m.name + '! (HP 15,000,000 - Loot: 10-15 Godzilla Fragments)', '#ff5a5a');
+  ringFx(e.pos.x, e.pos.z, 8, 0xff2222, 1.2); pillarFx(e.pos.x, e.pos.z, 0xff2222);
+}
+function worldBossOnMap(m) { if (WB.map === m.id && !(WB.e && WB.e.state !== 'dead')) wbSpawn(m); }
+function wbRemove() { if (WB.e) { var i = enemies.indexOf(WB.e); if (i >= 0) { disposeChar(WB.e.c); enemies.splice(i, 1); } WB.e = null; } }
+function updateWorldBoss(dt) {
+  if (WB.e && enemies.indexOf(WB.e) < 0) WB.e = null;   // map changed: the old model was cleared
+  if (!WB.map) {
+    WB.t -= dt;
+    if (WB.t <= 0) {
+      var ms = wbMaps(); if (!ms.length) { WB.t = 600; return; }
+      var m = ms[randInt(0, ms.length - 1)]; WB.map = m.id; WB.life = 1500; sfx('level');
+      log('⚠ WORLD BOSS: Dark Swordman has appeared in ' + m.name + '! Defeat him for 10-15 Godzilla Fragments.', '#ff5a5a');
+      bossAlert('Dark Swordman has appeared in ' + m.name + ' - 10-15 Godzilla Fragments!');
+      if (curMap && curMap.id === m.id) wbSpawn(m);
+    }
+    return;
+  }
+  WB.life -= dt;
+  if (WB.e && WB.e.state === 'dead' && WB.e.deadT > 3.3) { wbRemove(); WB.map = null; WB.t = rand(900, 1500); log('Dark Swordman is gone... he will return someday.', '#ffb74d'); return; }
+  if (WB.life <= 0 && !(WB.e && WB.e.state !== 'dead' && WB.e.state !== 'idle')) { wbRemove(); WB.map = null; WB.t = rand(900, 1500); log('Dark Swordman vanished into the shadows.', '#ffb74d'); }
 }

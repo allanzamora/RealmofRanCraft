@@ -103,13 +103,14 @@ function dropItem(pos, id) {
 }
 function clearPickups() { pickups.forEach(function (p) { scene.remove(p.m); }); pickups.length = 0; }
 function updatePickups(dt) {
+  var lootR = Math.max(3.8, petBonus('loot'));
   for (var i = pickups.length - 1; i >= 0; i--) {
     var p = pickups[i]; p.t += dt; p.life -= dt; var m = p.m;
     if (p.t < 0.55) { m.position.x += p.vx * dt; m.position.z += p.vz * dt; p.vy -= 16 * dt; m.position.y += p.vy * dt; if (m.position.y < 0.4) { m.position.y = 0.4; p.vy = 0; } }
     else m.position.y = 0.45 + Math.sin(p.t * 3) * 0.08;
     m.rotation.y += dt * 2.5;
     var dx = P.pos.x - m.position.x, dz = P.pos.z - m.position.z, d = Math.hypot(dx, dz);
-    if (!P.dead && p.t > 0.6 && d < 3.8) { var sp = 9 * dt / Math.max(d, 0.001); m.position.x += dx * sp; m.position.z += dz * sp; }
+    if (!P.dead && p.t > 0.6 && d < lootR) { var sp = (lootR > 3.8 ? 16 : 9) * dt / Math.max(d, 0.001); m.position.x += dx * sp; m.position.z += dz * sp; }
     if (!P.dead && p.t > 0.6 && d < 0.9) {
       if (p.type === 'gold') { P.gold += p.amount; spawnText('+' + p.amount + ' G', P.pos, 'gold', 2.2); sfx('coin'); }
       else {
@@ -128,7 +129,7 @@ function killEnemy(e, by) {
   startDeath(e.c, e.pos); e.c.tag.spr.visible = false;
   if (P.target === e) P.target = null;
   if (by) { aiGainXp(by, e.T); return; }       // an AI player got the kill: no loot/XP/quest for you
-  var xp = xpFor(e.T);
+  var xp = xpFor(e.T); if (xp > 0) xp = Math.round(xp * (1 + costumeSum('exp') / 100));   // costume EXP boost
   if (xp > 0) { spawnText('+' + xp + ' XP', P.pos, 'xp', 2.4); log('Defeated ' + e.T.name + '. +' + xp + ' XP', '#9fe3ff'); gainXp(xp); }
   else { spawnText('No EXP', P.pos, 'info', 2.4); log('Defeated ' + e.T.name + ' (level too low for EXP - loot only).', '#b8b8b8'); }
   dropGold(e.pos, randInt(e.T.gold[0], e.T.gold[1]));
@@ -422,7 +423,7 @@ function makeCrocMount(crown) {
 function applyMountVisual() {
   if (!mountObj) { mountObj = makeCrocMount(); P.c.g.add(mountObj.g); }
   mountObj.g.visible = !!P.mounted;
-  if (P.c.tag && P.c.tag.spr) P.c.tag.spr.position.y = P.mounted ? 2.45 : 2.3;
+  if (P.c.tag && P.c.tag.spr) P.c.tag.spr.position.y = P.mounted ? 2.75 : 2.6;
   if (!P.mounted) { P.c.rig.body.position.y = 0; }
 }
 function toggleMount() {
@@ -458,7 +459,7 @@ function renderMountShop(body) {
 
 /* ---------- Croczilla: the crowned crocodile boss uses the mount model, enlarged ---------- */
 function attachCroc(c) {
-  var m = makeCrocMount(true); c.g.add(m.g); c.croc = m; c.rig.body.visible = false; c.tag.spr.position.y = 1.7;
+  var m = makeCrocMount(true); c.g.add(m.g); c.croc = m; c.rig.body.visible = false; c.tag.spr.position.y = 2.0;
   m.g.traverse(function (o) { if (o.material && o.material.emissive) { o.material.userData = o.material.userData || {}; c.mats.push(o.material); } });
 }
 function animCroc(c, dt, spd) {

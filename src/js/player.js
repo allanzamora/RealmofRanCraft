@@ -1,14 +1,14 @@
-
+/* player.js - player state, stats, buffs, save/load, leveling */
 var SAVE_KEY = 'moviex_rpg_v3';
 var P = {
-  name: 'Hero', lvl: 1, xp: 0, hp: 100, look: { sex: 'm', style: 0, hair: 0x2a1a10, shirt: 0x2f6fd0, pants: 0x353a48 }, mp: 50, gold: 0, diamonds: 0, map: 'plains',
+  name: 'Hero', lvl: 1, xp: 0, hp: 100, costumes: [], costumeWorn: {}, pets: {}, pet: null, petFood: 0, petMeal: {}, petHunger: {}, look: { sex: 'm', style: 0, hair: 0x2a1a10, shirt: 0x2f6fd0, pants: 0x353a48 }, mp: 50, gold: 0, diamonds: 0, map: 'plains',
   inv: { hp_potion: 3, mp_potion: 1 }, owned: ['weapon0'],
   equip: { weapon: 'weapon0', helmet: null, armor: null, pants: null, gloves: null, wings: null },
   skills: DEFAULT_SLOTS.slice(), slots: padSlots(DEFAULT_SLOTS), quests: {},
   rolls: {}, upg: {}, mounts: {}, mounted: false, codes: {}, slowT: 0, slowMul: 1, poisonT: 0, poisonDps: 0, poisonAcc: 0, sp: 0, alloc: { hp: 0, dmg: 0, def: 0, crit: 0, cdmg: 0 }, reb: 0, taxPaid: 0, taxT: 0, dead: false, target: null, dash: 0, dashDir: { x: 0, z: 0 }, dashSpeed: 0,
   cd: { atk: 0, pot: 0, dash: 0 }, invuln: 0, skcd: {}, buffs: [], shield: 0, shieldT: 0, hot: null, lastCombat: -99, attackHeld: false, c: null, pos: null
 };
-function refreshPlayerTag(force) { 
+function refreshPlayerTag(force) {      // HP bar under the character name (floating tag)
   var f = clamp(P.hp / maxHp(), 0, 1), bkt = Math.round(f * 50);
   if (force || bkt !== P._tagB) { P._tagB = bkt; P.c.tag.draw(f); }
 }
@@ -19,13 +19,13 @@ var TAX_RATE = 0.12, SAFE_TAX = 5, SAFE_TAX_EVERY = 25;
 function buyCost(price) { return Math.ceil(price * (1 + TAX_RATE)); }
 function sellNet(v) { return Math.floor(v * (1 - TAX_RATE)); }
 var SP_PER_LEVEL = 3, SP_HP = 10, SP_DMG = 2, SP_DEF = 1, SP_CRIT = 0.2, SP_CDMG = 1;
-function maxHp() { return Math.round(100 + 25 * (P.lvl - 1) + gearSum('hp') + SP_HP * P.alloc.hp); }
+function maxHp() { return Math.round(100 + 25 * (P.lvl - 1) + gearSum('hp') + costumeSum('hp') + SP_HP * P.alloc.hp); }
 function critChance() { return Math.min(0.9, 0.12 + (gearSum('crit') + SP_CRIT * P.alloc.crit) / 100); }
 function critMul() { return 1.8 + (gearSum('cdmg') + SP_CDMG * P.alloc.cdmg) / 100; }
 function maxMp() { return 50 + 10 * (P.lvl - 1); }
-function atkVal() { return (12 + 3.2 * (P.lvl - 1) + gearSum('atk') + SP_DMG * P.alloc.dmg) * (1 + buffSum('atk')); }
-function defVal() { return Math.max(0, (2 + 1.5 * (P.lvl - 1) + gearSum('def') + SP_DEF * P.alloc.def) * (1 + buffSum('def'))); }
-function moveMul() { return Math.max(0.3, 1 + buffSum('spd') + gearSum('spd') / 100) * (P.mounted ? MOUNT_SPEED : 1) * (P.slowT > 0 ? P.slowMul : 1); }
+function atkVal() { return (12 + 3.2 * (P.lvl - 1) + gearSum('atk') + petBonus('atk') + costumeSum('atk') + SP_DMG * P.alloc.dmg) * (1 + buffSum('atk')); }
+function defVal() { return Math.max(0, (2 + 1.5 * (P.lvl - 1) + gearSum('def') + costumeSum('def') + SP_DEF * P.alloc.def) * (1 + buffSum('def'))); }
+function moveMul() { return Math.max(0.3, 1 + buffSum('spd') + petBonus('spd') + costumeSum('spd') + gearSum('spd') / 100) * (P.mounted ? MOUNT_SPEED : 1) * (P.slowT > 0 ? P.slowMul : 1); }
 
 function addBuff(stat, v, dur, name) {
   for (var i = P.buffs.length - 1; i >= 0; i--) if (P.buffs[i].src === name && P.buffs[i].stat === stat) P.buffs.splice(i, 1);
@@ -33,7 +33,7 @@ function addBuff(stat, v, dur, name) {
 }
 function updateBuffs(dt) {
   if (P.slowT > 0) P.slowT -= dt;
-  if (P.poisonT > 0 && !P.dead) {               
+  if (P.poisonT > 0 && !P.dead) {                // poison: flat damage every second (ignores defence)
     P.poisonT -= dt; P.poisonAcc += dt;
     while (P.poisonAcc >= 1 && !P.dead) { P.poisonAcc -= 1; P.hp -= P.poisonDps; spawnText('-' + P.poisonDps, P.pos, 'fl hurt', 2.2); if (P.hp <= 0) { playerDie('Poison'); break; } }
   }
@@ -46,7 +46,7 @@ function updateBuffs(dt) {
     if (P.hot.t <= 0) P.hot = null;
   }
 }
-
+/* active buff list for the HUD (icon + vertical bar) and the orbiting buff boxes */
 function activeBuffs() {
   var out = [], seen = {};
   P.buffs.forEach(function (b) { if (seen[b.src]) return; seen[b.src] = 1; out.push({ key: b.src, name: b.src, t: b.t, dur: b.dur || b.t, col: b.stat === 'def' ? 0xb0b8d0 : b.stat === 'spd' ? 0x7dffb0 : 0xffa040 }); });
@@ -84,13 +84,18 @@ function resetGame() {
 }
 function saveGame() {
   if (noSave) return;
-  try { localStorage.setItem(SAVE_KEY, JSON.stringify({ sp: P.sp, alloc: P.alloc, reb: P.reb, taxPaid: P.taxPaid, name: P.name, rolls: P.rolls, upg: P.upg, mounts: P.mounts, codes: P.codes, lvl: P.lvl, xp: P.xp, look: P.look, gold: P.gold, diamonds: P.diamonds, inv: P.inv, owned: P.owned, equip: P.equip, skills: P.skills, slots: P.slots, quests: P.quests, map: P.map })); } catch (e) {}
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify({ sp: P.sp, alloc: P.alloc, reb: P.reb, taxPaid: P.taxPaid, name: P.name, rolls: P.rolls, upg: P.upg, mounts: P.mounts, codes: P.codes, lvl: P.lvl, xp: P.xp, look: P.look, costumes: P.costumes, costumeWorn: P.costumeWorn, pets: P.pets, pet: P.pet, petFood: P.petFood, petMeal: P.petMeal, petHunger: P.petHunger, gold: P.gold, diamonds: P.diamonds, inv: P.inv, owned: P.owned, equip: P.equip, skills: P.skills, slots: P.slots, quests: P.quests, map: P.map })); } catch (e) {}
 }
 function loadGame() {
   try {
     var s = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null');
     if (!s) return;
     if (s.look) { var Lk = s.look; P.look = { sex: Lk.sex === 'f' ? 'f' : 'm', style: clamp(Lk.style | 0, 0, 6), hair: (Lk.hair | 0) & 0xffffff, shirt: (Lk.shirt | 0) & 0xffffff, pants: (Lk.pants | 0) & 0xffffff }; }
+    P.costumes = (s.costumes || []).filter(function (id) { return COSTUME_DEFS[id]; }); P.costumeWorn = {};
+    if (s.costumeWorn) for (var cs0 in s.costumeWorn) { var cd0 = COSTUME_DEFS[s.costumeWorn[cs0]]; if (cd0 && cd0.slot === cs0 && P.costumes.indexOf(cd0.id) >= 0) P.costumeWorn[cs0] = cd0.id; }
+    P.pets = {}; if (s.pets) for (var pid in s.pets) if (PETS[pid]) P.pets[pid] = { lvl: clamp(s.pets[pid].lvl | 0, 1, PET_MAX) };
+    P.pet = (s.pet && P.pets[s.pet]) ? s.pet : null; P.petFood = Math.max(0, s.petFood | 0);
+    P.petMeal = {}; P.petHunger = {}; for (var mid2 in PETS) { P.petMeal[mid2] = Math.max(0, (s.petMeal && s.petMeal[mid2]) | 0); P.petHunger[mid2] = clamp(+(s.petHunger && s.petHunger[mid2]) || 0, 0, PET_HUNGER_T); }
     if (s.name) P.name = String(s.name).slice(0, 14);
     if (s.rolls) for (var rid in s.rolls) { var ro = s.rolls[rid]; if (ro && ITEMS[ro.base] && ITEMS[ro.base].type === 'gear') makeInstance(ro.base, ro.r, rid); }
     P.codes = {}; if (s.codes) for (var cc in s.codes) if (REDEEM[cc]) P.codes[cc] = true;
@@ -129,7 +134,7 @@ function gainXp(amount) {
   saveGame();
 }
 
-
+/* ---------- per-frame player update ---------- */
 function updatePlayer(dt) {
   var c = P.c;
   P.cd.atk = Math.max(0, P.cd.atk - dt); P.cd.pot = Math.max(0, P.cd.pot - dt);
@@ -141,7 +146,7 @@ function updatePlayer(dt) {
   var fy = cam.yaw, fx = -Math.sin(fy), fz = -Math.cos(fy), rx = Math.cos(fy), rz = -Math.sin(fy);
   var wx = rx * mv.x + fx * (-mv.y), wz = rz * mv.x + fz * (-mv.y);
   var inSafe = inSafeZone();
-  if (inSafe && !(curMap && curMap.arena)) {        
+  if (inSafe && !(curMap && curMap.arena)) {        // Game Master's safe-zone upkeep: 5 gold every 10 seconds
     P.taxT += dt;
     if (P.taxT >= SAFE_TAX_EVERY) { P.taxT -= SAFE_TAX_EVERY; var tx = Math.min(P.gold, SAFE_TAX); if (tx > 0) { P.gold -= tx; P.taxPaid += tx; spawnText('-' + tx + ' G tax', P.pos, 'fl gold', 2.4); log('Safe-zone tax: -' + tx + ' G', '#ffd54f'); } }
   } else P.taxT = 0;
@@ -170,8 +175,8 @@ function updatePlayer(dt) {
   if (c.anim && c.anim.type === 'attack' && P.target && P.target.state !== 'dead')
     c.g.rotation.y = turnToward(c.g.rotation.y, Math.atan2(P.target.pos.x - P.pos.x, P.target.pos.z - P.pos.z), 1 - Math.exp(-18 * dt));
   if (P.attackHeld) tryBasic();
-  P.mp = Math.min(maxMp(), P.mp + (2 + maxMp() * 0.012 + gearSum('mpr')) * dt);
-  var hrg = gearSum('hpr'); if (hrg > 0) P.hp = Math.min(maxHp(), P.hp + hrg * dt);
+  P.mp = Math.min(maxMp(), P.mp + (2 + maxMp() * 0.012 + gearSum('mpr') + costumeSum('mpRegen')) * dt);
+  var hrg = gearSum('hpr') + costumeSum('hpRegen'); if (hrg > 0) P.hp = Math.min(maxHp(), P.hp + hrg * dt);
   if (inSafe) P.hp = Math.min(maxHp(), P.hp + maxHp() * 0.06 * dt);
   else if (!inCombat()) P.hp = Math.min(maxHp(), P.hp + maxHp() * 0.015 * dt);
   if (P.target && (P.target.state === 'dead' || Math.hypot(P.target.pos.x - P.pos.x, P.target.pos.z - P.pos.z) > 28)) P.target = null;

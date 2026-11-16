@@ -1,4 +1,7 @@
-
+/* characters.js - procedural humanoid rig, weapons, name tags, animation, NPCs/bots/enemy creation */
+/* =====================================================================
+   HUMANOID CHARACTER RIG (procedural, articulated)
+   ===================================================================== */
 function makeHumanoid(o) {
   var def = { scale: 1, bulk: 1, thin: false, skin: 0xffcc99, shirt: 0x3366cc, pants: 0x333344, boots: 0x2a1c10, hair: 0x3a2616, eye: 0x111111 };
   for (var key in def) if (o[key] === undefined) o[key] = def[key];
@@ -26,10 +29,12 @@ function makeHumanoid(o) {
   var glovesMat = M(0xaaaaaa, { metalness: 0.4, roughness: 0.5 });
   var helmMat = M(0x8a97a6, { metalness: 0.55, roughness: 0.4 });
   var wingMat = M(0xffffff, { roughness: 0.6, side: THREE.DoubleSide });
-  var hairStyles = null, hm = null, padMeshes = [], gloveMeshes = [], helmMeshes = [], hairMeshes = [], wings = [];
+  var hairStyles = null, crownG = null, maskG = null, ssjWings = null, ssjG = null, aura = null, hm = null, padMeshes = [], gloveMeshes = [], helmMeshes = [], hairMeshes = [], wings = [];
   var gzTrim = o.gear ? M(0x1adcff, { emissive: 0x0a8cb0, emissiveIntensity: 0.7, roughness: 0.4 }) : null;
   var gzPanel = o.gear ? M(0x174650, { roughness: 0.6 }) : null;
-  var gzArmorMeshes = [], gzGloveMeshes = [], gzPantsMeshes = [];
+  var gzArmorMeshes = [], gzGloveMeshes = [], gzPantsMeshes = [], radArmorMeshes = [], radGloveMeshes = [], radPantsMeshes = [];
+  var radGold = o.gear ? M(0xffd54f, { emissive: 0x8a6a00, emissiveIntensity: 0.8, metalness: 0.6, roughness: 0.3 }) : null;
+  var radTeal = o.gear ? M(0x3ff0e0, { emissive: 0x10a090, emissiveIntensity: 1.1, roughness: 0.3 }) : null;
   function gz(arr, geo, mat, parent, x, y, z, rz) { var m = add(geo, mat, parent, x, y, z, true); m.visible = false; if (rz) m.rotation.z = rz; arr.push(m); return m; }
 
   // hips: a belt block
@@ -51,6 +56,9 @@ function makeHumanoid(o) {
       for (var si = 0; si < 3; si++) gz(gzArmorMeshes, box(0.1, 0.025, 0.2), gzTrim, torso, sx * 0.28 * bk, 0.14 + si * 0.08, 0);
     });
     gz(gzArmorMeshes, box(0.4, 0.22, 0.02), gzPanel, torso, 0, 0.2, 0.165);
+    // Radiant armor costume trim: gold collar + belt + stripes, teal chest gem
+    gz(radArmorMeshes, box(0.14, 0.16, 0.03), radTeal, torso, 0, 0.45, 0.17); gz(radArmorMeshes, box(0.32, 0.05, 0.22), radGold, torso, 0, 0.63, 0); gz(radArmorMeshes, box(0.57 * bk, 0.06, 0.33), radGold, torso, 0, 0.08, 0);
+    [-1, 1].forEach(function (sx) { gz(radArmorMeshes, box(0.045, 0.32, 0.03), radGold, torso, sx * 0.16, 0.38, 0.17); gz(radArmorMeshes, box(0.2, 0.04, 0.03), radGold, torso, sx * 0.1, 0.26, 0.17); });
   }
 
   // head: cube with a block face
@@ -61,6 +69,61 @@ function makeHumanoid(o) {
     hm = M(o.hair);
     var cap = add(box(0.37, 0.11, 0.37), hm, head, 0, 0.365, 0), back = add(box(0.37, 0.3, 0.09), hm, head, 0, 0.2, -0.165), fr = add(box(0.37, 0.05, 0.05), hm, head, 0, 0.32, 0.17);
     hairMeshes.push(cap, back, fr);
+    if (o.hairStyles) {   // King Crown costume model (hidden until worn)
+      var cg = new THREE.Group(), gm2 = M(0xffd54f); gm2.emissive.setHex(0x6a4a00); gm2.userData.em = 0x6a4a00; gm2.userData.emi = 1;
+      var rb = M(0xe02030), bl = M(0x2a6ad8);
+      var cb = function (w, h2, d, mat, x, y, z) { var m = new THREE.Mesh(new THREE.BoxGeometry(w, h2, d), mat); m.position.set(x, y, z); cg.add(m); };
+      cb(0.43, 0.1, 0.43, gm2, 0, 0.0, 0);
+      [[-0.18, -0.18], [0.18, -0.18], [-0.18, 0.18], [0.18, 0.18], [0, 0.2], [0, -0.2], [-0.2, 0], [0.2, 0]].forEach(function (q, i) { cb(0.08, i < 4 ? 0.2 : 0.14, 0.08, gm2, q[0], i < 4 ? 0.14 : 0.11, q[1]); cb(0.045, 0.045, 0.045, i % 2 ? bl : rb, q[0], i < 4 ? 0.27 : 0.2, q[1]); });
+      cb(0.07, 0.07, 0.03, rb, 0, 0.0, 0.225);
+      cg.position.y = 0.42; cg.visible = false; head.add(cg); crownG = cg;
+      // Super Saiyan Hair (from the side-view picture): swept-back golden spikes + a long flat lock down the back
+      var sg = new THREE.Group(), gold = M(0xc8c81a); gold.emissive.setHex(0x5a5a00); gold.userData.em = 0x5a5a00; gold.userData.emi = 1;
+      var pale = M(0xdcdc3a); pale.emissive.setHex(0x6a6a00); pale.userData.em = 0x6a6a00; pale.userData.emi = 1;
+      sg.userData.gold = gold; sg.userData.sway = []; sg.userData.arcs = [];
+      var sb = function (w, h2, d, x, y, z) { var m = new THREE.Mesh(new THREE.BoxGeometry(w, h2, d), gold); m.position.set(x, y, z); sg.add(m); };
+      var spike = function (x, y, z, len, rad, rx, rz, mat, sway, flat) {
+        var pv = new THREE.Group(); pv.position.set(x, y, z); pv.rotation.set(rx, 0, rz); if (flat) pv.scale.x = flat;
+        var m = new THREE.Mesh(new THREE.ConeGeometry(rad, len, 5), mat || gold); m.position.y = len / 2; pv.add(m); sg.add(pv);
+        if (sway) sg.userData.sway.push({ pv: pv, rx: rx, rz: rz, ph: Math.random() * 6 }); return pv;
+      };
+      sb(0.39, 0.13, 0.39, 0, 0.36, 0); sb(0.39, 0.34, 0.12, 0, 0.19, -0.19); sb(0.06, 0.22, 0.22, -0.2, 0.2, -0.04); sb(0.06, 0.22, 0.22, 0.2, 0.2, -0.04);
+      [0.55, 0.75, 0.95, 1.05, 0.95, 0.8, 0.6].forEach(function (len, i) {   // spikes sweeping up and back
+        spike(((i % 3) - 1) * 0.09, 0.4, 0.12 - 0.05 * i, len, 0.085, -(0.35 + 0.18 * i), -((i % 3) - 1) * 0.2, i % 2 ? pale : gold, true);
+      });
+      [0.95, 1.1, 1.0, 0.8].forEach(function (len, i) {                         // spikes streaming straight back
+        spike([-0.1, 0.1, -0.05, 0.05][i], 0.3 - 0.04 * i, -0.15, len, 0.09, -(1.7 + 0.12 * i), (i % 2 ? 0.1 : -0.1), i % 2 ? gold : pale, true);
+      });
+      [[-0.08, -2.85, 1.5], [0.04, -2.92, 1.75], [0.12, -2.8, 1.3]].forEach(function (q, i) { spike(q[0], 0.3, -0.2, q[2], 0.13, q[1], 0, i === 1 ? pale : gold, true, 2.2); });   // long flat lock
+      spike(0, 0.37, 0.17, 0.3, 0.06, 1.1, 0, pale, false);                     // brow tuft pointing forward
+      sg.visible = false; head.add(sg); ssjG = sg;
+      // Johny Mask (from the picture): grey mask, blue ear spikes, 4 white dots, white visor strip with a notch, pointed chin plate
+      var mg = new THREE.Group(), gry = M(0x737373), blu = M(0x4399d3), wht = M(0xf6f6f6, { emissive: 0x555555, emissiveIntensity: 0.4 });
+      var mb = function (w, h2, d, mat, x, y, z) { var m = new THREE.Mesh(new THREE.BoxGeometry(w, h2, d), mat); m.position.set(x, y, z); mg.add(m); return m; };
+      mb(0.385, 0.4, 0.385, gry, 0, 0.17, 0); mb(0.385, 0.1, 0.385, gry, 0, -0.04, 0);
+      var chin = new THREE.Mesh(new THREE.ConeGeometry(0.27, 0.14, 4), gry); chin.rotation.set(Math.PI, Math.PI / 4, 0); chin.position.set(0, -0.14, 0); mg.add(chin);
+      [-0.115, -0.04, 0.04, 0.115].forEach(function (x) { mb(0.04, 0.04, 0.02, wht, x, 0.29, 0.195); });
+      mb(0.3, 0.115, 0.02, wht, 0, 0.15, 0.195); mb(0.3, 0.012, 0.022, blu, 0, 0.21, 0.196);
+      var nt = mb(0.075, 0.075, 0.024, gry, 0, 0.1, 0.197); nt.rotation.z = Math.PI / 4;
+      [-1, 1].forEach(function (s2) { var sp = new THREE.Mesh(new THREE.ConeGeometry(0.075, 0.2, 3), blu); sp.rotation.z = -s2 * Math.PI / 2; sp.position.set(s2 * 0.3, 0.17, 0); mg.add(sp); });
+      mg.visible = false; head.add(mg); maskG = mg;
+      // Super Saiyan Wings (from the picture): radiating golden spikes with pale translucent spikes behind them
+      var wgr = new THREE.Group(), wy = M(0xc4c42e), wp = new THREE.MeshBasicMaterial({ color: 0xe6e6c8, transparent: true, opacity: 0.4, depthWrite: false, side: THREE.DoubleSide });
+      wgr.userData.sides = [];
+      [-1, 1].forEach(function (s2) {
+        var side = new THREE.Group(); wgr.add(side); wgr.userData.sides.push({ g: side, s: s2 });
+        [[10, 2.3], [32, 2.0], [55, 1.6], [80, 1.1], [-14, 2.1], [-38, 1.7], [-62, 1.25], [-88, 0.9]].forEach(function (q) {
+          var phi = q[0] * Math.PI / 180, ang = Math.atan2(-s2 * Math.cos(phi), Math.sin(phi));
+          [[wy, 0.085, q[1]], [wp, 0.2, q[1] * 1.15]].forEach(function (k) {
+            var pv = new THREE.Group(); pv.rotation.set(-0.3, 0, ang); var m = new THREE.Mesh(new THREE.ConeGeometry(k[1], k[2], 4), k[0]); m.position.y = k[2] / 2; pv.add(m); side.add(pv);
+          });
+        });
+        var gem = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.05), M(0xf6f6f6)); gem.position.set(s2 * 0.05, 0, 0); side.add(gem);
+      });
+      wgr.position.set(0, 0.42, -0.2); wgr.visible = false; torso.add(wgr); ssjWings = wgr;
+      var auraM = new THREE.MeshBasicMaterial({ color: 0xffd54f, transparent: true, opacity: 0.28, side: THREE.DoubleSide, depthWrite: false });
+      var au = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 0.75, 2.6, 18, 1, true), auraM); au.position.y = 1.0; au.visible = false; root.add(au); aura = au;
+    }
     if (o.hairStyles) {   // player hair styles: 0 short, 1 spiky, 2 long, 3 ponytail, 4 buzz, 5 mohawk, 6 bun
       hairStyles = [hairMeshes.slice()];
       var hs = function (list) { list.forEach(function (m) { m.visible = false; }); hairStyles.push(list); };
@@ -123,8 +186,10 @@ function makeHumanoid(o) {
     add(box(0.19 * th, 0.27, 0.19 * th), M(o.forearm !== undefined ? o.forearm : o.skin), el, 0, -0.135, 0);
     if (o.gear) {
       gz(gzArmorMeshes, box(0.27, 0.035, 0.27), gzTrim, sh, 0, 0.07, 0);
+      gz(radArmorMeshes, box(0.05, 0.14, 0.3), radGold, sh, sx * 0.14, 0.04, 0); gz(radArmorMeshes, box(0.08, 0.08, 0.08), radTeal, sh, sx * 0.14, 0.12, 0);
       gz(gzArmorMeshes, box(0.04, 0.16, 0.27), gzTrim, sh, sx * 0.12, 0.0, 0);
       gz(gzGloveMeshes, box(0.25, 0.035, 0.25), gzTrim, el, 0, -0.12, 0);
+      gz(radGloveMeshes, box(0.27, 0.05, 0.27), radGold, el, 0, -0.1, 0); gz(radGloveMeshes, box(0.09, 0.09, 0.03), radTeal, el, 0, -0.21, 0.125); gz(radGloveMeshes, box(0.24, 0.03, 0.24), radTeal, el, 0, -0.29, 0);
       gz(gzGloveMeshes, box(0.25, 0.03, 0.25), gzTrim, el, 0, -0.29, 0);
       gz(gzGloveMeshes, box(0.1, 0.1, 0.02), gzPanel, el, 0, -0.2, 0.125);
       var gh = add(box(0.23, 0.12, 0.23), glovesMat, el, 0, -0.25, 0, true);
@@ -144,6 +209,7 @@ function makeHumanoid(o) {
     add(box(0.25, 0.1, 0.3), M(o.boots), kn, 0, -0.41, 0.03);
     if (o.gear) {   // Godzilla pants: cyan knee plate + thigh stripes
       gz(gzPantsMeshes, box(0.27, 0.1, 0.27), gzTrim, kn, 0, 0.02, 0);
+      gz(radPantsMeshes, box(0.27, 0.1, 0.27), radGold, kn, 0, 0.02, 0); gz(radPantsMeshes, box(0.05, 0.3, 0.03), radTeal, hp, 0, -0.22, 0.125); gz(radPantsMeshes, box(0.27, 0.06, 0.26), radGold, kn, 0, -0.3, 0);
       for (var ti = 0; ti < 3; ti++) gz(gzPantsMeshes, box(0.2 - ti * 0.05, 0.03, 0.02), gzTrim, hp, 0, -0.1 - ti * 0.07, 0.125);
       gz(gzPantsMeshes, box(0.2, 0.025, 0.02), gzTrim, kn, 0, -0.2, 0.12);
     }
@@ -243,7 +309,7 @@ function makeHumanoid(o) {
   root.scale.setScalar(o.scale);
   return { root: root, mats: mats, rig: { body: body, hips: hips, torso: torso, head: head, armL: armL, armR: armR, legL: legL, legR: legR, cape: cape, wpn: wpn, armor: armor, armorMat: armorMat,
     pantsMat: pantsMat, padMat: padMat, padMeshes: padMeshes, glovesMat: glovesMat, gloveMeshes: gloveMeshes, helmMat: helmMat, helmMeshes: helmMeshes,
-    hairMeshes: hairMeshes, hairStyles: hairStyles, skirt: skirt, hairMat: hm, shirtMats: shirtMats, wingMat: wingMat, wingsG: wingsG, wingsG2: wingsG2, wingsG3: wingsG3, wingMat2: wingMat2, gzTrim: gzTrim, gzArmorMeshes: gzArmorMeshes, gzGloveMeshes: gzGloveMeshes, gzPantsMeshes: gzPantsMeshes, wings: wings, godG: godG, godMat: godMat, flameMat: flameMat } };
+    hairMeshes: hairMeshes, hairStyles: hairStyles, crownG: crownG, maskG: maskG, ssjWings: ssjWings, ssjG: ssjG, aura: aura, skirt: skirt, hairMat: hm, shirtMats: shirtMats, wingMat: wingMat, wingsG: wingsG, wingsG2: wingsG2, wingsG3: wingsG3, wingMat2: wingMat2, gzTrim: gzTrim, radArmorMeshes: radArmorMeshes, radGloveMeshes: radGloveMeshes, radPantsMeshes: radPantsMeshes, gzArmorMeshes: gzArmorMeshes, gzGloveMeshes: gzGloveMeshes, gzPantsMeshes: gzPantsMeshes, wings: wings, godG: godG, godMat: godMat, flameMat: flameMat } };
 }
 
 function setWeapon(c, kind, color, glow) {
@@ -277,6 +343,16 @@ function setWeapon(c, kind, color, glow) {
     add(new THREE.BoxGeometry(0.1, 0.2, 0.03), metal, 0.02, 1.62, 0);
     add(new THREE.BoxGeometry(0.34, 1.3, 0.1), aura, 0, 0.3 + 0.65, 0);
     [0.5, 0.8, 1.1].forEach(function (yy, i) { var sp = add(new THREE.BoxGeometry(0.1, 0.09, 0.03), metal, (i % 2 ? -1 : 1) * 0.12, 0.3 + yy, 0); sp.rotation.z = (i % 2 ? 1 : -1) * 0.6; });
+  } else if (kind === 'ssjblade') {          // Super Saiyan Sword: flat, wide glowing yellow + white blade
+    var wh = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 0.9, roughness: 0.2 });
+    var gl = new THREE.MeshBasicMaterial({ color: 0xffe14a, transparent: true, opacity: 0.3, depthWrite: false });
+    add(new THREE.BoxGeometry(0.07, 0.3, 0.07), wood, 0, -0.04, 0);
+    add(new THREE.BoxGeometry(0.34, 0.07, 0.09), wh, 0, 0.14, 0);
+    add(new THREE.BoxGeometry(0.3, 1.5, 0.025), metal, 0, 0.18 + 0.75, 0);
+    add(new THREE.BoxGeometry(0.1, 1.4, 0.032), wh, 0, 0.18 + 0.7, 0);
+    add(new THREE.BoxGeometry(0.03, 1.5, 0.032), wh, -0.15, 0.18 + 0.75, 0); add(new THREE.BoxGeometry(0.03, 1.5, 0.032), wh, 0.15, 0.18 + 0.75, 0);
+    add(new THREE.BoxGeometry(0.16, 0.2, 0.025), metal, 0, 0.18 + 1.6, 0);
+    add(new THREE.BoxGeometry(0.5, 1.7, 0.08), gl, 0, 0.18 + 0.85, 0);
   } else if (kind === 'cane') {               // giant candy cane (Bad Santa)
     var red = new THREE.MeshStandardMaterial({ color: 0xd01818, roughness: 0.5 }), whi = new THREE.MeshStandardMaterial({ color: 0xf4f4f4, roughness: 0.5 });
     for (var sI = 0; sI < 10; sI++) add(new THREE.BoxGeometry(0.1, 0.17, 0.1), sI % 2 ? whi : red, 0, -0.1 + sI * 0.17, 0);
@@ -318,12 +394,12 @@ function setWeapon(c, kind, color, glow) {
 
 /* floating name tag + hp bar sprite */
 function makeTag(c, color, showBar) {
-  var cv = document.createElement('canvas'); cv.width = 256; cv.height = 64;
-  var ctx = cv.getContext('2d');
+  var cv = document.createElement('canvas'); cv.width = 512; cv.height = 128;
+  var ctx = cv.getContext('2d'); ctx.scale(2, 2);   // drawn in 256x64 units, 2x pixels for a sharp, bigger tag
   var tex = new THREE.CanvasTexture(cv);
   var spr = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, depthWrite: false }));
-  spr.scale.set(2.1 / c.scale, 0.525 / c.scale, 1);
-  spr.position.y = 2.3; spr.renderOrder = 999;
+  spr.scale.set(4.2 / c.scale, 1.05 / c.scale, 1);   // name tags are 2x bigger
+  spr.position.y = 2.6; spr.renderOrder = 999;
   c.g.add(spr);
   function draw(frac) {
     ctx.clearRect(0, 0, 256, 64);
@@ -472,43 +548,55 @@ function applyLook(rig) {   // apply P.look (sex, hair style, colors) to a model
     r.hairMeshes = r.hairStyles[st]; r.hairMeshes.forEach(function (m) { m.visible = true; });
   }
 }
-function applyEquipVisuals() {
-  applyLook();
-  var r = P.c.rig, w = wItem();
-  setWeapon(P.c, w.kind, w.color, w.glow);
-  var a = ITEMS[P.equip.armor], p = ITEMS[P.equip.pants], g = ITEMS[P.equip.gloves], hm = ITEMS[P.equip.helmet], wg = ITEMS[P.equip.wings];
+function applyEquipVisuals(tc, ov) {   // tc: optional preview character; ov: costume overrides {slot: id} (preview only)
+  var pc = tc || P.c, CW = Object.assign({}, P.costumeWorn || {}, ov || {}); pc.cwEff = CW;
+  applyLook(pc.rig);
+  var r = pc.rig, w = CW.weapon ? COSTUME_DEFS[CW.weapon] : wItem();
+  setWeapon(pc, w.kind, w.color, w.glow);   // a worn costume replaces (hides) the gear visual of its slot
+  function vis(slot) { return CW[slot] ? COSTUME_DEFS[CW[slot]] : ITEMS[P.equip[slot]]; }
+  var a = vis('armor'), p = vis('pants'), g = vis('gloves'), hm = vis('helmet'), wg = vis('wings');
+  var crown = !!(hm && hm.model === 'crown'); if (crown) hm = null;
+  var ssj = !!(hm && hm.model === 'ssj3'); if (ssj) hm = null;
+  var mask = !!(hm && hm.model === 'mask'); if (mask) hm = null;
+  var sw = !!(wg && wg.model === 'ssjwings'); if (sw) wg = null;
+  if (r.maskG) { r.maskG.visible = mask; r.ssjWings.visible = sw; }
+  if (r.crownG) r.crownG.visible = crown;
+  if (r.ssjG) { r.ssjG.visible = ssj; r.aura.visible = ssj; }
   var gzA = !!(a && a.model === 'godzilla'), gzP = !!(p && p.model === 'godzilla'), gzG = !!(g && g.model === 'godzilla'), gzW = !!(wg && wg.model === 'godzilla');
   r.armor.visible = !!a; if (a) r.armorMat.color.setHex(gzA ? 0x141414 : a.color);
   r.gzArmorMeshes.forEach(function (m) { m.visible = gzA; }); r.gzGloveMeshes.forEach(function (m) { m.visible = gzG; }); r.gzPantsMeshes.forEach(function (m) { m.visible = gzP; });
   if (p) { r.pantsMat.color.setHex(gzP ? 0x141414 : p.color); r.pantsMat.metalness = 0.5; } else { r.pantsMat.color.setHex(P.look.pants); r.pantsMat.metalness = 0.05; }
   r.padMeshes.forEach(function (m) { m.visible = !!a; });
-  if (a) r.padMat.color.setHex(gzA ? 0x141414 : a.color);
+  if (a) r.padMat.color.setHex(gzA ? 0x141414 : (a.padColor || a.color));
+  var radA = !!(a && a.model === 'radiant'), radG = !!(g && g.model === 'radiant'), radP = !!(p && p.model === 'radiant');
+  r.radArmorMeshes.forEach(function (m) { m.visible = radA; }); r.radGloveMeshes.forEach(function (m) { m.visible = radG; }); r.radPantsMeshes.forEach(function (m) { m.visible = radP; });
   r.gloveMeshes.forEach(function (m) { m.visible = !!g; }); if (g) r.glovesMat.color.setHex(gzG ? 0x141414 : g.color);
   var godH = !!(hm && hm.model === 'god');
-  r.helmMeshes.forEach(function (m) { m.visible = !!hm && !godH; }); r.hairMeshes.forEach(function (m) { m.visible = !hm; }); if (r.godG) r.godG.visible = godH; if (hm) r.helmMat.color.setHex(hm.color);
+  r.helmMeshes.forEach(function (m) { m.visible = !!hm && !godH; }); r.hairMeshes.forEach(function (m) { m.visible = !hm && !ssj && !mask; }); if (r.godG) r.godG.visible = godH; if (hm) r.helmMat.color.setHex(hm.color);
   if (r.wingsG) {
     var gearW = !!(wg && wg.model === 'gear');
     r.wingsG.visible = !!wg && !gearW && !gzW; r.wingsG2.visible = gearW; r.wingsG3.visible = gzW;
     if (wg && !gearW && !gzW) r.wingMat.color.setHex(wg.color);
   }
   var rare = [];
-  if (w.rare && P.c.wMat) rare.push({ m: P.c.wMat, fx: w.fx });
+  if (w.rare && pc.wMat) rare.push({ m: pc.wMat, fx: w.fx });
   var gzUsed = false; function gzRare(fx) { if (!gzUsed) { gzUsed = true; rare.push({ m: r.gzTrim, fx: fx }); } }
   if (a && a.rare) { if (gzA) gzRare(a.fx); else { rare.push({ m: r.armorMat, fx: a.fx }); rare.push({ m: r.padMat, fx: a.fx }); } }
   if (p && p.rare) { if (gzP) gzRare(p.fx); else rare.push({ m: r.pantsMat, fx: p.fx }); }
   if (g && g.rare) { if (gzG) gzRare(g.fx); else rare.push({ m: r.glovesMat, fx: g.fx }); }
   if (hm && hm.rare) rare.push({ m: godH ? r.flameMat : r.helmMat, fx: hm.fx });
   if (wg && wg.rare) { if (gzW) { gzRare(wg.fx); rare.push({ m: r.wingsG3.userData.mem, fx: wg.fx }); } else rare.push({ m: (wg.model === 'gear' ? r.wingMat2 : r.wingMat), fx: wg.fx }); }
-  P.c.rare = rare;
+  pc.rare = rare;
   var rareMats = rare.map(function (x) { return x.m; });
-  P.c.mats.forEach(function (m) { if (m.emissive && rareMats.indexOf(m) < 0) { m.emissive.setHex(m.userData.em || 0); m.emissiveIntensity = m.userData.emi || 1; } });
+  pc.mats.forEach(function (m) { if (m.emissive && rareMats.indexOf(m) < 0) { m.emissive.setHex(m.userData.em || 0); m.emissiveIntensity = m.userData.emi || 1; } });
   // upgrade glow: every +1 makes the item glow stronger
   var up = [];
   function ug(m, id) { var l = id ? upgLvl(id) : 0; if (m && l > 0) up.push({ m: m, lvl: l, rare: rareMats.indexOf(m) >= 0 }); }
   function gm(m, it) { return it && it.model === 'godzilla' ? r.gzTrim : m; }
-  ug(P.c.wMat, P.equip.weapon); ug(gm(r.armorMat, a), P.equip.armor); if (!gzA) ug(r.padMat, P.equip.armor); ug(gm(r.pantsMat, p), P.equip.pants);
-  ug(gm(r.glovesMat, g), P.equip.gloves); ug(godH ? r.flameMat : r.helmMat, P.equip.helmet); ug(gzW ? r.gzTrim : (wg && wg.model === 'gear' ? r.wingMat2 : r.wingMat), P.equip.wings);
-  P.c.upg = up;
+  var eqU = function (s) { return CW[s] ? null : P.equip[s]; };
+  ug(pc.wMat, eqU('weapon')); ug(gm(r.armorMat, a), eqU('armor')); if (!gzA) ug(r.padMat, eqU('armor')); ug(gm(r.pantsMat, p), eqU('pants'));
+  ug(gm(r.glovesMat, g), eqU('gloves')); ug(godH ? r.flameMat : r.helmMat, eqU('helmet')); ug(gzW ? r.gzTrim : (wg && wg.model === 'gear' ? r.wingMat2 : r.wingMat), eqU('wings'));
+  pc.upg = up;
 }
 var UPG_COL = [0x9bd0ff, 0x6dff9a, 0xffd54f, 0xff7a2a, 0xff4fd8];
 function upgColor(l, t) { return l >= MAX_UPG ? new THREE.Color().setHSL((t * 0.6) % 1, 1, 0.6).getHex() : UPG_COL[Math.min(4, Math.floor(l / 10))]; }
@@ -572,8 +660,8 @@ function makeNpc(name, kind, x, z, look) {
 }
 function populateTown(m) {
   var hub = m.hub, RR = Math.max(10, m.safeR - 4);
-  function rp(i) { var an = i / 8 * TAU + 0.5; return [Math.cos(an) * RR, Math.sin(an) * RR]; }   // NPCs stand on the edge of the safe zone
-  var q0 = rp(0), q1 = rp(1), q2 = rp(2), q3 = rp(3), q4 = rp(4), q5 = rp(5), q6 = rp(6), q7 = rp(7);
+  function rp(i) { var an = i / 11 * TAU + 0.5; return [Math.cos(an) * RR, Math.sin(an) * RR]; }   // NPCs stand on the edge of the safe zone
+  var q0 = rp(0), q1 = rp(1), q2 = rp(2), q3 = rp(3), q4 = rp(4), q5 = rp(5), q6 = rp(6), q7 = rp(7), q8 = rp(8), q9 = rp(9), q10 = rp(10);
   npcQuest = makeNpc('Elder Rowan', 'quest', q0[0], q0[1], { scale: 1, skin: 0xe0b896, shirt: 0x6a3d8a, pants: 0x3a2a4a, hair: 0xdddddd, sleeve: 0x6a3d8a, cape: 0x4a2a6a, boots: 0x2a1a10 });
   var shop = makeNpc('Merchant Mira', 'shop', q1[0], q1[1], { scale: 0.96, skin: 0xf0c0a0, shirt: 0xc0392b, pants: 0x5a3a2a, hair: 0x8a3a1a, boots: 0x3a2412 });
   var smith = makeNpc('Smith Brannock', 'upgrade', q2[0], q2[1], { scale: 1.08, bulk: 1.25, skin: 0xd0a07c, shirt: 0x5a4636, pants: 0x2a2a2a, hair: 0x3a2a1a, armor: 0x6a5a4a, pads: true, padColor: 0x6a5a4a, boots: 0x2a1a10 });
@@ -599,6 +687,9 @@ function populateTown(m) {
   })();
   var craft = makeNpc('Item Craft Master Vulcan', 'craft', q6[0], q6[1], { scale: 1.08, skin: 0xd9a77c, shirt: 0xb85a1e, pants: 0x3a2a22, hair: 0x2a1a10, sleeve: 0xb85a1e, cape: 0x5a3a22, boots: 0x2a1a10, armor: 0x6a4a30 });
   var dshop = makeNpc('Diamond Merchant Jewel', 'diamond', q7[0], q7[1], { scale: 1.05, skin: 0xe0b894, shirt: 0x1aa8c8, pants: 0x1a3a5a, hair: 0xf0f0ff, sleeve: 0x1aa8c8, cape: 0x7fe8ff, boots: 0x1a2a3a });
+  var petn = makeNpc('PetMaloo', 'pet', q8[0], q8[1], { scale: 1.0, skin: 0xf0c8a0, shirt: 0xff8ab0, pants: 0x6a4a9a, hair: 0xffb050, sleeve: 0xff8ab0, cape: 0xffd54f, boots: 0x5a3a22 });
+  var pfood = makeNpc('Kibble Kay (Pet Food)', 'petfood', q9[0], q9[1], { scale: 1.0, skin: 0xe0b894, shirt: 0x4aa05a, pants: 0x3a3a22, hair: 0x6a3a1a, sleeve: 0x4aa05a, cape: 0xc89850, boots: 0x3a2a1a });
+  var cshop = makeNpc('Costume Shop', 'costume', q10[0], q10[1], { scale: 1.0, skin: 0xf0c8a0, shirt: 0x8a2ad0, pants: 0x1a1a3a, hair: 0xe8e8e8, sleeve: 0x8a2ad0, cape: 0xffd54f, boots: 0x1a1a1a });
   var stable = makeNpc('Stable Master Garrick', 'mount', q5[0], q5[1], { scale: 1.02, skin: 0xc89870, shirt: 0x3f6a3a, pants: 0x4a3a22, hair: 0x2a1a10, sleeve: 0x3f6a3a, cape: 0x2a4a22, boots: 0x2a1a10 });
   npcs.forEach(function (n) { if (!n.sit) n.c.g.rotation.y = Math.atan2(-n.pos.x, -n.pos.z); });   // face the middle of the safe zone
 }
@@ -607,4 +698,19 @@ function clearPopulation() {
   bots.forEach(function (b) { disposeChar(b.c); }); bots.length = 0;
   enemies.forEach(function (e) { disposeChar(e.c); }); enemies.length = 0;
   ais.forEach(function (a) { disposeChar(a.c); }); ais.length = 0;
+}
+
+/* animated golden aura of the Super Saiyan 3 costume */
+function updateCostumeFx(dt, pvc) {
+  var cc = pvc || P.c, r = cc && cc.rig; if (!r) return;
+  var cw = (cc.cwEff || P.costumeWorn || {}).weapon; if (cw && cc.wMat) cc.wMat.emissiveIntensity = 0.8 + 0.5 * Math.sin(performance.now() / 150);
+  if (r.ssjWings && r.ssjWings.visible) { var wt = performance.now() / 1000; r.ssjWings.userData.sides.forEach(function (sd) { sd.g.rotation.y = sd.s * (0.35 + Math.sin(wt * 2.2) * 0.12); sd.g.rotation.z = sd.s * Math.sin(wt * 2.2 + 1) * 0.04; }); }
+  if (!r.aura || !r.aura.visible) return;
+  var sg = r.ssjG, tt = performance.now() / 1000;
+  sg.userData.sway.forEach(function (s) { s.pv.rotation.x = s.rx + Math.sin(tt * 3 + s.ph) * 0.07; s.pv.rotation.z = s.rz + Math.cos(tt * 2.4 + s.ph) * 0.05; });
+  sg.userData.gold.emissiveIntensity = 0.9 + 0.5 * Math.sin(tt * 9);
+  sg.userData.arcs.forEach(function (am) { am.visible = Math.random() < 0.5; if (am.visible) { am.position.set(rand(-0.7, 0.7), rand(-0.3, 1.2), rand(-0.7, 0.4)); am.rotation.set(rand(0, TAU), rand(0, TAU), rand(0, TAU)); am.scale.z = rand(0.4, 1.6); } });
+  var t = performance.now() / 1000; r.aura.scale.set(1 + 0.08 * Math.sin(t * 9), 1 + 0.06 * Math.sin(t * 7), 1 + 0.08 * Math.sin(t * 9)); r.aura.material.opacity = 0.24 + 0.1 * Math.sin(t * 11); r.aura.rotation.y += dt * 2;
+  if (pvc) return;
+  P.ssjT = (P.ssjT || 0) - dt; if (P.ssjT <= 0) { P.ssjT = 0.12; burst({ x: P.pos.x + rand(-0.6, 0.6), y: rand(0.2, 2.2), z: P.pos.z + rand(-0.6, 0.6) }, 0xffe14a, 1, 0.5, 2.2); }
 }

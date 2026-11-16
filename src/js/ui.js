@@ -1,1 +1,835 @@
-var _0x28d039=_0x552c;(function(_0x5a8960,_0x17df67){var _0x147c8e=_0x552c,_0x4ec1f9=_0x5a8960();while(!![]){try{var _0x26cccb=parseInt(_0x147c8e(0x369))/0x1*(-parseInt(_0x147c8e(0x16a))/0x2)+-parseInt(_0x147c8e(0x283))/0x3*(parseInt(_0x147c8e(0x25f))/0x4)+parseInt(_0x147c8e(0x255))/0x5+parseInt(_0x147c8e(0x1f4))/0x6*(parseInt(_0x147c8e(0x22c))/0x7)+-parseInt(_0x147c8e(0x2a8))/0x8*(-parseInt(_0x147c8e(0x217))/0x9)+parseInt(_0x147c8e(0x358))/0xa*(-parseInt(_0x147c8e(0x1f5))/0xb)+-parseInt(_0x147c8e(0x2f7))/0xc;if(_0x26cccb===_0x17df67)break;else _0x4ec1f9['push'](_0x4ec1f9['shift']());}catch(_0xed2c2f){_0x4ec1f9['push'](_0x4ec1f9['shift']());}}}(_0x53c5,0xa0736));var panelEl=$(_0x28d039(0x26f)),panelBody=$(_0x28d039(0x316));function openPanel(_0x98bde6,_0x424514){var _0x56c944=_0x28d039;closeNav(),ui[_0x56c944(0x2ff)]=_0x98bde6,ui['render']=_0x424514,$(_0x56c944(0x2fe))[_0x56c944(0x2b9)]=_0x98bde6,panelEl[_0x56c944(0x1bd)][_0x56c944(0x366)]=_0x56c944(0x1d2),releaseInputs(),rerender();}function rerender(){var _0x237b4a=_0x28d039,_0x17a0ff=panelBody[_0x237b4a(0x26b)];panelBody['innerHTML']='';if(ui[_0x237b4a(0x2a5)])ui['render'](panelBody);panelBody[_0x237b4a(0x26b)]=_0x17a0ff;}function closePanel(){var _0x8a1e08=_0x28d039;ui[_0x8a1e08(0x2ff)]=null,ui['render']=null,panelEl[_0x8a1e08(0x1bd)]['display']=_0x8a1e08(0x241);}$(_0x28d039(0x31e))[_0x28d039(0x30e)](_0x28d039(0x1c3),closePanel),panelEl['addEventListener'](_0x28d039(0x23d),function(_0x25f565){var _0x1d6f3c=_0x28d039;if(_0x25f565[_0x1d6f3c(0x1de)]===panelEl)closePanel();});function btn(_0x5166e3,_0x4c6a05,_0x582418,_0x3f72ae){var _0x2610f5=_0x28d039,_0x4d3dba=h('button',_0x3f72ae&&_0x3f72ae[_0x2610f5(0x28a)]?_0x3f72ae['cls']:null,_0x4c6a05,_0x5166e3);if(_0x3f72ae&&_0x3f72ae[_0x2610f5(0x2d6)])_0x4d3dba[_0x2610f5(0x2d6)]=!![];return _0x4d3dba['addEventListener'](_0x2610f5(0x1c3),function(){sfx('ui'),_0x582418();}),_0x4d3dba;}function iconEl(_0x4ab0f5,_0x155712,_0x574caa,_0x1c8ce3){var _0x5d8bad=_0x28d039,_0x2e963b=h(_0x5d8bad(0x309),_0x5d8bad(0x317)+(_0x1c8ce3||''),null,_0x4ab0f5),_0x4d4953=h(_0x5d8bad(0x2d7),null,null,_0x2e963b);return _0x4d4953[_0x5d8bad(0x2f2)]=_0x155712,_0x4d4953[_0x5d8bad(0x20d)]='',_0x4d4953[_0x5d8bad(0x285)]=![],_0x4d4953[_0x5d8bad(0x1e1)]=function(){var _0x4541eb=_0x5d8bad;_0x2e963b[_0x4541eb(0x338)](_0x4d4953),_0x2e963b[_0x4541eb(0x2b9)]=_0x574caa||'?';},_0x2e963b;}var SHOP_STOCK=[_0x28d039(0x1e6),_0x28d039(0x1e0)];ITEM_ORDER[_0x28d039(0x312)](function(_0x210829){var _0x157176=_0x28d039;if(ITEMS[_0x210829][_0x157176(0x20b)]===_0x157176(0x23f)&&!ITEMS[_0x210829][_0x157176(0x1ff)]&&_0x210829!==_0x157176(0x336)&&_0x210829!==_0x157176(0x2e3))SHOP_STOCK[_0x157176(0x2be)](_0x210829);});var bagTab=_0x28d039(0x1a2);function openBag(){openPanel('Bag\x20-\x20Items',renderBag);}var bagMode=_0x28d039(0x23f),BAG_ITEMS=[_0x28d039(0x1e6),_0x28d039(0x1e0),_0x28d039(0x2f8),'luxury_stone',_0x28d039(0x319),_0x28d039(0x1d9)];function renderBag(_0x3aa729){var _0x49abf1=_0x28d039,_0x334e98=h('div','tabs',null,_0x3aa729);[['gear',_0x49abf1(0x199)],[_0x49abf1(0x36f),'Items']]['forEach'](function(_0x1e4ace){var _0x233879=_0x49abf1,_0x110858=h(_0x233879(0x269),bagMode===_0x1e4ace[0x0]?_0x233879(0x221):null,_0x1e4ace[0x1],_0x334e98);_0x110858[_0x233879(0x30e)](_0x233879(0x1c3),function(){bagMode=_0x1e4ace[0x0],rerender();});});if(bagMode===_0x49abf1(0x36f)){h('div',_0x49abf1(0x266),'Potions\x20&\x20materials\x20(total\x20collected)',_0x3aa729),BAG_ITEMS['forEach'](function(_0x2d1c46){var _0x47c767=_0x49abf1,_0x2c2e04=ITEMS[_0x2d1c46],_0x46e60f=h(_0x47c767(0x309),_0x47c767(0x2e1),null,_0x3aa729);iconEl(_0x46e60f,_0x2c2e04[_0x47c767(0x16f)],'?');var _0x5e82ea=h(_0x47c767(0x309),'nm',null,_0x46e60f);h(_0x47c767(0x309),null,_0x2c2e04['name'],_0x5e82ea),h('div','ds',_0x2c2e04['desc'],_0x5e82ea),h(_0x47c767(0x240),'tag\x20eq','x'+(P[_0x47c767(0x2cc)][_0x2d1c46]||0x0),_0x46e60f);});return;}h(_0x49abf1(0x309),_0x49abf1(0x266),_0x49abf1(0x31f),_0x3aa729);var _0x41057e=h(_0x49abf1(0x309),_0x49abf1(0x1a3),null,_0x3aa729);SLOTS[_0x49abf1(0x312)](function(_0x17c7d3){var _0x162e6f=_0x49abf1,_0x5daf06=P[_0x162e6f(0x291)][_0x17c7d3],_0x54e6ee=h(_0x162e6f(0x309),_0x162e6f(0x25c)+(bagTab===_0x17c7d3?_0x162e6f(0x178):''),null,_0x41057e);if(_0x5daf06)iconEl(_0x54e6ee,ITEMS[_0x5daf06][_0x162e6f(0x16f)],SLOT_INFO[_0x17c7d3][_0x162e6f(0x16f)]);else h(_0x162e6f(0x309),_0x162e6f(0x35a),SLOT_INFO[_0x17c7d3][_0x162e6f(0x16f)],_0x54e6ee)[_0x162e6f(0x1bd)][_0x162e6f(0x1a5)]=_0x162e6f(0x164);h('div',null,_0x5daf06?itemName(_0x5daf06):SLOT_INFO[_0x17c7d3]['label'],_0x54e6ee),_0x54e6ee[_0x162e6f(0x30e)](_0x162e6f(0x1c3),function(){bagTab=_0x17c7d3,rerender();});}),h(_0x49abf1(0x309),'sec',SLOT_INFO[bagTab][_0x49abf1(0x21d)]+'s\x20owned',_0x3aa729);var _0x4ab885=![];P[_0x49abf1(0x2db)]['forEach'](function(_0x2a04eb){var _0x505996=_0x49abf1,_0xade941=ITEMS[_0x2a04eb];if(_0xade941[_0x505996(0x1cd)]!==bagTab)return;_0x4ab885=!![];var _0x17d0bf=h('div',_0x505996(0x2e1),null,_0x3aa729);iconEl(_0x17d0bf,_0xade941['icon'],SLOT_INFO[_0xade941[_0x505996(0x1cd)]][_0x505996(0x16f)]);var _0x197393=h(_0x505996(0x309),'nm',null,_0x17d0bf);h(_0x505996(0x309),_0xade941[_0x505996(0x1b6)]?_0x505996(0x1b6):null,(_0xade941[_0x505996(0x1b6)]?'★\x20':'')+itemName(_0x2a04eb)+(_0xade941['lvl']>0x1?_0x505996(0x2c5)+_0xade941[_0x505996(0x186)]+'+)':''),_0x197393),h(_0x505996(0x309),'ds',_0xade941[_0x505996(0x17f)],_0x197393);if(P[_0x505996(0x291)][_0xade941[_0x505996(0x1cd)]]===_0x2a04eb){h(_0x505996(0x240),_0x505996(0x14a),'EQUIPPED',_0x17d0bf);if(_0xade941['slot']!==_0x505996(0x1a2))btn(_0x17d0bf,_0x505996(0x207),function(){var _0x2ea4bf=_0x505996;unequipSlot(_0xade941[_0x2ea4bf(0x1cd)]),rerender();});}else btn(_0x17d0bf,_0x505996(0x280),function(){if(equipItem(_0x2a04eb))rerender();},{'disabled':P['lvl']<_0xade941['lvl']});});if(!_0x4ab885)h(_0x49abf1(0x309),'ds',_0x49abf1(0x166),_0x3aa729);}var skillTab=_0x28d039(0x25b),pickSlot=0x0;function openSkills(){openPanel('Skills',renderSkills);}function skillRow(_0x8271e0,_0x29f435,_0x1146a4){var _0x4e57a9=_0x28d039,_0x169294=SKILLS[_0x29f435],_0x24d7d1=h(_0x4e57a9(0x309),'item'+(P[_0x4e57a9(0x259)][_0x4e57a9(0x185)](_0x29f435)<0x0&&P[_0x4e57a9(0x186)]<_0x169294[_0x4e57a9(0x186)]?_0x4e57a9(0x26e):''),null,_0x8271e0);iconEl(_0x24d7d1,_0x169294[_0x4e57a9(0x16f)],_0x169294['emoji']);var _0x7ca1e1=h(_0x4e57a9(0x309),'nm',null,_0x24d7d1);return h(_0x4e57a9(0x309),null,_0x169294[_0x4e57a9(0x2b6)]+'\x20\x20(Lv\x20'+_0x169294['lvl']+')',_0x7ca1e1),h('div','ds',_0x169294['desc']+'\x20\x20MP\x20'+_0x169294['mp']+_0x4e57a9(0x15c)+_0x169294['cd']+'s',_0x7ca1e1),_0x1146a4(_0x24d7d1,_0x169294),_0x24d7d1;}function renderSkills(_0x4bb9c0){var _0x29c883=_0x28d039,_0x178f64=h('div',_0x29c883(0x2f6),null,_0x4bb9c0);[[_0x29c883(0x25b),'My\x20skills'],[_0x29c883(0x1b0),_0x29c883(0x1d6)]][_0x29c883(0x312)](function(_0x3a6c2a){var _0x3bafc3=_0x29c883,_0x2febe4=h('button',skillTab===_0x3a6c2a[0x0]?_0x3bafc3(0x221):null,_0x3a6c2a[0x1],_0x178f64);_0x2febe4['addEventListener'](_0x3bafc3(0x1c3),function(){skillTab=_0x3a6c2a[0x0],rerender();});});if(skillTab===_0x29c883(0x25b)){h(_0x29c883(0x309),_0x29c883(0x266),_0x29c883(0x1b3),_0x4bb9c0);var _0x109f22=h(_0x29c883(0x309),'slotrow',null,_0x4bb9c0);for(var _0x145bf3=0x0;_0x145bf3<SKILL_SLOTS;_0x145bf3++)(function(_0x44b935){var _0x26647e=_0x29c883,_0x2718d1=P[_0x26647e(0x2ec)][_0x44b935],_0x486b5f=h('div',_0x26647e(0x25c)+(pickSlot===_0x44b935?_0x26647e(0x178):''),null,_0x109f22);if(_0x2718d1)iconEl(_0x486b5f,SKILLS[_0x2718d1][_0x26647e(0x16f)],SKILLS[_0x2718d1]['emoji']);else h(_0x26647e(0x309),'ico','+',_0x486b5f)['style'][_0x26647e(0x1a5)]='.4';h(_0x26647e(0x309),null,_0x44b935+0x1+'.\x20'+(_0x2718d1?SKILLS[_0x2718d1][_0x26647e(0x2b6)]:_0x26647e(0x173)),_0x486b5f),_0x486b5f[_0x26647e(0x30e)](_0x26647e(0x1c3),function(){pickSlot=_0x44b935,rerender();});}(_0x145bf3));h(_0x29c883(0x309),_0x29c883(0x266),_0x29c883(0x286)+P[_0x29c883(0x259)][_0x29c883(0x157)]+'/'+SKILL_ORDER[_0x29c883(0x157)]+')',_0x4bb9c0),SKILL_ORDER[_0x29c883(0x312)](function(_0x8161e9){var _0x140663=_0x29c883;if(P[_0x140663(0x259)][_0x140663(0x185)](_0x8161e9)<0x0)return;skillRow(_0x4bb9c0,_0x8161e9,function(_0x1fecb6){var _0x37d9a3=_0x140663,_0xb8ff4a=P[_0x37d9a3(0x2ec)][_0x37d9a3(0x185)](_0x8161e9);if(_0xb8ff4a>=0x0)h(_0x37d9a3(0x240),'tag\x20eq',_0x37d9a3(0x234)+(_0xb8ff4a+0x1),_0x1fecb6);btn(_0x1fecb6,_0xb8ff4a===pickSlot?_0x37d9a3(0x1da):_0x37d9a3(0x280),function(){var _0xe7e95d=_0x37d9a3,_0x72bf55=P[_0xe7e95d(0x2ec)][pickSlot],_0x56ac41=P[_0xe7e95d(0x2ec)]['indexOf'](_0x8161e9);if(_0x56ac41>=0x0)P[_0xe7e95d(0x2ec)][_0x56ac41]=_0x72bf55||null;P[_0xe7e95d(0x2ec)][pickSlot]=_0x8161e9,refreshSkillButtons(),saveGame(),rerender();},{'disabled':_0xb8ff4a===pickSlot});});});}else{h(_0x29c883(0x309),'sec','Gold:\x20'+P[_0x29c883(0x2cf)],_0x4bb9c0),SKILL_ORDER['forEach'](function(_0x3aae08){var _0x24eef4=_0x29c883;if(P[_0x24eef4(0x259)]['indexOf'](_0x3aae08)>=0x0)return;skillRow(_0x4bb9c0,_0x3aae08,function(_0xaaf6b4,_0x1b3add){var _0x4a37dd=_0x24eef4;h(_0x4a37dd(0x240),'tag',_0x1b3add[_0x4a37dd(0x27d)]+'\x20G',_0xaaf6b4),btn(_0xaaf6b4,_0x4a37dd(0x27f),function(){var _0x596f89=_0x4a37dd;if(P['lvl']<_0x1b3add[_0x596f89(0x186)]){log(_0x596f89(0x2d2)+_0x1b3add['lvl']+'.','#ff9a9a');return;}if(P[_0x596f89(0x2cf)]<_0x1b3add[_0x596f89(0x27d)]){log(_0x596f89(0x23e),'#ff9a9a');return;}P[_0x596f89(0x2cf)]-=_0x1b3add[_0x596f89(0x27d)],P['skills'][_0x596f89(0x2be)](_0x3aae08),sfx(_0x596f89(0x1ce)),log('Learned\x20'+_0x1b3add[_0x596f89(0x2b6)]+_0x596f89(0x196),'#ffd54f'),saveGame(),rerender();},{'disabled':P[_0x4a37dd(0x186)]<_0x1b3add[_0x4a37dd(0x186)]||P[_0x4a37dd(0x2cf)]<_0x1b3add['price'],'cls':_0x4a37dd(0x15d)});});});if(P[_0x29c883(0x259)][_0x29c883(0x157)]>=SKILL_ORDER[_0x29c883(0x157)])h(_0x29c883(0x309),'ds',_0x29c883(0x337),_0x4bb9c0);}}function refreshSkillButtons(){var _0x1c79f1=_0x28d039;for(var _0x5aaa74=0x0;_0x5aaa74<SKILL_SLOTS;_0x5aaa74++){var _0x1cc4ec=$('b-k'+(_0x5aaa74+0x1)),_0x410542=P[_0x1c79f1(0x2ec)][_0x5aaa74];_0x1cc4ec['innerHTML']='',_0x1cc4ec[_0x1c79f1(0x20c)]['toggle'](_0x1c79f1(0x173),!_0x410542);if(_0x410542){var _0x2a81d8=h('img',null,null,_0x1cc4ec);_0x2a81d8[_0x1c79f1(0x2f2)]=SKILLS[_0x410542][_0x1c79f1(0x16f)],_0x2a81d8[_0x1c79f1(0x285)]=![],_0x2a81d8[_0x1c79f1(0x1e1)]=function(_0x184a51){return function(){var _0xf8f307=_0x552c,_0x5141b1=this[_0xf8f307(0x2a6)];_0x5141b1&&(_0x5141b1['removeChild'](this),_0x5141b1[_0xf8f307(0x13f)](document[_0xf8f307(0x351)](_0x184a51),_0x5141b1[_0xf8f307(0x15b)]));};}(SKILLS[_0x410542][_0x1c79f1(0x2c2)]),h('span','kn',String(_0x5aaa74+0x1),_0x1cc4ec);}else h(_0x1c79f1(0x240),'kn',String(_0x5aaa74+0x1),_0x1cc4ec);h(_0x1c79f1(0x309),'cd',null,_0x1cc4ec);}}function openWorldMap(){var _0x49a10d=_0x28d039;openPanel(_0x49a10d(0x2a4),renderWorldMap);}function renderWorldMap(_0x518591){var _0x39a469=_0x28d039;h(_0x39a469(0x309),'ds',_0x39a469(0x32e),_0x518591),MAPS[_0x39a469(0x312)](function(_0x18bc1b){var _0x37f1db=_0x39a469,_0x14b664=curMap&&curMap['id']===_0x18bc1b['id'],_0x55713f=P['lvl']>=_0x18bc1b[_0x37f1db(0x32d)],_0x9ef051=h(_0x37f1db(0x309),_0x37f1db(0x2e1)+(_0x55713f?'':'\x20locked'),null,_0x518591);h(_0x37f1db(0x309),'ico',_0x55713f?'🗺':'🔒',_0x9ef051);var _0x183850=h('div','nm',null,_0x9ef051);h('div',null,_0x18bc1b['name']+_0x37f1db(0x2c5)+_0x18bc1b[_0x37f1db(0x32d)]+'+)',_0x183850);var _0x4051f1=_0x18bc1b[_0x37f1db(0x191)][_0x37f1db(0x229)](function(_0x2820be){return ENEMY_TYPES[_0x2820be]['lvl'];});if(_0x18bc1b[_0x37f1db(0x1fc)])h('div','ds',_0x37f1db(0x220),_0x183850);else{if(_0x18bc1b[_0x37f1db(0x16d)])h(_0x37f1db(0x309),'ds',_0x37f1db(0x327)+ENEMY_TYPES[_0x18bc1b[_0x37f1db(0x191)][0x0]][_0x37f1db(0x2b6)]+_0x37f1db(0x30f)+_0x4051f1[0x0]+_0x37f1db(0x353)+_0x18bc1b['mobs'][_0x37f1db(0x157)]+'\x20Lv\x20'+ENEMY_TYPES[_0x18bc1b['mobs'][0x0]]['lvl']+_0x37f1db(0x34e),_0x183850);else{if(_0x18bc1b[_0x37f1db(0x23c)])h(_0x37f1db(0x309),'ds',_0x37f1db(0x362)+ENEMY_TYPES[_0x18bc1b['enemies'][0x0]][_0x37f1db(0x2b6)]+'\x20(Lv\x20'+_0x4051f1[0x0]+_0x37f1db(0x361),_0x183850);else h(_0x37f1db(0x309),'ds',_0x18bc1b[_0x37f1db(0x191)][_0x37f1db(0x157)]+_0x37f1db(0x1b5)+Math[_0x37f1db(0x32d)][_0x37f1db(0x35d)](null,_0x4051f1)+'-'+Math[_0x37f1db(0x36e)][_0x37f1db(0x35d)](null,_0x4051f1)+_0x37f1db(0x21f)+ENEMY_TYPES[_0x18bc1b[_0x37f1db(0x191)][_0x18bc1b['enemies'][_0x37f1db(0x157)]-0x1]][_0x37f1db(0x2b6)]+(ENEMY_TYPES[_0x18bc1b[_0x37f1db(0x191)][_0x18bc1b[_0x37f1db(0x191)]['length']-0x1]][_0x37f1db(0x14d)]?_0x37f1db(0x14c):''),_0x183850);}}if(_0x14b664)h(_0x37f1db(0x240),_0x37f1db(0x14a),'HERE',_0x9ef051);else btn(_0x9ef051,_0x37f1db(0x168),function(){closePanel(),travelTo(_0x18bc1b['id']);},{'disabled':!_0x55713f,'cls':'good'});});}function openQuestLog(){var _0x54d7e0=_0x28d039;openPanel(_0x54d7e0(0x2b1),renderQuests);}function questRewardText(_0x2171ec){var _0x8423e6=_0x28d039,_0x22920f=_0x2171ec['rewards'],_0x304cf3=[_0x22920f['gold']+'\x20G',_0x22920f['xp']+'\x20XP'];for(var _0x5e7842 in _0x22920f[_0x8423e6(0x36f)])_0x304cf3[_0x8423e6(0x2be)](_0x22920f[_0x8423e6(0x36f)][_0x5e7842]+'x\x20'+ITEMS[_0x5e7842][_0x8423e6(0x2b6)]);return _0x304cf3[_0x8423e6(0x27c)](',\x20');}function renderQuests(_0xaac6a7){var _0x424181=_0x28d039;QUESTS[_0x424181(0x312)](function(_0x378e38){var _0x7f565c=_0x424181,_0x540a1e=P[_0x7f565c(0x1e8)][_0x378e38['id']],_0x5cbc00=h(_0x7f565c(0x309),_0x7f565c(0x2e1),null,_0xaac6a7),_0x2fdb3e=h(_0x7f565c(0x309),'nm',null,_0x5cbc00);h(_0x7f565c(0x309),null,_0x378e38[_0x7f565c(0x1b8)],_0x2fdb3e);var _0x6dc392=!_0x540a1e?_0x7f565c(0x1e5):_0x540a1e[_0x7f565c(0x276)]===_0x7f565c(0x2cb)?_0x7f565c(0x1aa):_0x540a1e[_0x7f565c(0x276)]===_0x7f565c(0x1cb)?'Ready\x20to\x20turn\x20in':_0x7f565c(0x16c)+_0x540a1e['n']+'/'+_0x378e38[_0x7f565c(0x1a9)];h('div','ds',_0x7f565c(0x278)+_0x378e38[_0x7f565c(0x1a9)]+'\x20'+ENEMY_TYPES[_0x378e38[_0x7f565c(0x1de)]][_0x7f565c(0x2b6)]+_0x7f565c(0x2bf)+_0x6dc392,_0x2fdb3e),h(_0x7f565c(0x309),'ds',_0x7f565c(0x360)+questRewardText(_0x378e38),_0x2fdb3e);});}function nearestNpc(){var _0xc8aa20=_0x28d039,_0x341fe5=null,_0x465c16=3.4;return npcs[_0xc8aa20(0x312)](function(_0x3fe564){var _0x465527=_0xc8aa20,_0xebbe13=Math[_0x465527(0x2a7)](_0x3fe564[_0x465527(0x262)]['x']-P[_0x465527(0x262)]['x'],_0x3fe564[_0x465527(0x262)]['z']-P[_0x465527(0x262)]['z']);_0xebbe13<_0x465c16&&(_0x465c16=_0xebbe13,_0x341fe5=_0x3fe564);}),_0x341fe5;}function nearestInteract(){var _0x46b308=_0x28d039,_0x1e1cd5=nearestNpc();if(_0x1e1cd5)return _0x1e1cd5;for(var _0x804bd1=0x0;_0x804bd1<portals['length'];_0x804bd1++)if(Math[_0x46b308(0x2a7)](portals[_0x804bd1]['x']-P[_0x46b308(0x262)]['x'],portals[_0x804bd1]['z']-P['pos']['z'])<3.6)return{'name':_0x46b308(0x19b),'kind':_0x46b308(0x24c),'pos':{'x':portals[_0x804bd1]['x'],'z':portals[_0x804bd1]['z']}};return null;}function interact(_0x54840b){var _0x17754d=_0x28d039;if(P[_0x17754d(0x15f)])return;if(_0x54840b[_0x17754d(0x2b4)]==='shop')openShop(_0x54840b);else{if(_0x54840b[_0x17754d(0x2b4)]===_0x17754d(0x1f0))openUpgrade(_0x54840b);else{if(_0x54840b['kind']===_0x17754d(0x21c))openMountShop(_0x54840b);else{if(_0x54840b[_0x17754d(0x2b4)]===_0x17754d(0x169))openRebirth(_0x54840b);else{if(_0x54840b[_0x17754d(0x2b4)]===_0x17754d(0x290))openTist(_0x54840b);else{if(_0x54840b[_0x17754d(0x2b4)]==='gm')openGM(_0x54840b);else{if(_0x54840b[_0x17754d(0x2b4)]===_0x17754d(0x232))openCraft(_0x54840b);else{if(_0x54840b[_0x17754d(0x2b4)]==='diamond')openDiamondShop(_0x54840b);else{if(_0x54840b[_0x17754d(0x2b4)]===_0x17754d(0x24c))openWorldMap();else openQuestDialog(_0x54840b);}}}}}}}}}function openQuestDialog(_0x544c49){var _0xb5d3da=_0x28d039;openPanel(_0x544c49[_0xb5d3da(0x2b6)],function(_0x47ca3f){var _0x381918=_0xb5d3da,_0x5e5918=currentQuest(),_0x34ef8e=h(_0x381918(0x309),_0x381918(0x260),null,_0x47ca3f),_0x77da6f;if(!_0x5e5918){h('p',null,_0x381918(0x246),_0x34ef8e),_0x77da6f=h(_0x381918(0x309),_0x381918(0x30b),null,_0x34ef8e),btn(_0x77da6f,_0x381918(0x34a),closePanel);return;}var _0x58d08c=P[_0x381918(0x1e8)][_0x5e5918['id']];h(_0x381918(0x309),'sec',_0x5e5918[_0x381918(0x1b8)],_0x34ef8e);if(!_0x58d08c)h('p',null,_0x5e5918[_0x381918(0x161)],_0x34ef8e),h('p',null,'Goal:\x20defeat\x20'+_0x5e5918[_0x381918(0x1a9)]+'\x20'+ENEMY_TYPES[_0x5e5918[_0x381918(0x1de)]][_0x381918(0x2b6)]+_0x381918(0x304)+questRewardText(_0x5e5918)+'.',_0x34ef8e),_0x77da6f=h(_0x381918(0x309),_0x381918(0x30b),null,_0x34ef8e),btn(_0x77da6f,_0x381918(0x1fd),closePanel),btn(_0x77da6f,_0x381918(0x155),function(){var _0x530bf3=_0x381918;P['quests'][_0x5e5918['id']]={'state':_0x530bf3(0x263),'n':0x0},refreshMarkers(),saveGame(),log(_0x530bf3(0x152)+_0x5e5918['title'],_0x530bf3(0x15e)),closePanel();},{'cls':'good'});else _0x58d08c['state']==='active'?(h('p',null,_0x381918(0x16c)+_0x58d08c['n']+'/'+_0x5e5918[_0x381918(0x1a9)]+'\x20'+ENEMY_TYPES[_0x5e5918[_0x381918(0x1de)]]['name']+_0x381918(0x22a),_0x34ef8e),_0x77da6f=h('div',_0x381918(0x30b),null,_0x34ef8e),btn(_0x77da6f,'Close',closePanel)):(h('p',null,_0x5e5918[_0x381918(0x2cb)],_0x34ef8e),_0x77da6f=h(_0x381918(0x309),'btns',null,_0x34ef8e),btn(_0x77da6f,_0x381918(0x368),function(){var _0x2f0f9a=_0x381918,_0x39d5f7=_0x5e5918['rewards'];P[_0x2f0f9a(0x2cf)]+=_0x39d5f7[_0x2f0f9a(0x2cf)];for(var _0x4d0a7a in _0x39d5f7[_0x2f0f9a(0x36f)])giveItem(_0x4d0a7a,_0x39d5f7['items'][_0x4d0a7a]);_0x58d08c['state']=_0x2f0f9a(0x2cb),log(_0x2f0f9a(0x275)+_0x39d5f7[_0x2f0f9a(0x2cf)]+_0x2f0f9a(0x2a9)+_0x39d5f7['xp']+_0x2f0f9a(0x282),_0x2f0f9a(0x267)),gainXp(_0x39d5f7['xp']),sfx('level'),refreshMarkers(),saveGame(),closePanel();if(currentQuest())schedule(0.5,function(){var _0x33c971=_0x2f0f9a;log(_0x33c971(0x1dd),'#ffd54f');});},{'cls':'good'}));});}function openShop(_0x55b723){var _0x10f2c6=_0x28d039;openPanel(_0x55b723['name']+_0x10f2c6(0x18a),renderShop);}function renderShop(_0x4c886a){var _0xbfe21c=_0x28d039;h(_0xbfe21c(0x309),_0xbfe21c(0x266),_0xbfe21c(0x1ba)+P[_0xbfe21c(0x2cf)],_0x4c886a);var _0x11aab8=h(_0xbfe21c(0x309),_0xbfe21c(0x2f6),null,_0x4c886a);[['potion',_0xbfe21c(0x249)]][_0xbfe21c(0x346)](SLOTS[_0xbfe21c(0x229)](function(_0x4698c6){return[_0x4698c6,SLOT_INFO[_0x4698c6]['label']];}))[_0xbfe21c(0x312)](function(_0x2132f8){var _0x215870=_0xbfe21c,_0x22fa17=h('button',shopTab===_0x2132f8[0x0]?_0x215870(0x221):null,_0x2132f8[0x1],_0x11aab8);_0x22fa17[_0x215870(0x30e)](_0x215870(0x1c3),function(){shopTab=_0x2132f8[0x0],rerender();});}),SHOP_STOCK[_0xbfe21c(0x312)](function(_0x5d4c14){var _0x100603=_0xbfe21c,_0x2fe14c=ITEMS[_0x5d4c14];if((_0x2fe14c[_0x100603(0x20b)]===_0x100603(0x2e8)?_0x100603(0x2e8):_0x2fe14c[_0x100603(0x1cd)])!==shopTab)return;var _0x1a4fa2=h(_0x100603(0x309),_0x100603(0x2e1),null,_0x4c886a);iconEl(_0x1a4fa2,_0x2fe14c[_0x100603(0x16f)],'+');var _0x1ecaec=h(_0x100603(0x309),'nm',null,_0x1a4fa2);h(_0x100603(0x309),null,_0x2fe14c[_0x100603(0x2b6)]+(_0x2fe14c[_0x100603(0x186)]>0x1?_0x100603(0x2c5)+_0x2fe14c[_0x100603(0x186)]+'+)':''),_0x1ecaec),h(_0x100603(0x309),'ds',_0x2fe14c['desc']+'\x20-\x20'+_0x2fe14c[_0x100603(0x27d)]+_0x100603(0x145)+buyCost(_0x2fe14c[_0x100603(0x27d)])+'\x20G',_0x1ecaec);if(_0x2fe14c[_0x100603(0x20b)]!==_0x100603(0x2e8)&&P['owned']['indexOf'](_0x5d4c14)>=0x0)h(_0x100603(0x240),_0x100603(0x14f),'OWNED',_0x1a4fa2);else btn(_0x1a4fa2,_0x100603(0x27f),function(){var _0x19670e=_0x100603,_0x1a6791=buyCost(_0x2fe14c[_0x19670e(0x27d)]);if(P[_0x19670e(0x2cf)]<_0x1a6791){log(_0x19670e(0x167)+_0x1a6791+_0x19670e(0x300),_0x19670e(0x270));return;}P[_0x19670e(0x2cf)]-=_0x1a6791,P[_0x19670e(0x27e)]+=_0x1a6791-_0x2fe14c[_0x19670e(0x27d)],giveItem(_0x5d4c14,0x1),sfx(_0x19670e(0x1ce)),log('Bought\x20'+_0x2fe14c[_0x19670e(0x2b6)]+_0x19670e(0x1be)+_0x1a6791+_0x19670e(0x222)+(_0x1a6791-_0x2fe14c[_0x19670e(0x27d)])+_0x19670e(0x175),_0x19670e(0x15e)),saveGame(),rerender();},{'disabled':P[_0x100603(0x2cf)]<buyCost(_0x2fe14c['price'])});}),h('div','sec',_0xbfe21c(0x322),_0x4c886a);var _0x2dee2f=![];P[_0xbfe21c(0x2db)]['forEach'](function(_0x42dd15){var _0x4c925f=_0xbfe21c,_0x1014f8=ITEMS[_0x42dd15];if(P[_0x4c925f(0x291)][_0x1014f8[_0x4c925f(0x1cd)]]===_0x42dd15||_0x42dd15===_0x4c925f(0x2e3)||upgLvl(_0x42dd15)>0x0)return;_0x2dee2f=!![];var _0x17f977=h(_0x4c925f(0x309),_0x4c925f(0x2e1),null,_0x4c886a);iconEl(_0x17f977,_0x1014f8[_0x4c925f(0x16f)],'?');var _0x3204bf=h(_0x4c925f(0x309),'nm',null,_0x17f977);h(_0x4c925f(0x309),null,_0x1014f8[_0x4c925f(0x2b6)],_0x3204bf),btn(_0x17f977,_0x4c925f(0x253)+sellNet(sellValue(_0x1014f8))+'\x20G',function(){var _0x4c834d=_0x4c925f;P[_0x4c834d(0x2db)][_0x4c834d(0x2bb)](P[_0x4c834d(0x2db)][_0x4c834d(0x185)](_0x42dd15),0x1),P[_0x4c834d(0x2cf)]+=sellNet(sellValue(_0x1014f8)),P[_0x4c834d(0x27e)]+=sellValue(_0x1014f8)-sellNet(sellValue(_0x1014f8)),sfx('coin'),saveGame(),rerender();});});if(!_0x2dee2f)h(_0xbfe21c(0x309),'ds','No\x20spare\x20gear\x20to\x20sell.',_0x4c886a);}var shopTab=_0x28d039(0x2e8);function openSettings(){var _0x34e628=_0x28d039;openPanel(_0x34e628(0x1c4),renderSettings);}function renderSettings(_0x25e06d){var _0x111d12=_0x28d039,_0x41b376=h(_0x111d12(0x309),_0x111d12(0x1ea),null,_0x25e06d);h('span',null,_0x111d12(0x22e),_0x41b376);var _0x1013ec=h('input',null,null,_0x25e06d);_0x1013ec['type']='range',_0x1013ec[_0x111d12(0x32d)]=_0x111d12(0x238),_0x1013ec[_0x111d12(0x36e)]='2',_0x1013ec[_0x111d12(0x14b)]=_0x111d12(0x180),_0x1013ec['value']=String(S['sens']),_0x1013ec[_0x111d12(0x30e)]('input',function(){var _0x4b2643=_0x111d12;S[_0x4b2643(0x1eb)]=parseFloat(_0x1013ec[_0x4b2643(0x24f)]),saveSettings();});var _0x29d699=h(_0x111d12(0x309),_0x111d12(0x1ea),null,_0x25e06d),_0x63b8ed=h(_0x111d12(0x240),null,_0x111d12(0x218)+Math[_0x111d12(0x2d4)](S[_0x111d12(0x281)]*0x64)+'%'+(bgmFailed?_0x111d12(0x359):''),_0x29d699),_0x169a98=h(_0x111d12(0x230),null,null,_0x25e06d);_0x169a98[_0x111d12(0x20b)]=_0x111d12(0x235),_0x169a98[_0x111d12(0x32d)]='0',_0x169a98[_0x111d12(0x36e)]='1',_0x169a98[_0x111d12(0x14b)]=_0x111d12(0x295),_0x169a98['value']=String(S['music']),_0x169a98[_0x111d12(0x30e)]('input',function(){var _0xb74829=_0x111d12;S['music']=parseFloat(_0x169a98[_0xb74829(0x24f)]),_0x63b8ed[_0xb74829(0x2b9)]=_0xb74829(0x218)+Math['round'](S[_0xb74829(0x281)]*0x64)+'%',musicApply(),saveSettings();});var _0x49b5b8=h(_0x111d12(0x309),'setrow',null,_0x25e06d);h(_0x111d12(0x240),null,'Shadows\x20(turn\x20off\x20for\x20speed)',_0x49b5b8),btn(_0x49b5b8,S[_0x111d12(0x162)]?'ON':'OFF',function(){var _0x57c3bf=_0x111d12;S['shadows']=!S[_0x57c3bf(0x162)],applyShadows(),saveSettings(),rerender();});var _0x14727b=h('div',_0x111d12(0x1ea),null,_0x25e06d);h(_0x111d12(0x240),null,_0x111d12(0x19c),_0x14727b),btn(_0x14727b,S[_0x111d12(0x2f3)]?'ON':_0x111d12(0x224),function(){S['sound']=!S['sound'],saveSettings(),rerender();});var _0x2ceb59=h(_0x111d12(0x309),_0x111d12(0x1ea),null,_0x25e06d);h(_0x111d12(0x240),null,_0x111d12(0x2ba),_0x2ceb59),btn(_0x2ceb59,'TOGGLE',function(){var _0x3b1a72=_0x111d12;if(document['fullscreenElement']||document[_0x3b1a72(0x2b5)])(document[_0x3b1a72(0x1d8)]||document[_0x3b1a72(0x1c1)])['call'](document);else goFullscreen();}),h(_0x111d12(0x309),_0x111d12(0x266),'Controls',_0x25e06d),h(_0x111d12(0x309),'ds',_0x111d12(0x233),_0x25e06d),h(_0x111d12(0x309),_0x111d12(0x266),_0x111d12(0x200),_0x25e06d);var _0x2ceb59=h(_0x111d12(0x309),_0x111d12(0x1ea),null,_0x25e06d);h(_0x111d12(0x240),null,_0x111d12(0x146),_0x2ceb59);if(!resetArmed)btn(_0x2ceb59,_0x111d12(0x355),function(){resetArmed=!![],rerender(),setTimeout(function(){var _0xcd93ae=_0x552c;resetArmed=![];if(ui['open']===_0xcd93ae(0x1c4))rerender();},0x1388);});else btn(_0x2ceb59,_0x111d12(0x24e),function(){resetGame();},{'cls':'danger'});}var resetArmed=![];function updateCamera(_0x59c697){var _0x353d14=_0x28d039,_0x513050=P[_0x353d14(0x262)]['x'],_0x258f54=P[_0x353d14(0x262)]['y']+1.5,_0x1d329a=P[_0x353d14(0x262)]['z'],_0x571a96=Math[_0x353d14(0x2d9)](cam[_0x353d14(0x34d)]),_0x1f86ff=_0x513050+Math[_0x353d14(0x147)](cam[_0x353d14(0x1b4)])*_0x571a96*cam[_0x353d14(0x165)],_0x5e97fe=Math[_0x353d14(0x36e)](0.6,_0x258f54+Math[_0x353d14(0x147)](cam[_0x353d14(0x34d)])*cam[_0x353d14(0x165)]),_0x3e3876=_0x1d329a+Math['cos'](cam[_0x353d14(0x1b4)])*_0x571a96*cam[_0x353d14(0x165)],_0x31b26d=0x1-Math[_0x353d14(0x31b)](-0x10*_0x59c697);camera['position']['x']=lerp(camera[_0x353d14(0x245)]['x'],_0x1f86ff,_0x31b26d),camera['position']['y']=lerp(camera['position']['y'],_0x5e97fe,_0x31b26d),camera[_0x353d14(0x245)]['z']=lerp(camera[_0x353d14(0x245)]['z'],_0x3e3876,_0x31b26d),camera[_0x353d14(0x242)](_0x513050,_0x258f54+0.2,_0x1d329a),sun[_0x353d14(0x245)][_0x353d14(0x1f8)](_0x513050+0x1e,0x32,_0x1d329a+0x14),sun[_0x353d14(0x1de)][_0x353d14(0x245)][_0x353d14(0x1f8)](_0x513050,0x0,_0x1d329a);}var lastZone=-0x1,zoneTimer=null;function zoneIndex(){var _0x3f73c4=_0x28d039;if(!curMap)return 0x0;if(curMap[_0x3f73c4(0x1fc)]||curMap[_0x3f73c4(0x23c)])return Math['hypot'](P['pos']['x'],P['pos']['z'])<curMap['safeR']?0x0:0x1;var _0x55ebfe=Math[_0x3f73c4(0x2a7)](P['pos']['x'],P[_0x3f73c4(0x262)]['z']);if(_0x55ebfe<curMap[_0x3f73c4(0x231)])return 0x0;var _0x3007c0=curMap['safeR']+0x6,_0x3e4094=(curMap['R']-0xc-_0x3007c0)/(curMap[_0x3f73c4(0x191)][_0x3f73c4(0x157)]-0x1);return clamp(0x1+Math[_0x3f73c4(0x29a)]((_0x55ebfe-_0x3007c0)/_0x3e4094+0.000001)+(_0x55ebfe<_0x3007c0?-0x1:0x0),0x1,curMap[_0x3f73c4(0x191)][_0x3f73c4(0x157)]);}function showBanner(_0x533a3c,_0x2a1194){var _0x32a711=_0x28d039;$(_0x32a711(0x18e))[_0x32a711(0x2b9)]=_0x533a3c,$(_0x32a711(0x198))[_0x32a711(0x2b9)]=_0x2a1194;var _0xc78f33=$(_0x32a711(0x314));_0xc78f33[_0x32a711(0x1bd)][_0x32a711(0x1a5)]='1',clearTimeout(zoneTimer),zoneTimer=setTimeout(function(){var _0x56fb29=_0x32a711;_0xc78f33[_0x56fb29(0x1bd)]['opacity']='0';},0xa28);}function updateZone(){var _0x133107=_0x28d039;if(!curMap)return;var _0x21d26a=zoneIndex();if(_0x21d26a===lastZone)return;lastZone=_0x21d26a;if(curMap['arena']){showBanner(_0x133107(0x36a),_0x133107(0x179));return;}if(curMap[_0x133107(0x23c)]&&_0x21d26a===0x1){showBanner(curMap[_0x133107(0x2b6)],_0x133107(0x272)+ENEMY_TYPES[curMap[_0x133107(0x191)][0x0]][_0x133107(0x186)]+'\x20'+ENEMY_TYPES[curMap[_0x133107(0x191)][0x0]][_0x133107(0x2b6)]);return;}if(_0x21d26a===0x0){showBanner(curMap[_0x133107(0x2b6)]+(curMap['hub']?_0x133107(0x1ca):'\x20Camp'),_0x133107(0x13e));return;}var _0x4c7b0a=ENEMY_TYPES[curMap[_0x133107(0x191)][Math['min'](_0x21d26a-0x1,curMap[_0x133107(0x191)]['length']-0x1)]];showBanner(_0x4c7b0a[_0x133107(0x23c)]?_0x133107(0x2d0):_0x4c7b0a['name']+'\x20Grounds','Level\x20'+_0x4c7b0a[_0x133107(0x186)]+(_0x4c7b0a['boss']?'\x20Boss':''));}function setCd(_0x57ce0d,_0x5f1670,_0x48ca47){var _0x49c537=_0x28d039,_0xad8cda=$(_0x57ce0d)[_0x49c537(0x19d)]('.cd');if(_0xad8cda)_0xad8cda['style']['setProperty'](_0x49c537(0x2a0),_0x48ca47>0x0&&_0x5f1670>0x0?(_0x5f1670/_0x48ca47*0x64)[_0x49c537(0x17d)](0x0):'0');}function updateHud(){var _0x9f227=_0x28d039;$(_0x9f227(0x2ea))[_0x9f227(0x2b9)]=P[_0x9f227(0x186)],$(_0x9f227(0x142))[_0x9f227(0x2b9)]=P[_0x9f227(0x2b6)]+(P['reb']?_0x9f227(0x204)+P[_0x9f227(0x21b)]+']':''),$('p-hp')[_0x9f227(0x1bd)][_0x9f227(0x318)]=P['hp']/maxHp()*0x64+'%',$(_0x9f227(0x32a))[_0x9f227(0x2b9)]=Math['floor'](P['hp'])+_0x9f227(0x313)+maxHp(),$(_0x9f227(0x188))[_0x9f227(0x1bd)]['width']=P['mp']/maxMp()*0x64+'%',$(_0x9f227(0x277))[_0x9f227(0x2b9)]=Math['floor'](P['mp'])+_0x9f227(0x313)+maxMp(),$('p-xp')[_0x9f227(0x1bd)][_0x9f227(0x318)]=(P[_0x9f227(0x186)]>=MAX_LVL?0x64:P['xp']/xpNext(P[_0x9f227(0x186)])*0x64)+'%',refreshPlayerTag(![]);var _0x3c76f0=$('p-sp');_0x3c76f0[_0x9f227(0x2b9)]=P['sp']>0x0?'+'+P['sp']+'\x20pts':'',_0x3c76f0[_0x9f227(0x1bd)][_0x9f227(0x366)]=P['sp']>0x0?_0x9f227(0x2d1):_0x9f227(0x241),$(_0x9f227(0x2cf))[_0x9f227(0x2b9)]=P[_0x9f227(0x2cf)]+'\x20G',$(_0x9f227(0x29c))[_0x9f227(0x2b9)]=P[_0x9f227(0x13c)]+_0x9f227(0x227),$(_0x9f227(0x284))[_0x9f227(0x2b9)]=curMap?curMap[_0x9f227(0x2b6)]:'',$(_0x9f227(0x1af))[_0x9f227(0x2b9)]=P[_0x9f227(0x2cc)]['hp_potion']||0x0,$(_0x9f227(0x14e))[_0x9f227(0x2b9)]=P['inv'][_0x9f227(0x1e0)]||0x0;for(var _0x29f231=0x0;_0x29f231<SKILL_SLOTS;_0x29f231++){var _0xfa45bb=P[_0x9f227(0x2ec)][_0x29f231],_0x1a42d1=$(_0x9f227(0x2a1)+(_0x29f231+0x1));_0xfa45bb&&(setCd(_0x9f227(0x2a1)+(_0x29f231+0x1),P[_0x9f227(0x1d3)][_0xfa45bb]||0x0,SKILLS[_0xfa45bb]['cd']),_0x1a42d1['style']['opacity']=P['mp']>=SKILLS[_0xfa45bb]['mp']?'1':_0x9f227(0x1e3));}$(_0x9f227(0x33f))[_0x9f227(0x20c)][_0x9f227(0x206)]('on',!!P[_0x9f227(0x325)]),$(_0x9f227(0x33f))['lastChild'][_0x9f227(0x2b9)]=P[_0x9f227(0x325)]?_0x9f227(0x247):_0x9f227(0x2e6),setCd(_0x9f227(0x2bd),P['cd']['dash'],DASH_CD),setCd(_0x9f227(0x329),P['cd'][_0x9f227(0x35f)],1.2),setCd(_0x9f227(0x315),P['cd']['pot'],1.2),renderBuffs();var _0x2c309b=$('target-frame');if(P[_0x9f227(0x1de)]&&P['target'][_0x9f227(0x276)]!=='dead')_0x2c309b[_0x9f227(0x1bd)][_0x9f227(0x366)]=_0x9f227(0x2d1),$(_0x9f227(0x279))[_0x9f227(0x2b9)]='Lv'+P[_0x9f227(0x1de)]['T'][_0x9f227(0x186)]+'\x20'+P[_0x9f227(0x1de)]['T']['name'],$(_0x9f227(0x257))[_0x9f227(0x1bd)][_0x9f227(0x318)]=Math['max'](0x0,P['target']['hp']/P[_0x9f227(0x1de)][_0x9f227(0x1fa)]*0x64)+'%',$(_0x9f227(0x28d))[_0x9f227(0x2b9)]=Math[_0x9f227(0x324)](P['target']['hp'])+_0x9f227(0x313)+P[_0x9f227(0x1de)]['maxHp'];else _0x2c309b[_0x9f227(0x1bd)]['display']=_0x9f227(0x241);var _0xd2bdac=$(_0x9f227(0x33e)),_0x2d3c4d=P['target'];if(_0x2d3c4d&&_0x2d3c4d[_0x9f227(0x2e5)]&&_0x2d3c4d[_0x9f227(0x276)]!==_0x9f227(0x15f)&&!ui['open']&&!P[_0x9f227(0x15f)])_0xd2bdac['style'][_0x9f227(0x366)]='block',_0xd2bdac[_0x9f227(0x2b9)]=_0x2d3c4d['hostile']>0x0?_0x9f227(0x2ed):_0x9f227(0x1cf)+_0x2d3c4d[_0x9f227(0x2b6)],_0xd2bdac[_0x9f227(0x20c)][_0x9f227(0x206)]('on',_0x2d3c4d[_0x9f227(0x296)]>0x0);else _0xd2bdac[_0x9f227(0x1bd)]['display']='none';var _0x3ad1f5=nearestInteract(),_0x2860bb=$('btn-talk');if(_0x3ad1f5&&!ui[_0x9f227(0x2ff)]&&!P[_0x9f227(0x15f)])_0x2860bb[_0x9f227(0x1bd)][_0x9f227(0x366)]=_0x9f227(0x2d1),_0x2860bb[_0x9f227(0x2b9)]=(_0x3ad1f5[_0x9f227(0x2b4)]==='portal'?_0x9f227(0x1ec):_0x9f227(0x1c7))+_0x3ad1f5[_0x9f227(0x2b6)];else _0x2860bb['style']['display']=_0x9f227(0x241);}var mini=$('minimap'),mctx=mini['getContext']('2d');function drawMini(){var _0x4a521b=_0x28d039,_0x504e84=mini[_0x4a521b(0x318)],_0x3c2af1=0x2e,_0x52d70c=_0x504e84/0x2/_0x3c2af1;mctx[_0x4a521b(0x2d8)](0x0,0x0,_0x504e84,_0x504e84),mctx[_0x4a521b(0x261)](),mctx[_0x4a521b(0x1a6)](_0x504e84/0x2,_0x504e84/0x2),mctx[_0x4a521b(0x1db)](),mctx[_0x4a521b(0x2c3)](0x0,0x0,_0x504e84/0x2-0x2,0x0,TAU),mctx[_0x4a521b(0x30d)](),mctx[_0x4a521b(0x331)]=curMap?'#'+(_0x4a521b(0x288)+new THREE['Color'](curMap[_0x4a521b(0x202)][_0x4a521b(0x21c)])[_0x4a521b(0x308)]())[_0x4a521b(0x1bc)](-0x6):_0x4a521b(0x2ce),mctx[_0x4a521b(0x357)]=0.85,mctx['fillRect'](-_0x504e84/0x2,-_0x504e84/0x2,_0x504e84,_0x504e84),mctx[_0x4a521b(0x357)]=0x1;var _0x54b743=-Math[_0x4a521b(0x147)](cam[_0x4a521b(0x1b4)]),_0x12ec5c=-Math['cos'](cam[_0x4a521b(0x1b4)]),_0x1461e0=Math[_0x4a521b(0x2d9)](cam[_0x4a521b(0x1b4)]),_0x25d316=-Math['sin'](cam[_0x4a521b(0x1b4)]);function _0x52a1d6(_0x599ebb,_0x47cf04){var _0x23535c=_0x599ebb-P['pos']['x'],_0x5c9be1=_0x47cf04-P['pos']['z'];return{'x':(_0x23535c*_0x1461e0+_0x5c9be1*_0x25d316)*_0x52d70c,'y':-(_0x23535c*_0x54b743+_0x5c9be1*_0x12ec5c)*_0x52d70c};}var _0x5bd977=_0x52a1d6(0x0,0x0);mctx[_0x4a521b(0x331)]=_0x4a521b(0x307),mctx[_0x4a521b(0x1db)](),mctx[_0x4a521b(0x2c3)](_0x5bd977['x'],_0x5bd977['y'],(curMap?curMap[_0x4a521b(0x231)]:0x10)*_0x52d70c,0x0,TAU),mctx[_0x4a521b(0x1ed)](),enemies['forEach'](function(_0x585962){var _0x2b298d=_0x4a521b;if(_0x585962[_0x2b298d(0x276)]===_0x2b298d(0x15f))return;var _0x165f12=_0x52a1d6(_0x585962['pos']['x'],_0x585962[_0x2b298d(0x262)]['z']);if(_0x165f12['x']*_0x165f12['x']+_0x165f12['y']*_0x165f12['y']>_0x504e84*_0x504e84/0x4)return;mctx['fillStyle']=_0x585962['T'][_0x2b298d(0x23c)]?_0x2b298d(0x215):_0x2b298d(0x2de),mctx[_0x2b298d(0x1db)](),mctx['arc'](_0x165f12['x'],_0x165f12['y'],_0x585962['T'][_0x2b298d(0x23c)]?0x6:0x3,0x0,TAU),mctx[_0x2b298d(0x1ed)]();}),ais[_0x4a521b(0x312)](function(_0x298684){var _0x3713a5=_0x4a521b;if(_0x298684[_0x3713a5(0x276)]===_0x3713a5(0x15f))return;var _0x234313=_0x52a1d6(_0x298684[_0x3713a5(0x262)]['x'],_0x298684[_0x3713a5(0x262)]['z']);if(_0x234313['x']*_0x234313['x']+_0x234313['y']*_0x234313['y']>_0x504e84*_0x504e84/0x4)return;mctx[_0x3713a5(0x331)]=_0x298684[_0x3713a5(0x296)]>0x0?_0x3713a5(0x170):_0x3713a5(0x172),mctx[_0x3713a5(0x1db)](),mctx[_0x3713a5(0x2c3)](_0x234313['x'],_0x234313['y'],3.4,0x0,TAU),mctx[_0x3713a5(0x1ed)]();}),bots[_0x4a521b(0x312)](function(_0x28da64){var _0x3830e6=_0x4a521b,_0x56c541=_0x52a1d6(_0x28da64[_0x3830e6(0x262)]['x'],_0x28da64[_0x3830e6(0x262)]['z']);mctx['fillStyle']=_0x3830e6(0x16e),mctx[_0x3830e6(0x1db)](),mctx['arc'](_0x56c541['x'],_0x56c541['y'],0x3,0x0,TAU),mctx[_0x3830e6(0x1ed)]();}),npcs[_0x4a521b(0x312)](function(_0x28e6af){var _0xec08eb=_0x4a521b,_0x238cdc=_0x52a1d6(_0x28e6af[_0xec08eb(0x262)]['x'],_0x28e6af[_0xec08eb(0x262)]['z']);mctx[_0xec08eb(0x331)]=_0xec08eb(0x354),mctx[_0xec08eb(0x1db)](),mctx['arc'](_0x238cdc['x'],_0x238cdc['y'],0x4,0x0,TAU),mctx[_0xec08eb(0x1ed)]();}),portals[_0x4a521b(0x312)](function(_0x573661){var _0x343c9e=_0x4a521b,_0x5f46fb=_0x52a1d6(_0x573661['x'],_0x573661['z']);mctx[_0x343c9e(0x331)]=_0x343c9e(0x26a),mctx[_0x343c9e(0x32b)](_0x5f46fb['x']-0x4,_0x5f46fb['y']-0x4,0x8,0x8);});var _0x44d426=P['c']['g'][_0x4a521b(0x294)]['y'],_0x5b918f=Math['sin'](_0x44d426),_0x1b062a=Math[_0x4a521b(0x2d9)](_0x44d426),_0xb2b1fc=_0x5b918f*_0x1461e0+_0x1b062a*_0x25d316,_0x13e4fb=-(_0x5b918f*_0x54b743+_0x1b062a*_0x12ec5c);mctx[_0x4a521b(0x2a3)](Math[_0x4a521b(0x335)](_0x13e4fb,_0xb2b1fc)),mctx['fillStyle']=_0x4a521b(0x29b),mctx[_0x4a521b(0x1db)](),mctx[_0x4a521b(0x2b7)](0x9,0x0),mctx['lineTo'](-0x6,0x6),mctx[_0x4a521b(0x32c)](-0x3,0x0),mctx['lineTo'](-0x6,-0x6),mctx[_0x4a521b(0x1e7)](),mctx[_0x4a521b(0x1ed)](),mctx[_0x4a521b(0x1c0)]();}$(_0x28d039(0x163))[_0x28d039(0x30e)](_0x28d039(0x1c3),function(){var _0x53ca33=_0x28d039;$('death')[_0x53ca33(0x1bd)][_0x53ca33(0x366)]=_0x53ca33(0x241);if(!(curMap&&curMap['arena']))P[_0x53ca33(0x2cf)]-=Math['floor'](P[_0x53ca33(0x2cf)]*0.05);P['dead']=![],P['hp']=maxHp(),P['mp']=maxMp(),P['c'][_0x53ca33(0x1f1)]=null,P[_0x53ca33(0x262)][_0x53ca33(0x1f8)](0x0,0x0,0x7),P['c']['g'][_0x53ca33(0x294)]['y']=Math['PI'],P['c'][_0x53ca33(0x31d)][_0x53ca33(0x1a4)][_0x53ca33(0x294)]['x']=0x0,P['c']['rig'][_0x53ca33(0x1a4)][_0x53ca33(0x245)]['y']=0x0,enemies['forEach'](function(_0x33918b){var _0x5bb59e=_0x53ca33;if(_0x33918b[_0x5bb59e(0x276)]==='chase'||_0x33918b[_0x5bb59e(0x276)]==='attack')_0x33918b[_0x5bb59e(0x276)]=_0x5bb59e(0x2c0);}),saveGame();});var NAME_ERR='TIST:\x20Special\x20character\x20is\x20not\x20allew\x20in\x20game\x20name',HAIR_STYLES=[_0x28d039(0x29e),_0x28d039(0x333),_0x28d039(0x214),_0x28d039(0x2aa),_0x28d039(0x209),_0x28d039(0x2c1),_0x28d039(0x305)],HAIR_COLORS=[0x2a1a10,0x6b3a1a,0xc8a050,0xf0e070,0xe8e8e8,0x111111,0xd03030,0x2f6fd0,0x9b3fd0,0xff7ab8],DRESS_COLORS=[0x2f6fd0,0xd03030,0x2fa04a,0xf0c020,0x9b3fd0,0xff7ab8,0xf2f2f2,0x222222,0xe07a20,0x1ab8c8],PANTS_COLORS=[0x353a48,0x111111,0x2a4a8a,0x5a3a22,0x3f6a3a,0x7a1f1f,0xd8d8d8,0x6a4a9a,0xc8a050,0x1a6a7a],crv=null;function initCreatorPreview(){var _0x57ef3d=_0x28d039;if(crv){crv[_0x57ef3d(0x171)]();return;}try{var _0x1f9c9f=$('cr-canvas'),_0x5f15cf=new THREE[(_0x57ef3d(0x265))]({'canvas':_0x1f9c9f,'antialias':!![],'alpha':!![]}),_0x442d38=new THREE[(_0x57ef3d(0x298))](),_0x19dcb6=new THREE[(_0x57ef3d(0x1d7))](0x1e,0x1,0.1,0x32);_0x442d38[_0x57ef3d(0x345)](new THREE[(_0x57ef3d(0x181))](0xffffff,0.75));var _0x49fa6f=new THREE[(_0x57ef3d(0x364))](0xffffff,0.9);_0x49fa6f[_0x57ef3d(0x245)][_0x57ef3d(0x1f8)](0x2,0x4,0x5),_0x442d38[_0x57ef3d(0x345)](_0x49fa6f);var _0xfc123f=makeHumanoid({'hairStyles':!![],'scale':0x1,'skin':0xf0c8a0,'shirt':0x2f6fd0,'pants':0x353a48,'hair':0x2a1a10,'pads':!![],'padColor':0x8a97a6,'boots':0x3a2a1a});setWeapon({'rig':_0xfc123f[_0x57ef3d(0x31d)]},_0x57ef3d(0x323),0x9b7653),_0x442d38[_0x57ef3d(0x345)](_0xfc123f[_0x57ef3d(0x33d)]),crv={'rd':_0x5f15cf,'sc':_0x442d38,'cam':_0x19dcb6,'rig':_0xfc123f[_0x57ef3d(0x31d)],'root':_0xfc123f['root'],'ry':0.5,'drag':null,'run':![]},crv['fit']=function(){var _0x51013e=_0x57ef3d,_0x4472f7=_0x1f9c9f[_0x51013e(0x2fa)]||0x8c,_0x3b78cc=_0x1f9c9f['clientHeight']||0x12c;_0x5f15cf[_0x51013e(0x193)](Math[_0x51013e(0x32d)](window['devicePixelRatio']||0x1,0x2)),_0x5f15cf[_0x51013e(0x34c)](_0x4472f7,_0x3b78cc,![]),_0x19dcb6['aspect']=_0x4472f7/_0x3b78cc,_0x19dcb6['fov']=_0x19dcb6[_0x51013e(0x292)]<0.6?0x26:0x1e,_0x19dcb6[_0x51013e(0x2f4)](),_0x19dcb6[_0x51013e(0x245)]['set'](0x0,0x1,6.2),_0x19dcb6['lookAt'](0x0,0.95,0x0);},crv[_0x57ef3d(0x171)](),_0x1f9c9f[_0x57ef3d(0x30e)]('pointerdown',function(_0x5bbf4a){var _0xcdc2f=_0x57ef3d;crv['drag']=_0x5bbf4a[_0xcdc2f(0x252)];try{_0x1f9c9f[_0xcdc2f(0x1c6)](_0x5bbf4a[_0xcdc2f(0x2ca)]);}catch(_0x1c2362){}}),_0x1f9c9f[_0x57ef3d(0x30e)](_0x57ef3d(0x1fb),function(_0x3fc678){var _0x546eb8=_0x57ef3d;crv[_0x546eb8(0x15a)]!==null&&(crv['ry']+=(_0x3fc678['clientX']-crv[_0x546eb8(0x15a)])*0.012,crv['drag']=_0x3fc678[_0x546eb8(0x252)]);}),_0x1f9c9f['addEventListener'](_0x57ef3d(0x1c9),function(){var _0x588ffc=_0x57ef3d;crv[_0x588ffc(0x15a)]=null;}),_0x1f9c9f[_0x57ef3d(0x30e)]('pointercancel',function(){crv['drag']=null;}),window['addEventListener'](_0x57ef3d(0x342),function(){var _0x4179a7=_0x57ef3d;if(crv[_0x4179a7(0x1b1)])crv[_0x4179a7(0x171)]();});}catch(_0x296793){crv=null;}}function creatorLoop(){var _0x4d1085=_0x28d039;if(!crv||!crv['run'])return;if(crv[_0x4d1085(0x15a)]===null)crv['ry']+=0.012;crv[_0x4d1085(0x33d)][_0x4d1085(0x294)]['y']=crv['ry'];try{crv['rd'][_0x4d1085(0x2a5)](crv['sc'],crv['cam']);}catch(_0x48ec88){}requestAnimationFrame(creatorLoop);}function previewLook(){var _0xcc69dd=_0x28d039;applyLook(),applyEquipVisuals();if(crv)applyLook(crv[_0xcc69dd(0x31d)]);}function buildCreator(){var _0x1440ac=_0x28d039,_0x3402af=P[_0x1440ac(0x1b2)];function _0x168ca(_0x4513c8,_0x28829b,_0x142701){var _0x3c6921=_0x1440ac,_0x3a29c9=$(_0x4513c8);_0x3a29c9[_0x3c6921(0x2cd)]='',_0x28829b[_0x3c6921(0x312)](function(_0x4f09e6){var _0x40ff75=_0x3c6921,_0x23e515=document['createElement']('i');_0x23e515[_0x40ff75(0x1bd)]['background']='#'+(_0x40ff75(0x288)+_0x4f09e6[_0x40ff75(0x24b)](0x10))[_0x40ff75(0x1bc)](-0x6);if(_0x3402af[_0x142701]===_0x4f09e6)_0x23e515['className']='on';_0x23e515[_0x40ff75(0x30e)](_0x40ff75(0x1c3),function(){var _0x584a55=_0x40ff75;_0x3402af[_0x142701]=_0x4f09e6,Array[_0x584a55(0x19f)]['forEach'][_0x584a55(0x18d)](_0x3a29c9['children'],function(_0x50ab9c){var _0x2b091c=_0x584a55;_0x50ab9c[_0x2b091c(0x2e9)]='';}),_0x23e515[_0x584a55(0x2e9)]='on',previewLook();}),_0x3a29c9['appendChild'](_0x23e515);});}_0x168ca(_0x1440ac(0x33c),HAIR_COLORS,_0x1440ac(0x31a)),_0x168ca(_0x1440ac(0x1ab),DRESS_COLORS,_0x1440ac(0x2f5)),_0x168ca(_0x1440ac(0x2bc),PANTS_COLORS,_0x1440ac(0x174));var _0x16cde7=$(_0x1440ac(0x2df))[_0x1440ac(0x349)](_0x1440ac(0x269));Array['prototype']['forEach'][_0x1440ac(0x18d)](_0x16cde7,function(_0x56bbcb){var _0x25c8bf=_0x1440ac;_0x56bbcb[_0x25c8bf(0x2e9)]=_0x56bbcb['getAttribute'](_0x25c8bf(0x1c2))===_0x3402af['sex']?'on':'',_0x56bbcb[_0x25c8bf(0x35b)]=function(){var _0x5068f2=_0x25c8bf;_0x3402af[_0x5068f2(0x1f9)]=_0x56bbcb[_0x5068f2(0x17c)](_0x5068f2(0x1c2)),Array[_0x5068f2(0x19f)][_0x5068f2(0x312)][_0x5068f2(0x18d)](_0x16cde7,function(_0x5a6675){_0x5a6675['className']=_0x5a6675===_0x56bbcb?'on':'';}),previewLook();};});var _0x73fb93=$(_0x1440ac(0x1c8));_0x73fb93['innerHTML']='',HAIR_STYLES[_0x1440ac(0x312)](function(_0x5cbc04,_0x438bc3){var _0x570bcd=_0x1440ac,_0x43a6b9=document[_0x570bcd(0x339)](_0x570bcd(0x269));_0x43a6b9[_0x570bcd(0x2b9)]=_0x5cbc04,_0x43a6b9[_0x570bcd(0x2e9)]=_0x3402af[_0x570bcd(0x1bd)]===_0x438bc3?'on':'',_0x43a6b9[_0x570bcd(0x35b)]=function(){var _0xb07e4d=_0x570bcd;_0x3402af[_0xb07e4d(0x1bd)]=_0x438bc3,Array['prototype'][_0xb07e4d(0x312)][_0xb07e4d(0x18d)](_0x73fb93['children'],function(_0x3a4b86){var _0x2cf853=_0xb07e4d;_0x3a4b86[_0x2cf853(0x2e9)]=_0x3a4b86===_0x43a6b9?'on':'';}),previewLook();},_0x73fb93[_0x570bcd(0x2e7)](_0x43a6b9);}),previewLook();}function openNameScreen(){var _0x1d9776=_0x28d039;ui[_0x1d9776(0x2ff)]=_0x1d9776(0x2b6),$(_0x1d9776(0x190))[_0x1d9776(0x1bd)][_0x1d9776(0x366)]=_0x1d9776(0x1d2);var _0x3a8fff=$('name-input');_0x3a8fff[_0x1d9776(0x24f)]='',$(_0x1d9776(0x1d5))[_0x1d9776(0x2b9)]='',initCreatorPreview(),buildCreator(),crv&&(crv[_0x1d9776(0x1b1)]=!![],crv[_0x1d9776(0x171)](),creatorLoop());}function cleanNameInput(){var _0x85336=_0x28d039,_0x40c248=$(_0x85336(0x297)),_0x44565e=_0x40c248['value'],_0x23fc31=_0x44565e[_0x85336(0x302)](/[^A-Za-z0-9]/g,'');_0x23fc31!==_0x44565e&&(_0x40c248[_0x85336(0x24f)]=_0x23fc31,$('name-err')[_0x85336(0x2b9)]=NAME_ERR,clearTimeout(cleanNameInput['t']),cleanNameInput['t']=setTimeout(function(){var _0x273eba=_0x85336;if($('name-err')[_0x273eba(0x2b9)]===NAME_ERR)$('name-err')['textContent']='';},0xdac));}$('name-input')[_0x28d039(0x30e)](_0x28d039(0x230),cleanNameInput);function confirmName(){var _0x1fe477=_0x28d039,_0x5cd96d=$(_0x1fe477(0x297))['value'],_0x4e0840=_0x5cd96d[_0x1fe477(0x302)](/[^A-Za-z0-9]/g,'')[_0x1fe477(0x1bc)](0x0,0xe);if(_0x4e0840!==_0x5cd96d[_0x1fe477(0x16b)]()&&_0x5cd96d[_0x1fe477(0x157)]){$(_0x1fe477(0x297))['value']=_0x4e0840,$(_0x1fe477(0x1d5))[_0x1fe477(0x2b9)]=NAME_ERR;return;}if(_0x4e0840[_0x1fe477(0x157)]<0x2){$(_0x1fe477(0x1d5))[_0x1fe477(0x2b9)]=_0x1fe477(0x20a);return;}P[_0x1fe477(0x2b6)]=_0x4e0840,P['c'][_0x1fe477(0x2b6)]=_0x4e0840,refreshPlayerTag(!![]),$(_0x1fe477(0x190))[_0x1fe477(0x1bd)][_0x1fe477(0x366)]=_0x1fe477(0x241),ui[_0x1fe477(0x2ff)]=null;if(crv)crv[_0x1fe477(0x1b1)]=![];saveGame(),sfx('level'),log('Welcome,\x20'+_0x4e0840+_0x1fe477(0x268),'#ffe066');}$(_0x28d039(0x1fe))[_0x28d039(0x30e)]('click',confirmName),$('name-input')[_0x28d039(0x30e)](_0x28d039(0x2fd),function(_0x3461dc){var _0x5818ad=_0x28d039;if(_0x3461dc[_0x5818ad(0x2dd)]===_0x5818ad(0x25a)){_0x3461dc[_0x5818ad(0x28c)]();try{$('name-input')[_0x5818ad(0x1bf)]();}catch(_0x2aa543){}}});function openStats(){var _0x4e92c2=_0x28d039;openPanel(_0x4e92c2(0x177),renderStats);}function renderStats(_0x91b773){var _0x33790a=_0x28d039,_0x143366=h(_0x33790a(0x309),_0x33790a(0x344),null,_0x91b773);[[_0x33790a(0x153),P[_0x33790a(0x2b6)]],['Level',P[_0x33790a(0x186)]],[_0x33790a(0x197),P['reb']+_0x33790a(0x210)],['Gold',P[_0x33790a(0x2cf)]],['XP',P['xp']+_0x33790a(0x313)+(P[_0x33790a(0x186)]>=MAX_LVL?_0x33790a(0x28f):xpNext(P[_0x33790a(0x186)]))],['HP',Math[_0x33790a(0x29a)](P['hp'])+_0x33790a(0x313)+maxHp()],['MP',Math['floor'](P['mp'])+_0x33790a(0x313)+maxMp()],[_0x33790a(0x216),Math[_0x33790a(0x2d4)](atkVal())],[_0x33790a(0x32f),Math[_0x33790a(0x2d4)](defVal()*0xa)/0xa],[_0x33790a(0x2c8),'+'+Math[_0x33790a(0x2d4)](gearSum(_0x33790a(0x2da))*0xa)/0xa+_0x33790a(0x1bb)],[_0x33790a(0x36b),'+'+Math['round']((0x2+maxMp()*0.012+gearSum(_0x33790a(0x29f)))*0xa)/0xa+'/s'],[_0x33790a(0x156),'+'+Math[_0x33790a(0x2d4)]((moveMul()-0x1)*0x64)+'%'],[_0x33790a(0x2eb),Math[_0x33790a(0x2d4)](critChance()*0x3e8)/0xa+'%'],[_0x33790a(0x201),Math[_0x33790a(0x2d4)](critMul()*0x64)+'%'],[_0x33790a(0x256),_0x33790a(0x225)+XP_CUTOFF+_0x33790a(0x27b)]][_0x33790a(0x312)](function(_0x324a21){var _0x58a9dd=_0x33790a;h(_0x58a9dd(0x309),null,_0x324a21[0x0]+':\x20'+_0x324a21[0x1],_0x143366);}),h('div','sec','Stat\x20points:\x20'+P['sp']+_0x33790a(0x2ef)+SP_PER_LEVEL+_0x33790a(0x2e0),_0x91b773),[['hp','HP','+'+SP_HP+_0x33790a(0x18b)],['dmg','Damage','+'+SP_DMG+_0x33790a(0x328)],[_0x33790a(0x183),_0x33790a(0x273),'+'+SP_DEF+'\x20defence\x20per\x20point'],[_0x33790a(0x301),'Crit\x20Rate','+'+SP_CRIT+_0x33790a(0x2d5)],[_0x33790a(0x363),'Crit\x20Damage','+'+SP_CDMG+_0x33790a(0x30c)]][_0x33790a(0x312)](function(_0x51343d){var _0x21bb15=_0x33790a,_0x1e4853=h(_0x21bb15(0x309),_0x21bb15(0x2e1),null,_0x91b773),_0x3d6337=h(_0x21bb15(0x309),'nm',null,_0x1e4853);h(_0x21bb15(0x309),null,_0x51343d[0x1]+_0x21bb15(0x2b3)+P[_0x21bb15(0x2b2)][_0x51343d[0x0]]+')',_0x3d6337),h(_0x21bb15(0x309),'ds',_0x51343d[0x2],_0x3d6337),[0x1,0x5,0x19][_0x21bb15(0x312)](function(_0x1c198b){var _0x15522f=_0x21bb15;btn(_0x1e4853,'+'+_0x1c198b,function(){var _0x1c3654=Math['min'](_0x1c198b,P['sp']);if(_0x1c3654<=0x0)return;P['alloc'][_0x51343d[0x0]]+=_0x1c3654,P['sp']-=_0x1c3654;if(_0x51343d[0x0]==='hp')P['hp']+=SP_HP*_0x1c3654;saveGame(),rerender();},{'disabled':P['sp']<=0x0,'cls':_0x15522f(0x15d)});});});}tapBtn(_0x28d039(0x1a8),function(){openStats();}),(function(){var _0x2f0833=_0x28d039,_0x5ef474=h('div',null,null,$(_0x2f0833(0x1a8)));_0x5ef474['id']=_0x2f0833(0x311),_0x5ef474[_0x2f0833(0x2b9)]='';}());var upTab=_0x28d039(0x1a2),UP_TABS=[[_0x28d039(0x1a2),_0x28d039(0x1dc),[_0x28d039(0x1a2)]],[_0x28d039(0x2e1),_0x28d039(0x13b),[_0x28d039(0x330),_0x28d039(0x2fc),_0x28d039(0x174),_0x28d039(0x2fb)]],['wings',_0x28d039(0x144),['wings']]];function openUpgrade(_0x3af9ce){var _0x41782f=_0x28d039;openPanel(_0x3af9ce[_0x41782f(0x2b6)]+_0x41782f(0x2dc),renderUpgrade);}function _0x552c(_0x2e8cec,_0x42af36){_0x2e8cec=_0x2e8cec-0x13b;var _0x53c553=_0x53c5();var _0x552c61=_0x53c553[_0x2e8cec];return _0x552c61;}function doUpgrade(_0x324352){var _0x22a43f=_0x28d039,_0xa22124=ITEMS[_0x324352],_0x58a65b=upgLvl(_0x324352),_0x378158=upgMat(_0xa22124[_0x22a43f(0x1cd)]),_0x50a236=upgGold(_0xa22124,_0x58a65b),_0x43771e=upgStones(_0x58a65b);if(_0x58a65b>=MAX_UPG)return;if(P[_0x22a43f(0x2cf)]<_0x50a236){log(_0x22a43f(0x23e),_0x22a43f(0x270));return;}if((P['inv'][_0x378158]||0x0)<_0x43771e){log('Not\x20enough\x20'+ITEMS[_0x378158][_0x22a43f(0x2b6)]+'.',_0x22a43f(0x270));return;}P[_0x22a43f(0x2cf)]-=_0x50a236,P[_0x22a43f(0x2cc)][_0x378158]-=_0x43771e,P['upg'][_0x324352]=_0x58a65b+0x1;var _0x561b40=upgColor(_0x58a65b+0x1,performance[_0x22a43f(0x154)]()/0x3e8);P['equip'][_0xa22124['slot']]===_0x324352&&(applyEquipVisuals(),ringFx(P[_0x22a43f(0x262)]['x'],P[_0x22a43f(0x262)]['z'],2.4,_0x561b40,0.7),pillarFx(P[_0x22a43f(0x262)]['x'],P['pos']['z'],_0x561b40),burst({'x':P[_0x22a43f(0x262)]['x'],'y':0x1,'z':P[_0x22a43f(0x262)]['z']},_0x561b40,0x10,0x4,0x3)),sfx('level'),spawnText(itemName(_0x324352),P[_0x22a43f(0x262)],'xp',2.6),log(_0x22a43f(0x36d)+_0xa22124['name']+_0x22a43f(0x236)+(_0x58a65b+0x1)+'!'+((_0x58a65b+0x1)%0xa===0x0?_0x22a43f(0x30a):''),_0x22a43f(0x15e)),saveGame(),rerender();}function renderUpgrade(_0x3253d6){var _0xc4bb2e=_0x28d039;h(_0xc4bb2e(0x309),'sec',_0xc4bb2e(0x1ba)+P['gold']+_0xc4bb2e(0x35c)+MATERIAL_IDS[_0xc4bb2e(0x229)](function(_0x301c96){var _0x2f3106=_0xc4bb2e;return ITEMS[_0x301c96][_0x2f3106(0x2b6)]+'\x20x'+(P[_0x2f3106(0x2cc)][_0x301c96]||0x0);})[_0xc4bb2e(0x27c)]('\x20\x20·\x20\x20'),_0x3253d6),h(_0xc4bb2e(0x309),'ds',_0xc4bb2e(0x208)+MAX_UPG+'.',_0x3253d6);var _0x274fc8=h(_0xc4bb2e(0x309),_0xc4bb2e(0x2f6),null,_0x3253d6);UP_TABS['forEach'](function(_0x3c154a){var _0xde5560=_0xc4bb2e,_0x1f2835=h(_0xde5560(0x269),upTab===_0x3c154a[0x0]?_0xde5560(0x221):null,_0x3c154a[0x1],_0x274fc8);_0x1f2835['addEventListener'](_0xde5560(0x1c3),function(){upTab=_0x3c154a[0x0],rerender();});});var _0x4ad894=UP_TABS[_0xc4bb2e(0x293)](function(_0x122918){return _0x122918[0x0]===upTab;})[0x0][0x2],_0x11ba61=![],_0x27d910=P['owned'][_0xc4bb2e(0x293)](function(_0x13b770){return ITEMS[_0x13b770]&&_0x4ad894['indexOf'](ITEMS[_0x13b770]['slot'])>=0x0;});_0x27d910[_0xc4bb2e(0x2a2)](function(_0x26913b,_0x4ca121){var _0x260faa=_0xc4bb2e;return(P[_0x260faa(0x291)][ITEMS[_0x4ca121]['slot']]===_0x4ca121?0x1:0x0)-(P['equip'][ITEMS[_0x26913b][_0x260faa(0x1cd)]]===_0x26913b?0x1:0x0);}),_0x27d910[_0xc4bb2e(0x312)](function(_0x403017){var _0x329720=_0xc4bb2e;_0x11ba61=!![];var _0x4b1dab=ITEMS[_0x403017],_0x5c9267=upgLvl(_0x403017),_0x25444f=upgMat(_0x4b1dab['slot']),_0x2acd2c=h('div','item',null,_0x3253d6);iconEl(_0x2acd2c,_0x4b1dab[_0x329720(0x16f)],SLOT_INFO[_0x4b1dab[_0x329720(0x1cd)]][_0x329720(0x16f)]);var _0x5e1165=h('div','nm',null,_0x2acd2c);h(_0x329720(0x309),_0x4b1dab[_0x329720(0x1b6)]?'rare':null,(_0x4b1dab[_0x329720(0x1b6)]?'★\x20':'')+itemName(_0x403017),_0x5e1165);if(P[_0x329720(0x291)][_0x4b1dab[_0x329720(0x1cd)]]===_0x403017)h(_0x329720(0x240),_0x329720(0x14a),_0x329720(0x248),_0x5e1165);if(_0x5c9267>=MAX_UPG){h(_0x329720(0x309),'ds',_0x329720(0x34f)+MAX_UPG+_0x329720(0x28b)+upgMul(_0x403017)[_0x329720(0x17d)](0x2)+')',_0x5e1165);return;}var _0x5884a1=upgGold(_0x4b1dab,_0x5c9267),_0x4fa615=upgStones(_0x5c9267),_0x24061e=P[_0x329720(0x2cf)]>=_0x5884a1&&(P['inv'][_0x25444f]||0x0)>=_0x4fa615;h(_0x329720(0x309),'ds',_0x329720(0x1a0)+upgMul(_0x403017)[_0x329720(0x17d)](0x2)+'\x20→\x20x'+(upgMul(_0x403017)+UPG_BONUS)[_0x329720(0x17d)](0x2)+_0x329720(0x2f9)+_0x5884a1+_0x329720(0x226)+_0x4fa615+'\x20'+ITEMS[_0x25444f][_0x329720(0x2b6)],_0x5e1165),btn(_0x2acd2c,'+'+(_0x5c9267+0x1),function(){doUpgrade(_0x403017);},{'disabled':!_0x24061e,'cls':_0x24061e?_0x329720(0x15d):''});});if(!_0x11ba61)h(_0xc4bb2e(0x309),'ds',_0xc4bb2e(0x2c7),_0x3253d6);h(_0xc4bb2e(0x309),'sec',_0xc4bb2e(0x343),_0x3253d6),MATERIAL_IDS[_0xc4bb2e(0x312)](function(_0x16d38f){var _0x21feda=_0xc4bb2e,_0x43ec44=ITEMS[_0x16d38f],_0x16e23f=h(_0x21feda(0x309),_0x21feda(0x2e1),null,_0x3253d6);iconEl(_0x16e23f,_0x43ec44[_0x21feda(0x16f)],'◆');var _0x240099=h(_0x21feda(0x309),'nm',null,_0x16e23f);h(_0x21feda(0x309),null,_0x43ec44[_0x21feda(0x2b6)]+_0x21feda(0x2b0)+(P[_0x21feda(0x2cc)][_0x16d38f]||0x0)+')',_0x240099),h(_0x21feda(0x309),'ds',_0x43ec44[_0x21feda(0x17f)]+_0x21feda(0x2f9)+_0x43ec44['price']+'\x20G',_0x240099),btn(_0x16e23f,_0x21feda(0x27f),function(){var _0x4a9c70=_0x21feda;if(P[_0x4a9c70(0x2cf)]<_0x43ec44[_0x4a9c70(0x27d)])return;P[_0x4a9c70(0x2cf)]-=_0x43ec44[_0x4a9c70(0x27d)],giveItem(_0x16d38f,0x1),sfx(_0x4a9c70(0x1ce)),saveGame(),rerender();},{'disabled':P['gold']<_0x43ec44[_0x21feda(0x27d)]});});}function openNav(){var _0xffb4a1=_0x28d039;$(_0xffb4a1(0x159))[_0xffb4a1(0x20c)]['add'](_0xffb4a1(0x2ff)),$(_0xffb4a1(0x2ab))['style'][_0xffb4a1(0x366)]='block',releaseInputs();}function closeNav(){var _0x36f1e9=_0x28d039;$(_0x36f1e9(0x159))['classList'][_0x36f1e9(0x2ae)](_0x36f1e9(0x2ff)),$(_0x36f1e9(0x2ab))['style']['display']=_0x36f1e9(0x241);}var REDEEM={'free12':{'gold':0xf4240},'xpmax99':{'xp':0x1d4c0},'beta123':{'gold':0x4c4b40,'xp':0x30d40},'tagalog.moviex':{'gold':0x989680,'xp':0x4e20},'diamond123':{'diamonds':0x186a0},'gold0900':{'gold':0x989680},'expexp':{'exp':0xf4240},'gianmarlo':{'gold':0xf4240},'katot':{'exp':0xf4240},'sukarap':{'gold':0xf4240}},redeemMsg='';function openRedeem(){redeemMsg='',openPanel('Redeem\x20Code',renderRedeem);}function doRedeem(_0x289a78){var _0x579f8d=_0x28d039,_0x218936=String(_0x289a78||'')[_0x579f8d(0x16b)]()[_0x579f8d(0x25d)](),_0x4e3540=REDEEM[_0x218936];if(!_0x218936){redeemMsg=_0x579f8d(0x35e);return;}if(!_0x4e3540){redeemMsg='Invalid\x20code.';return;}if(P[_0x579f8d(0x244)][_0x218936]){redeemMsg=_0x579f8d(0x250);return;}P[_0x579f8d(0x244)][_0x218936]=!![];var _0xfd3b2d=[];_0x4e3540[_0x579f8d(0x2cf)]&&(P[_0x579f8d(0x2cf)]+=_0x4e3540['gold'],_0xfd3b2d['push'](_0x4e3540[_0x579f8d(0x2cf)]['toLocaleString']()+'\x20Gold'));_0x4e3540[_0x579f8d(0x13c)]&&(P[_0x579f8d(0x13c)]+=_0x4e3540[_0x579f8d(0x13c)],_0xfd3b2d[_0x579f8d(0x2be)](_0x4e3540['diamonds'][_0x579f8d(0x340)]()+_0x579f8d(0x22b)));if(_0x4e3540['xp']){if(P[_0x579f8d(0x186)]>=MAX_LVL)_0xfd3b2d['push'](_0x4e3540['xp'][_0x579f8d(0x340)]()+_0x579f8d(0x17e));else gainXp(_0x4e3540['xp']),_0xfd3b2d[_0x579f8d(0x2be)](_0x4e3540['xp'][_0x579f8d(0x340)]()+_0x579f8d(0x18f));}redeemMsg=_0x579f8d(0x13d)+_0xfd3b2d[_0x579f8d(0x27c)]('\x20+\x20')+'.',log(redeemMsg,_0x579f8d(0x354)),sfx(_0x579f8d(0x1ce)),saveGame();}function renderRedeem(_0xbd7be0){var _0x5bf124=_0x28d039;h(_0x5bf124(0x309),'ds',_0x5bf124(0x2c9),_0xbd7be0);var _0x3aa24b=h(_0x5bf124(0x230),null,null,_0xbd7be0);_0x3aa24b['id']=_0x5bf124(0x19a),_0x3aa24b[_0x5bf124(0x20b)]=_0x5bf124(0x17a),_0x3aa24b[_0x5bf124(0x1d1)]=_0x5bf124(0x17b),_0x3aa24b[_0x5bf124(0x148)]=_0x5bf124(0x1ad),_0x3aa24b['autocapitalize']=_0x5bf124(0x1ad),_0x3aa24b[_0x5bf124(0x31c)]=![];var _0x52f454=h(_0x5bf124(0x309),'setrow',null,_0xbd7be0);btn(_0x52f454,'REDEEM',function(){var _0x3f808=_0x5bf124;doRedeem(_0x3aa24b[_0x3f808(0x24f)]),rerender();},{'cls':'good'});if(redeemMsg)h('div','ds',redeemMsg,_0xbd7be0);h('div',_0x5bf124(0x266),_0x5bf124(0x1f6)+P[_0x5bf124(0x2cf)]['toLocaleString']()+_0x5bf124(0x348)+P['lvl'],_0xbd7be0);}var QR_URL='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgzsQpH4IJNOiMZp1c-T8ZytpxsBFlFB-e3l-wm_gmG3cQAz6RRwVAI6qa6OMe9TeVnHWhAMj9bNWAl0UkmlCcsm8s8bVXoXmQbBTMmp22Rau3Mw4LunXBd0DDHOI-dMJFl_ZumjlkiYUw4lV5K3EWMuWGh1pvmg8HXhBAJRiHiGcHYnUZfs7Tfl9P_45vl/s1339/GCash_QR_Code%20%281%29.png';function openSupport(){openPanel('Support\x20Game',renderSupport);}function renderSupport(_0x653459){var _0x1cbe2c=_0x28d039;h(_0x1cbe2c(0x309),_0x1cbe2c(0x266),'Support\x20Game',_0x653459);var _0x225f90=h('img','qrimg',null,_0x653459);_0x225f90[_0x1cbe2c(0x2f2)]=QR_URL,_0x225f90[_0x1cbe2c(0x20d)]=_0x1cbe2c(0x176),_0x225f90[_0x1cbe2c(0x285)]=![];var _0x460698=h('div',_0x1cbe2c(0x219),null,_0x653459);_0x460698[_0x1cbe2c(0x2e7)](document[_0x1cbe2c(0x351)](_0x1cbe2c(0x243)));var _0xb417a=document[_0x1cbe2c(0x339)]('a');_0xb417a[_0x1cbe2c(0x23b)]=QR_URL,_0xb417a[_0x1cbe2c(0x1de)]=_0x1cbe2c(0x365),_0xb417a[_0x1cbe2c(0x1ee)]='noopener',_0xb417a[_0x1cbe2c(0x1d4)](_0x1cbe2c(0x2c4),'Support_QR.png'),_0xb417a[_0x1cbe2c(0x2b9)]='Download\x20QR',_0x460698[_0x1cbe2c(0x2e7)](_0xb417a);}var MAX_REBIRTH=0x32,rebConfirm=![];function rebirthCost(_0x5b5111){return _0x5b5111<=0x5?0xf4240:_0x5b5111<=0xa?0x2dc6c0:_0x5b5111<=0xf?0x5b8d80:_0x5b5111<=0x19?0x989680:0xe4e1c0;}function openRebirth(_0x364f3a){var _0x228a48=_0x28d039;rebConfirm=![],openPanel(_0x364f3a[_0x228a48(0x2b6)]+_0x228a48(0x264),renderRebirth);}function doRebirth(){var _0x194091=_0x28d039,_0x333bb7=P['reb']+0x1,_0x23d897=rebirthCost(_0x333bb7);if(P[_0x194091(0x21b)]>=MAX_REBIRTH||P['lvl']<MAX_LVL||P[_0x194091(0x2cf)]<_0x23d897)return;P[_0x194091(0x2cf)]-=_0x23d897,P[_0x194091(0x21b)]=_0x333bb7,P[_0x194091(0x186)]=0x1,P['xp']=0x0;var _0x7c570b=[];SLOTS[_0x194091(0x312)](function(_0x35e4fd){var _0x39bbec=_0x194091,_0x328a7b=P[_0x39bbec(0x291)][_0x35e4fd];_0x328a7b&&ITEMS[_0x328a7b]&&(ITEMS[_0x328a7b]['lvl']||0x1)>P[_0x39bbec(0x186)]&&(_0x7c570b[_0x39bbec(0x2be)](ITEMS[_0x328a7b][_0x39bbec(0x2b6)]),P[_0x39bbec(0x291)][_0x35e4fd]=_0x35e4fd===_0x39bbec(0x1a2)?_0x39bbec(0x2e3):null);}),dismount(),P[_0x194091(0x33b)]['length']=0x0,P['shield']=0x0,P['hot']=null,P['slowT']=0x0,P[_0x194091(0x187)]=0x0,P[_0x194091(0x1de)]=null,applyEquipVisuals(),P['c'][_0x194091(0x186)]=P[_0x194091(0x186)],P['hp']=maxHp(),P['mp']=maxMp(),refreshPlayerTag(!![]),ringFx(P[_0x194091(0x262)]['x'],P['pos']['z'],0x5,0xffd54f,0.9),pillarFx(P[_0x194091(0x262)]['x'],P[_0x194091(0x262)]['z'],0xffd54f),sfx(_0x194091(0x194)),loadMap(MAPS[0x0]['id'],!![]),log(_0x194091(0x26c)+_0x333bb7+_0x194091(0x1b7)+MAPS[0x0][_0x194091(0x2b6)]+'.'+(_0x7c570b['length']?_0x194091(0x289)+_0x7c570b['join'](',\x20')+'.':''),_0x194091(0x15e)),saveGame(),closePanel();}function renderRebirth(_0x33f517){var _0x389efc=_0x28d039,_0x3f41cd=P[_0x389efc(0x21b)]+0x1,_0x211ed0=P['reb']>=MAX_REBIRTH;h(_0x389efc(0x309),'sec','Rebirth:\x20'+P[_0x389efc(0x21b)]+_0x389efc(0x313)+MAX_REBIRTH,_0x33f517),h(_0x389efc(0x309),'ds',_0x389efc(0x306),_0x33f517);if(_0x211ed0){h(_0x389efc(0x309),_0x389efc(0x266),_0x389efc(0x213),_0x33f517);return;}var _0x12c89a=rebirthCost(_0x3f41cd),_0x519235=P[_0x389efc(0x186)]>=MAX_LVL,_0x202bfb=P['gold']>=_0x12c89a;h(_0x389efc(0x309),_0x389efc(0x266),_0x389efc(0x223)+_0x3f41cd+_0x389efc(0x334),_0x33f517),h('div',null,(_0x519235?'✔\x20':'✘\x20')+_0x389efc(0x2f0)+MAX_LVL+_0x389efc(0x192)+P[_0x389efc(0x186)]+')',_0x33f517),h(_0x389efc(0x309),null,(_0x202bfb?'✔\x20':'✘\x20')+_0x12c89a['toLocaleString']()+_0x389efc(0x189)+P[_0x389efc(0x2cf)][_0x389efc(0x340)]()+')',_0x33f517);var _0x51b9aa=h(_0x389efc(0x309),_0x389efc(0x1ea),null,_0x33f517);btn(_0x51b9aa,rebConfirm?'TAP\x20AGAIN\x20TO\x20CONFIRM':_0x389efc(0x1ef),function(){if(!rebConfirm){rebConfirm=!![],rerender();return;}doRebirth();},{'disabled':!(_0x519235&&_0x202bfb),'cls':_0x389efc(0x15d)}),h('div',_0x389efc(0x266),_0x389efc(0x326),_0x33f517),h(_0x389efc(0x309),'ds','Rebirth\x201-5:\x201M\x20·\x206-10:\x203M\x20·\x2011-15:\x206M\x20·\x2016-25:\x2010M\x20·\x2026-50:\x2015M\x20gold\x20(each\x20also\x20needs\x20level\x20100)',_0x33f517);}var MAP_PX=0x12c,mapTimer=null;function openMapPopup(){var _0x4671da=_0x28d039;if(P['dead']||ui[_0x4671da(0x2ff)])return;openPanel(_0x4671da(0x149),function(_0x831c8a){var _0x974b55=_0x4671da;h(_0x974b55(0x309),'ds',_0x974b55(0x2ac),_0x831c8a);var _0x517839=h(_0x974b55(0x2af),'bigmap',null,_0x831c8a);_0x517839[_0x974b55(0x318)]=_0x517839[_0x974b55(0x160)]=MAP_PX*0x2,_0x517839[_0x974b55(0x1bd)][_0x974b55(0x318)]=_0x517839[_0x974b55(0x1bd)][_0x974b55(0x160)]=MAP_PX+'px',drawBigMap(_0x517839),_0x517839[_0x974b55(0x30e)](_0x974b55(0x1c3),function(_0x40bd45){var _0x266729=_0x974b55,_0x3dcf17=_0x517839[_0x266729(0x23a)](),_0x5066d1=(_0x40bd45[_0x266729(0x252)]-_0x3dcf17['left'])/_0x3dcf17['width']*0x2-0x1,_0x52611d=(_0x40bd45[_0x266729(0x195)]-_0x3dcf17[_0x266729(0x367)])/_0x3dcf17[_0x266729(0x160)]*0x2-0x1,_0x5f4810=(WORLD_R-0x2)/(0x1-0.04),_0x1040c8=_0x5066d1*_0x5f4810,_0x30e14f=_0x52611d*_0x5f4810,_0xef1595=Math['hypot'](_0x1040c8,_0x30e14f),_0x1c54fc=WORLD_R-0x2;_0xef1595>_0x1c54fc&&(_0x1040c8*=_0x1c54fc/_0xef1595,_0x30e14f*=_0x1c54fc/_0xef1595),P[_0x266729(0x1f7)]={'x':_0x1040c8,'z':_0x30e14f},P[_0x266729(0x24a)]=0x0,P[_0x266729(0x143)]=P[_0x266729(0x262)]['x'],P[_0x266729(0x34b)]=P['pos']['z'],sfx('ui'),closePanel(),log('Moving\x20to\x20the\x20selected\x20spot...',_0x266729(0x28e));}),clearInterval(mapTimer),mapTimer=setInterval(function(){var _0x3d7502=_0x974b55;if(ui[_0x3d7502(0x2ff)]!==_0x3d7502(0x149)){clearInterval(mapTimer);return;}drawBigMap(_0x517839);},0x190);});}function drawBigMap(_0x3dd00a){var _0x3955e4=_0x28d039,_0x44a23c=_0x3dd00a[_0x3955e4(0x318)],_0x333b69=_0x3dd00a['getContext']('2d'),_0x27fde1=_0x44a23c/0x2*0.96/(WORLD_R-0x2);function _0x151c8a(_0xe16acc,_0x4cd588){return{'x':_0x44a23c/0x2+_0xe16acc*_0x27fde1,'y':_0x44a23c/0x2+_0x4cd588*_0x27fde1};}_0x333b69['clearRect'](0x0,0x0,_0x44a23c,_0x44a23c),_0x333b69[_0x3955e4(0x261)](),_0x333b69[_0x3955e4(0x1db)](),_0x333b69['arc'](_0x44a23c/0x2,_0x44a23c/0x2,_0x44a23c/0x2-0x2,0x0,TAU),_0x333b69[_0x3955e4(0x30d)](),_0x333b69[_0x3955e4(0x331)]=curMap?'#'+(_0x3955e4(0x288)+new THREE[(_0x3955e4(0x2ad))](curMap['theme'][_0x3955e4(0x21c)])[_0x3955e4(0x308)]())[_0x3955e4(0x1bc)](-0x6):'#244',_0x333b69[_0x3955e4(0x32b)](0x0,0x0,_0x44a23c,_0x44a23c),_0x333b69[_0x3955e4(0x331)]=_0x3955e4(0x24d),_0x333b69[_0x3955e4(0x32b)](0x0,0x0,_0x44a23c,_0x44a23c);var _0x2d365c=_0x151c8a(0x0,0x0);_0x333b69[_0x3955e4(0x331)]='rgba(190,180,150,.75)',_0x333b69[_0x3955e4(0x1db)](),_0x333b69[_0x3955e4(0x2c3)](_0x2d365c['x'],_0x2d365c['y'],(curMap?curMap[_0x3955e4(0x231)]:0x10)*_0x27fde1,0x0,TAU),_0x333b69[_0x3955e4(0x1ed)]();function _0x22f8b2(_0x35fab7,_0x48a88c,_0x34d8a5,_0x1ffd44){var _0x431294=_0x3955e4,_0xe0fed1=_0x151c8a(_0x35fab7,_0x48a88c);_0x333b69['fillStyle']=_0x34d8a5,_0x333b69[_0x431294(0x1db)](),_0x333b69[_0x431294(0x2c3)](_0xe0fed1['x'],_0xe0fed1['y'],_0x1ffd44,0x0,TAU),_0x333b69[_0x431294(0x1ed)]();}enemies[_0x3955e4(0x312)](function(_0x4deb36){var _0x263e78=_0x3955e4;if(_0x4deb36[_0x263e78(0x276)]!==_0x263e78(0x15f))_0x22f8b2(_0x4deb36[_0x263e78(0x262)]['x'],_0x4deb36[_0x263e78(0x262)]['z'],_0x4deb36['T'][_0x263e78(0x23c)]?_0x263e78(0x215):'#ff4a4a',_0x4deb36['T'][_0x263e78(0x23c)]?0x9:0x4);}),ais['forEach'](function(_0xc22aed){var _0x1eac38=_0x3955e4;if(_0xc22aed[_0x1eac38(0x276)]!==_0x1eac38(0x15f))_0x22f8b2(_0xc22aed[_0x1eac38(0x262)]['x'],_0xc22aed[_0x1eac38(0x262)]['z'],_0xc22aed[_0x1eac38(0x296)]>0x0?_0x1eac38(0x170):_0x1eac38(0x172),0x4);}),npcs[_0x3955e4(0x312)](function(_0x50121d){var _0x159b28=_0x3955e4;_0x22f8b2(_0x50121d[_0x159b28(0x262)]['x'],_0x50121d[_0x159b28(0x262)]['z'],_0x159b28(0x354),0x6);}),portals[_0x3955e4(0x312)](function(_0x164a88){var _0x4dd38b=_0x3955e4,_0x111dd4=_0x151c8a(_0x164a88['x'],_0x164a88['z']);_0x333b69[_0x4dd38b(0x331)]=_0x4dd38b(0x26a),_0x333b69['fillRect'](_0x111dd4['x']-0x7,_0x111dd4['y']-0x7,0xe,0xe);});if(P[_0x3955e4(0x1f7)]){var _0x1b5812=_0x151c8a(P['dest']['x'],P[_0x3955e4(0x1f7)]['z']);_0x333b69['strokeStyle']=_0x3955e4(0x267),_0x333b69[_0x3955e4(0x158)]=0x3,_0x333b69['beginPath'](),_0x333b69['arc'](_0x1b5812['x'],_0x1b5812['y'],0x9,0x0,TAU),_0x333b69[_0x3955e4(0x19e)]();}_0x22f8b2(P[_0x3955e4(0x262)]['x'],P['pos']['z'],_0x3955e4(0x2b8),0x7),_0x333b69[_0x3955e4(0x1c0)](),_0x333b69[_0x3955e4(0x211)]=_0x3955e4(0x287),_0x333b69[_0x3955e4(0x158)]=0x4,_0x333b69[_0x3955e4(0x1db)](),_0x333b69[_0x3955e4(0x2c3)](_0x44a23c/0x2,_0x44a23c/0x2,_0x44a23c/0x2-0x2,0x0,TAU),_0x333b69[_0x3955e4(0x19e)]();}mini[_0x28d039(0x30e)](_0x28d039(0x1c3),openMapPopup);var ROULETTE_COST=0x3e8,spinning=![],ROULETTE=[{'id':_0x28d039(0x1e6),'n':0x2,'p':0x16,'label':'2\x20HP\x20Potions'},{'id':_0x28d039(0x1e0),'n':0x2,'p':0x16,'label':_0x28d039(0x141)},{'id':'hp_potion','n':0x5,'p':0xc,'label':'5\x20HP\x20Potions'},{'id':_0x28d039(0x1b9),'n':0x2,'p':14.5,'label':_0x28d039(0x237)},{'id':_0x28d039(0x2f8),'n':0x2,'p':14.5,'label':'Burr\x20Stone\x20x2'},{'id':_0x28d039(0x319),'n':0x2,'p':13.7,'label':_0x28d039(0x22d)},{'id':_0x28d039(0x1ac),'n':0x1,'p':0x1,'label':_0x28d039(0x310)},{'id':_0x28d039(0x2e4),'n':0x1,'p':0.3,'label':_0x28d039(0x1e2),'jackpot':!![]}];function rollRoulette(){var _0x16de3e=_0x28d039,_0x1b3332=Math[_0x16de3e(0x1df)]()*0x64,_0x5c7dbc=0x0;for(var _0x51b87f=0x0;_0x51b87f<ROULETTE[_0x16de3e(0x157)];_0x51b87f++){_0x5c7dbc+=ROULETTE[_0x51b87f]['p'];if(_0x1b3332<_0x5c7dbc)return _0x51b87f;}return 0x0;}function openTist(_0x1d576e){spinning=![],openPanel(_0x1d576e['name'],renderTist);}function renderTist(_0xaadfd5){var _0x2c9f03=_0x28d039,_0x3a6a20=h('div',_0x2c9f03(0x260),null,_0xaadfd5);h('p',null,'They\x20I\x20See\x20Tea\x20(TIST)\x20is\x20the\x20guardian\x20of\x20this\x20realm:\x20game\x20security,\x20patches,\x20updates\x20and\x20much\x20more.\x20Fancy\x20a\x20shot\x20at\x20the\x20legendary\x20Godzilla\x20Wings?\x20Spin\x20the\x20roulette\x20below\x20and\x20try\x20your\x20luck!',_0x3a6a20),h(_0x2c9f03(0x309),_0x2c9f03(0x266),_0x2c9f03(0x350),_0xaadfd5);var _0x5d8ac1=h('div',_0x2c9f03(0x239),null,_0xaadfd5),_0x90d020=[];ROULETTE['forEach'](function(_0x54e53b,_0x1d5c27){var _0x19825c=_0x2c9f03,_0x3dc267=h(_0x19825c(0x309),_0x19825c(0x20f)+(_0x54e53b['jackpot']?_0x19825c(0x151):''),null,_0x5d8ac1);_0x90d020[_0x19825c(0x2be)](_0x3dc267),iconEl(_0x3dc267,ITEMS[_0x54e53b['id']][_0x19825c(0x16f)],'?'),h(_0x19825c(0x309),'rn',_0x54e53b[_0x19825c(0x21d)],_0x3dc267),h(_0x19825c(0x309),'rp',(_0x54e53b['jackpot']?_0x19825c(0x341):'')+_0x54e53b['p']+'%',_0x3dc267);});var _0x447ef7=h(_0x2c9f03(0x309),_0x2c9f03(0x2c6),_0x2c9f03(0x1c5)+ROULETTE_COST[_0x2c9f03(0x340)]()+'\x20gold',_0xaadfd5),_0x4bef5e=h(_0x2c9f03(0x309),'ds',_0x2c9f03(0x1f6)+P[_0x2c9f03(0x2cf)][_0x2c9f03(0x340)](),_0xaadfd5),_0x1e2bde=h(_0x2c9f03(0x309),'setrow',null,_0xaadfd5),_0x209d36;_0x209d36=btn(_0x1e2bde,_0x2c9f03(0x1d0)+ROULETTE_COST+'\x20G)',function(){var _0x56fc18=_0x2c9f03;if(spinning||P[_0x56fc18(0x2cf)]<ROULETTE_COST)return;spinning=!![],_0x209d36['disabled']=!![],P[_0x56fc18(0x2cf)]-=ROULETTE_COST,_0x4bef5e[_0x56fc18(0x2b9)]='Your\x20gold:\x20'+P['gold']['toLocaleString']();var _0x2c3a90=rollRoulette(),_0x47f63a=ROULETTE[_0x2c3a90],_0x55c9fe=0x18+_0x2c3a90+0x1,_0x4943a5=0x0;if(_0x47f63a['id']===_0x56fc18(0x2e4)||_0x47f63a['id']===_0x56fc18(0x1ac))giveDrop(_0x47f63a['id']);else giveItem(_0x47f63a['id'],_0x47f63a['n']);saveGame(),_0x447ef7['textContent']=_0x56fc18(0x150),_0x447ef7[_0x56fc18(0x2e9)]=_0x56fc18(0x2c6),function _0x1f5d84(){var _0x236a8f=_0x56fc18;_0x90d020['forEach'](function(_0x5b8e63){var _0x4e6ba2=_0x552c;_0x5b8e63[_0x4e6ba2(0x20c)][_0x4e6ba2(0x2ae)]('on');}),_0x90d020[_0x4943a5%0x8]['classList']['add']('on'),sfx('ui');if(_0x4943a5>=_0x55c9fe-0x1){spinning=![],_0x209d36[_0x236a8f(0x2d6)]=P[_0x236a8f(0x2cf)]<ROULETTE_COST,_0x447ef7[_0x236a8f(0x2b9)]=(_0x47f63a[_0x236a8f(0x182)]?_0x236a8f(0x320):_0x236a8f(0x2f1))+_0x47f63a[_0x236a8f(0x21d)]+'!',_0x447ef7['className']=_0x236a8f(0x251)+(_0x47f63a[_0x236a8f(0x182)]?_0x236a8f(0x29d):''),_0x90d020[_0x2c3a90][_0x236a8f(0x20c)][_0x236a8f(0x345)](_0x236a8f(0x352)),sfx(_0x236a8f(0x194)),log('TIST\x20Roulette:\x20'+_0x47f63a[_0x236a8f(0x21d)]+'!',_0x47f63a[_0x236a8f(0x182)]?_0x236a8f(0x15e):_0x236a8f(0x28e));return;}var _0x18b324=0x2d+0x104*Math['pow'](_0x4943a5/_0x55c9fe,0x3);_0x4943a5++,setTimeout(_0x1f5d84,_0x18b324);}();},{'disabled':P[_0x2c9f03(0x2cf)]<ROULETTE_COST,'cls':_0x2c9f03(0x15d)}),btn(_0x1e2bde,_0x2c9f03(0x34a),closePanel);}function _0x53c5(){var _0x4ca3ac=['panel','#ff9a9a','god_helmet','Boss:\x20Lv\x20','Defence','\x20\x20(random\x20bonus\x20stats)\x20\x20·\x20\x20Lv\x20','Quest\x20reward:\x20','state','p-mp-t','Defeat\x20','t-name','\x20\x20\x20·\x20\x20\x20Godzilla\x20Fragments:\x20','+\x20lvls\x20below\x20you','join','price','taxPaid','Buy','Equip','music','\x20XP.','453WQaSkH','mapname','draggable','Owned\x20skills\x20(','rgba(255,255,255,.6)','000000','\x20Unequipped:\x20','cls','\x20\x20(stats\x20x','preventDefault','t-hp-t','#9fe3ff','MAX','tist','equip','aspect','filter','rotation','0.05','hostile','name-input','Scene','•\x20Staying\x20inside\x20a\x20safe\x20zone:\x20','floor','#fff','diamond','\x20jp','Short','mpr','--p','b-k','sort','rotate','World\x20Map','render','parentNode','hypot','7080OdvVuN','\x20gold,\x20','Ponytail','nav-back','Tap\x20a\x20spot\x20on\x20the\x20map\x20and\x20your\x20hero\x20will\x20walk\x20there\x20(touch\x20the\x20joystick\x20to\x20cancel).','Color','remove','canvas','\x20\x20(owned\x20','Quest\x20Log','alloc','\x20\x20\x20(points:\x20','kind','webkitFullscreenElement','name','moveTo','#ffffff','textContent','Fullscreen','splice','sw-pants','b-dash','push','\x20-\x20','return','Mohawk','emoji','arc','download','\x20\x20(Lv\x20','rres','You\x20have\x20nothing\x20of\x20this\x20kind\x20to\x20upgrade.','HP\x20regen','Enter\x20a\x20code\x20to\x20get\x20rewards.\x20Each\x20code\x20can\x20be\x20used\x20once.','pointerId','done','inv','innerHTML','#244','gold','Boss\x20Lair','block','Requires\x20level\x20','col','round','%\x20crit\x20chance\x20per\x20point\x20(max\x2090%\x20total)','disabled','img','clearRect','cos','hpr','owned','\x20-\x20Upgrade','key','#ff4a4a','cr-sex','\x20every\x20level)','item','godset_armor','weapon0','godset_wings','isAI','RIDE','appendChild','potion','className','p-lvl','Crit\x20chance','slots','PK\x20ON','\x20gold\x20every\x20','\x20\x20\x20(+','Level\x20','You\x20won:\x20','src','sound','updateProjectionMatrix','shirt','tabs','17139936fBOAhm','burr_stone','\x20\x20·\x20\x20','clientWidth','gloves','armor','keydown','panel-title','open','\x20G).','crit','replace','bfst','.\x20Reward:\x20','Bun','On\x20rebirth\x20your\x20level\x20returns\x20to\x201\x20(EXP\x200),\x20gear\x20that\x20needs\x20a\x20higher\x20level\x20is\x20unequipped\x20(it\x20stays\x20in\x20your\x20bag),\x20and\x20you\x20return\x20to\x20the\x20first\x20map\x27s\x20safe\x20zone.\x20Gold\x20is\x20spent;\x20items,\x20skills,\x20stat\x20points,\x20upgrades\x20and\x20mounts\x20are\x20kept.','rgba(190,180,150,.8)','getHexString','div','\x20\x20The\x20glow\x20changes\x20colour!','btns','%\x20crit\x20damage\x20per\x20point','clip','addEventListener','\x20(Lv\x20','Crimson\x20Eye\x20Blade','p-sp','forEach','\x20/\x20','zone-banner','b-mp','panel-body','ico\x20','width','feather','hair','exp','spellcheck','rig','panel-close','Equipped','JACKPOT!\x20','Poisoned\x20','Sell\x20gear\x20(12%\x20tax\x20deducted)','sword','ceil','mounted','Costs','Boss:\x20','\x20attack\x20per\x20point','b-hp','p-hp-t','fillRect','lineTo','min','Use\x20a\x20portal\x20(glowing\x20ring\x20at\x20the\x20camp)\x20or\x20this\x20map\x20to\x20travel.\x20Your\x20level\x20must\x20meet\x20the\x20map\x20requirement.','Defense','helmet','fillStyle','baseDesc','Spiky','\x20requires:','atan2','dragon_blade','You\x20know\x20every\x20skill!','removeChild','createElement','\x20\x20\x20·\x20\x20\x20Gold:\x20','buffs','sw-hair','root','btn-pk','b-mount','toLocaleString','JACKPOT\x20','resize','Materials\x20shop','grid2','add','concat','Buy\x20','\x20\x20·\x20\x20Level\x20','querySelectorAll','Close','destZ0','setSize','pitch','\x20mob\x20types\x20·\x20mobs\x20drop\x20refine\x20stones\x20+\x20gold,\x20boss\x20drops\x20God\x20of\x20Helmet\x20/\x20Godzilla\x20Sword','MAX\x20+','Prizes','createTextNode','won',')\x20+\x20','#ffe066','Reset','godset_gloves','globalAlpha','1510SMBful','\x20\x20(could\x20not\x20load)','ico','onclick','\x20\x20\x20\x20|\x20\x20\x20\x20','apply','Enter\x20a\x20code\x20first.','pot','Reward:\x20',')\x20·\x20drops\x20boss-only\x20rare\x20gear','ONE\x20boss:\x20','cdmg','DirectionalLight','_blank','display','top','Claim\x20reward','3637PyBTEX','Blood\x20Arena','MP\x20regen','Godzilla\x20Fragments:\x20','Upgraded\x20','max','items','Item','diamonds','Code\x20redeemed!\x20You\x20got\x20','Safe\x20Zone','insertBefore','frag','2\x20MP\x20Potions','p-name','destX0','Wings','\x20G\x20+\x2012%\x20tax\x20=\x20','Erase\x20save\x20and\x20restart','sin','autocomplete','Map\x20-\x20tap\x20to\x20move','tag\x20eq','step','\x20·\x20Drops:\x20Celestial\x20set','celestial','c-mp','tag','Spinning...','\x20jack','Quest\x20accepted:\x20','Name','now','Accept\x20quest','Move\x20speed','length','lineWidth','sidenav','drag','firstChild','\x20·\x20CD\x20','good','#ffd54f','dead','height','intro','shadows','btn-respawn','.35','dist','Nothing\x20yet.\x20Buy\x20or\x20loot\x20some!','Not\x20enough\x20gold\x20(price\x20+\x2012%\x20tax\x20=\x20','Travel','rebirth','18gPBnTZ','trim','Progress:\x20','mobs','#6ab7ff','icon','#ff3b6b','fit','#c08aff','empty','pants','\x20G\x20tax).','Support\x20QR\x20code','Character\x20Stats','\x20sel','FREE\x20PK\x20\x20-\x20\x20no\x20drops','text','Enter\x20code','getAttribute','toFixed','\x20EXP\x20(not\x20applied:\x20max\x20level)','desc','0.1','AmbientLight','jackpot','def','1\x20Diamond\x20=\x201\x20Fragment','indexOf','lvl','poisonT','p-mp','\x20Gold\x20\x20(you:\x20','\x20-\x20Shop','\x20max\x20HP\x20per\x20point','\x20seconds\x20(not\x20in\x20the\x20Blood\x20Arena).','call','zone-t','\x20EXP','name-screen','enemies','\x20\x20(you:\x20','setPixelRatio','level','clientY','!\x20Equip\x20it\x20in\x20My\x20skills.','Rebirth','zone-s','Equipment','redeem-in','Portal','Sound','querySelector','stroke','prototype','Now\x20x','Spend\x20your\x20Diamonds\x20here.\x20More\x20goods\x20coming\x20soon!','weapon','slotrow','body','opacity','translate','•\x20Buying\x20from\x20NPC\x20shops:\x20price\x20+\x2012%\x20tax\x20(e.g.\x20a\x202,000\x20G\x20sword\x20costs\x202,240\x20G).','player-frame','need','Completed','sw-shirt','santa_weapon','off','\x20-\x20Crafting','c-hp','shop','run','look','Equipped\x20slots\x20(tap\x20a\x20slot,\x20then\x20\x22Equip\x22\x20a\x20skill)','yaw','\x20monster\x20types\x20·\x20Suggested\x20Lv\x20','rare','!\x20You\x20are\x20level\x201\x20again\x20in\x20','title','luxury_stone','Gold:\x20','/s\x20(gear)','slice','style','\x20for\x20','blur','restore','webkitExitFullscreen','data-sex','click','Menu','Cost\x20per\x20spin:\x20','setPointerCapture','TALK:\x20','cr-style','pointerup','\x20Village','ready','\x20Gold','slot','coin','PK\x20\x20⚔\x20\x20','SPIN\x20(','placeholder','flex','skcd','setAttribute','name-err','Skill\x20shop','PerspectiveCamera','exitFullscreen','godzilla_fragment','In\x20slot','beginPath','Sword','Elder\x20Rowan\x20has\x20a\x20new\x20task\x20for\x20you.','target','random','mp_potion','onerror','Godzilla\x20Wings','0.55','#1adcff','Not\x20started','hp_potion','closePath','quests','slowT','setrow','sens','ENTER\x20','fill','rel','REBIRTH','upgrade','anim','Diamonds:\x20','Total\x20tax\x20paid:\x20','6145446XDdcBB','2673WyVQeY','Your\x20gold:\x20','dest','set','sex','maxHp','pointermove','arena','Later','name-go','bossOnly','Progress','Crit\x20damage','theme','bfbar','\x20[R','•\x20Selling\x20to\x20NPC\x20shops:\x20selling\x20price\x20-\x2012%\x20tax.','toggle','Remove','Each\x20+\x20adds\x205%\x20to\x20the\x20item\x27s\x20stats\x20and\x20makes\x20it\x20glow\x20brighter\x20(colour\x20changes\x20every\x20+10).\x20Max\x20+','Buzz\x20cut','Name\x20must\x20be\x202-14\x20characters.','type','classList','alt','\x20Godzilla\x20Fragment','rcell','\x20/\x2050','strokeStyle','bft','You\x20reached\x20the\x20maximum\x20rebirth.','Long','#ff9a2a','Attack','12897wQauah','Music\x20volume:\x20','qrnote','s\x20\x20','reb','mount','label','bfill','\x20·\x20Boss:\x20','PvP\x20arena\x20·\x2020-25\x20AI\x20players\x20·\x20FREE\x20PK\x20·\x20no\x20drops','act','\x20G\x20(incl.\x20','Rebirth\x20','OFF','mobs\x20','\x20G\x20+\x20','\x20💎','Bring\x20me\x20Godzilla\x20Fragments\x20from\x20the\x20mobs\x20of\x20Promise\x20Wonderland\x20and\x20I\x20will\x20forge\x20the\x20Godzilla\x20set\x20(helmet,\x20armor,\x20pants\x20and\x20gloves)\x20for\x20you.','map','.\x20Keep\x20fighting!','\x20Diamonds','7zpAEaC','Feather\x20x2','Camera\x20sensitivity','\x20Godzilla\x20Fragments\x20\x20\x20','input','safeR','craft','Bottom-left:\x20joystick\x20(touch\x20anywhere\x20in\x20the\x20lower-left\x20area).\x20Right\x20side:\x20drag\x20to\x20turn\x20the\x20camera,\x20pinch\x20or\x20+/-\x20to\x20zoom,\x20tap\x20an\x20enemy\x20to\x20target.\x20Hold\x20ATTACK\x20to\x20auto-attack.\x20Keyboard:\x20WASD,\x20Space,\x201-5\x20skills,\x20Q/E\x20potions,\x20F\x20talk,\x20B\x20bag,\x20K\x20skills,\x20M\x20map,\x20L\x20quests,\x20+/-\x20zoom.','SLOT\x20','range','\x20to\x20+','Luxury\x20Stone\x20x2','0.4','rgrid','getBoundingClientRect','href','boss','pointerdown','Not\x20enough\x20gold.','gear','span','none','lookAt','Scan\x20QR\x20or\x20','codes','position','You\x20have\x20cleared\x20every\x20threat\x20in\x20the\x20land.\x20The\x20realm\x20is\x20safe,\x20hero.','UNRIDE','EQUIPPED','Potions','destChk','toString','portal','rgba(0,0,0,.25)','Tap\x20again\x20to\x20ERASE\x20ALL','value','You\x20already\x20redeemed\x20this\x20code.','rres\x20win','clientX','Sell\x20','Craft','3044535bFebTI','EXP\x20cutoff','t-hp','Tax\x20rules','skills','Enter','mine','slotbox','toLowerCase','Bought\x20','19772mvxnyA','dlg','save','pos','active','\x20-\x20Rebirth','WebGLRenderer','sec','#7dff9a','!\x20Talk\x20to\x20Elder\x20Rowan\x20(!)\x20to\x20begin.','button','#66ccff','scrollTop','REBIRTH\x20','.bfst','\x20locked'];_0x53c5=function(){return _0x4ca3ac;};return _0x53c5();}function openGM(_0x33fd6a){openPanel(_0x33fd6a['name'],function(_0x3fdaff){var _0x4a2781=_0x552c,_0x51b947=h(_0x4a2781(0x309),_0x4a2781(0x260),null,_0x3fdaff);h('p',null,'The\x20Game\x20Master\x20handles\x20the\x20realm\x27s\x20asset\x20management\x20and\x20collects\x20the\x20taxes.\x20Nothing\x20moves\x20in\x20this\x20land\x20without\x20a\x20small\x20cut.',_0x51b947),h(_0x4a2781(0x309),'sec',_0x4a2781(0x258),_0x3fdaff),h('div','ds',_0x4a2781(0x1a7),_0x3fdaff),h('div','ds',_0x4a2781(0x205),_0x3fdaff),h('div','ds',_0x4a2781(0x299)+SAFE_TAX+_0x4a2781(0x2ee)+SAFE_TAX_EVERY+_0x4a2781(0x18c),_0x3fdaff),h(_0x4a2781(0x309),_0x4a2781(0x266),'Your\x20tax\x20record',_0x3fdaff),h('div',null,_0x4a2781(0x1f3)+P[_0x4a2781(0x27e)][_0x4a2781(0x340)]()+'\x20G',_0x3fdaff);var _0x1bc911=h('div',_0x4a2781(0x30b),null,_0x51b947);btn(_0x1bc911,'Close',closePanel);});}var buffEls={};function buffIcon(_0x5b80e2){var _0x410f26=_0x28d039;for(var _0x2c801a in SKILLS)if(SKILLS[_0x2c801a][_0x410f26(0x2b6)]===_0x5b80e2)return SKILLS[_0x2c801a];return null;}function renderBuffs(){var _0x2fcc6b=_0x28d039,_0x30348d=$(_0x2fcc6b(0x33b)),_0x18b201=activeBuffs();for(var _0x4d3f52 in buffEls)!_0x18b201['some'](function(_0x5be7ee){return _0x5be7ee['key']===_0x4d3f52;})&&(_0x30348d[_0x2fcc6b(0x338)](buffEls[_0x4d3f52]['el']),delete buffEls[_0x4d3f52]);_0x18b201[_0x2fcc6b(0x312)](function(_0x48cf73){var _0x18558b=_0x2fcc6b,_0x223468=buffEls[_0x48cf73['key']];if(!_0x223468){var _0x10f810=h(_0x18558b(0x309),'bf',null,_0x30348d),_0x1a4412=h(_0x18558b(0x309),'bfi',null,_0x10f810),_0x2a819e=buffIcon(_0x48cf73[_0x18558b(0x2b6)]);if(_0x2a819e)iconEl(_0x1a4412,_0x2a819e[_0x18558b(0x16f)],_0x2a819e[_0x18558b(0x2c2)]);else _0x1a4412[_0x18558b(0x2b9)]='✨';var _0x47f1ea=h(_0x18558b(0x309),_0x18558b(0x203),null,_0x10f810),_0x5a8f71=h(_0x18558b(0x309),_0x18558b(0x21e),null,_0x47f1ea),_0x4b3c6f=h(_0x18558b(0x309),_0x18558b(0x212),null,_0x1a4412);_0x223468=buffEls[_0x48cf73[_0x18558b(0x2dd)]]={'el':_0x10f810,'fill':_0x5a8f71,'tx':_0x4b3c6f};}_0x223468[_0x18558b(0x1ed)][_0x18558b(0x1bd)][_0x18558b(0x160)]=Math[_0x18558b(0x36e)](0x0,Math[_0x18558b(0x32d)](0x64,_0x48cf73['t']/_0x48cf73['dur']*0x64))+'%',_0x223468[_0x18558b(0x1ed)][_0x18558b(0x1bd)]['background']='#'+(_0x18558b(0x288)+_0x48cf73[_0x18558b(0x2d3)][_0x18558b(0x24b)](0x10))[_0x18558b(0x1bc)](-0x6),_0x223468['tx'][_0x18558b(0x2b9)]=Math[_0x18558b(0x324)](_0x48cf73['t']);});var _0x5a73a4='';if(P[_0x2fcc6b(0x1e9)]>0x0)_0x5a73a4+='Slowed\x20'+Math[_0x2fcc6b(0x324)](P['slowT'])+_0x2fcc6b(0x21a);if(P[_0x2fcc6b(0x187)]>0x0)_0x5a73a4+=_0x2fcc6b(0x321)+Math[_0x2fcc6b(0x324)](P[_0x2fcc6b(0x187)])+'s';var _0x3a06b1=_0x30348d[_0x2fcc6b(0x19d)](_0x2fcc6b(0x26d));!_0x3a06b1&&(_0x3a06b1=h(_0x2fcc6b(0x309),_0x2fcc6b(0x303),null,_0x30348d)),_0x3a06b1[_0x2fcc6b(0x2b9)]=_0x5a73a4,_0x3a06b1[_0x2fcc6b(0x1bd)][_0x2fcc6b(0x366)]=_0x5a73a4?_0x2fcc6b(0x2d1):_0x2fcc6b(0x241);}var CRAFT_RECIPES=[{'id':_0x28d039(0x271),'frag':0x6e,'gold':0xaae60},{'id':_0x28d039(0x2e2),'frag':0x64,'gold':0x927c0},{'id':'godset_pants','frag':0x5a,'gold':0x86470},{'id':_0x28d039(0x356),'frag':0x50,'gold':0x7a120}];function openCraft(_0x4426ae){var _0x249eb0=_0x28d039;openPanel(_0x4426ae[_0x249eb0(0x2b6)]+_0x249eb0(0x1ae),renderCraft);}function renderCraft(_0x5508b4){var _0x38b8bc=_0x28d039,_0x1dd642=h(_0x38b8bc(0x309),_0x38b8bc(0x260),null,_0x5508b4);h('p',null,_0x38b8bc(0x228),_0x1dd642),h('div','ds',_0x38b8bc(0x36c)+(P[_0x38b8bc(0x2cc)][_0x38b8bc(0x1d9)]||0x0)+_0x38b8bc(0x33a)+P[_0x38b8bc(0x2cf)][_0x38b8bc(0x340)](),_0x5508b4),CRAFT_RECIPES[_0x38b8bc(0x312)](function(_0x14c579){var _0x2e58b1=_0x38b8bc,_0x36de2a=ITEMS[_0x14c579['id']],_0x455a0c=h(_0x2e58b1(0x309),_0x2e58b1(0x2e1),null,_0x5508b4);iconEl(_0x455a0c,_0x36de2a[_0x2e58b1(0x16f)],'?');var _0xbe8cee=h(_0x2e58b1(0x309),'nm',null,_0x455a0c);h(_0x2e58b1(0x309),null,_0x36de2a[_0x2e58b1(0x2b6)],_0xbe8cee),h(_0x2e58b1(0x309),'ds',_0x36de2a[_0x2e58b1(0x332)]+_0x2e58b1(0x274)+_0x36de2a[_0x2e58b1(0x186)],_0xbe8cee);var _0x2f8a31=(P['inv'][_0x2e58b1(0x1d9)]||0x0)>=_0x14c579['frag'],_0x42b887=P[_0x2e58b1(0x2cf)]>=_0x14c579['gold'];h(_0x2e58b1(0x309),'ds',(_0x2f8a31?'✔\x20':'✘\x20')+_0x14c579[_0x2e58b1(0x140)]+_0x2e58b1(0x22f)+(_0x42b887?'✔\x20':'✘\x20')+_0x14c579[_0x2e58b1(0x2cf)][_0x2e58b1(0x340)]()+_0x2e58b1(0x1cc),_0xbe8cee),btn(_0x455a0c,_0x2e58b1(0x254),function(){var _0x33ed74=_0x2e58b1;if((P[_0x33ed74(0x2cc)]['godzilla_fragment']||0x0)<_0x14c579[_0x33ed74(0x140)]||P['gold']<_0x14c579['gold'])return;P[_0x33ed74(0x2cc)]['godzilla_fragment']-=_0x14c579[_0x33ed74(0x140)],P[_0x33ed74(0x2cf)]-=_0x14c579['gold'],giveDrop(_0x14c579['id']),sfx(_0x33ed74(0x1ce)),log('Crafted\x20'+_0x36de2a[_0x33ed74(0x2b6)]+'!',_0x33ed74(0x1e4)),saveGame(),rerender();},{'disabled':!(_0x2f8a31&&_0x42b887),'cls':'good'});});}function openDiamondShop(_0x55a54b){var _0x59bc87=_0x28d039;openPanel(_0x55a54b[_0x59bc87(0x2b6)]+'\x20-\x20Diamond\x20Shop',renderDiamondShop);}function renderDiamondShop(_0x46c7cf){var _0x269385=_0x28d039,_0x5e9b10=h(_0x269385(0x309),'dlg',null,_0x46c7cf);h('p',null,_0x269385(0x1a1),_0x5e9b10),h(_0x269385(0x309),'ds',_0x269385(0x1f2)+P[_0x269385(0x13c)][_0x269385(0x340)]()+_0x269385(0x27a)+(P['inv'][_0x269385(0x1d9)]||0x0),_0x46c7cf);var _0x5d61ad=ITEMS['godzilla_fragment'],_0x45d2d7=h(_0x269385(0x309),_0x269385(0x2e1),null,_0x46c7cf);iconEl(_0x45d2d7,_0x5d61ad[_0x269385(0x16f)],'?');var _0x5ab344=h(_0x269385(0x309),'nm',null,_0x45d2d7);h(_0x269385(0x309),null,_0x5d61ad[_0x269385(0x2b6)],_0x5ab344),h(_0x269385(0x309),'ds',_0x269385(0x184),_0x5ab344),[0x1,0xa,0x64][_0x269385(0x312)](function(_0x974cbe){var _0x4b92f3=_0x269385;btn(_0x45d2d7,_0x4b92f3(0x347)+_0x974cbe,function(){var _0x283e00=_0x4b92f3;if(P[_0x283e00(0x13c)]<_0x974cbe)return;P[_0x283e00(0x13c)]-=_0x974cbe,P['inv'][_0x283e00(0x1d9)]=(P[_0x283e00(0x2cc)][_0x283e00(0x1d9)]||0x0)+_0x974cbe,sfx(_0x283e00(0x1ce)),log(_0x283e00(0x25e)+_0x974cbe+_0x283e00(0x20e)+(_0x974cbe>0x1?'s':'')+_0x283e00(0x1be)+_0x974cbe+'\x20Diamond'+(_0x974cbe>0x1?'s':''),'#7fe8ff'),saveGame(),updateHud(),rerender();},{'disabled':P[_0x4b92f3(0x13c)]<_0x974cbe,'cls':_0x4b92f3(0x15d)});});}
+/* ui.js - panels (bag/equipment, shops, skills, world map, quests, settings), HUD, minimap, camera */
+var panelEl = $('panel'), panelBody = $('panel-body');
+var pvw = null, pvOverride = {};
+function openPanel(title, render, opts) { closeNav(); ui.open = title; ui.render = render; ui.preview = !!(opts && opts.preview); pvOverride = {}; panelEl.classList.toggle('hasprev', ui.preview); if (pvw) pvw.run = false; $('panel-title').textContent = title; panelEl.style.display = 'flex'; releaseInputs(); rerender(); }
+function rerender() {
+  var st = panelBody.scrollTop, pt = $('panel-tabs'); panelBody.innerHTML = ''; pt.innerHTML = '';
+  if (ui.render) ui.render(panelBody);
+  if (ui.preview) updatePanelPreview();
+  var tb = panelBody.querySelector('.tabs'); if (tb) pt.appendChild(tb);   // tabs are pinned right under the title
+  pt.style.display = tb ? 'block' : 'none'; panelBody.scrollTop = st;
+}
+function closePanel() { ui.open = null; ui.render = null; ui.preview = false; panelEl.classList.remove('hasprev'); if (pvw) pvw.run = false; panelEl.style.display = 'none'; }
+$('panel-close').addEventListener('click', closePanel);
+panelEl.addEventListener('pointerdown', function (e) { if (e.target === panelEl) closePanel(); });
+function btn(parent, text, fn, opts) {
+  var b = h('button', opts && opts.cls ? opts.cls : null, text, parent);
+  if (opts && opts.disabled) b.disabled = true;
+  b.addEventListener('click', function () { sfx('ui'); fn(); }); return b;
+}
+function iconEl(parent, src, fallback, cls) {
+  var d = h('div', 'ico ' + (cls || ''), null, parent), im = h('img', null, null, d);
+  im.src = src; im.alt = ''; im.draggable = false;
+  im.onerror = function () { d.removeChild(im); d.textContent = fallback || '?'; };
+  return d;
+}
+var SHOP_STOCK = ['hp_potion', 'mp_potion'];
+ITEM_ORDER.forEach(function (id) { if (ITEMS[id].type === 'gear' && !ITEMS[id].bossOnly && id !== 'dragon_blade' && id !== 'weapon0') SHOP_STOCK.push(id); });
+
+/* ---------- bag / equipment ---------- */
+var bagTab = 'weapon';
+function openBag() { openPanel('Bag - Items', renderBag, { preview: true }); }
+var bagMode = 'gear', BAG_ITEMS = ['hp_potion', 'mp_potion', 'burr_stone', 'luxury_stone', 'feather', 'godzilla_fragment'];
+function renderBag(body) {
+  var mt = h('div', 'tabs', null, body);
+  [['gear', 'Equipment'], ['items', 'Items'], ['costume', 'Costume']].forEach(function (t) { var b = h('button', bagMode === t[0] ? 'act' : null, t[1], mt); b.addEventListener('click', function () { bagMode = t[0]; rerender(); }); });
+  if (bagMode === 'costume') { renderCostumes(body); return; }
+  if (bagMode === 'items') {
+    h('div', 'sec', 'Potions & materials (total collected)', body);
+    BAG_ITEMS.forEach(function (id) {
+      var it = ITEMS[id], r = h('div', 'item', null, body); iconEl(r, it.icon, '?');
+      var nm = h('div', 'nm', null, r); h('div', null, it.name, nm); h('div', 'ds', it.desc, nm);
+      h('span', 'tag eq', 'x' + (P.inv[id] || 0), r);
+    });
+    return;
+  }
+  h('div', 'sec', 'Equipped', body);
+  var row = h('div', 'slotrow', null, body);
+  SLOTS.forEach(function (sl) {
+    var id = P.equip[sl], bx = h('div', 'slotbox' + (bagTab === sl ? ' sel' : ''), null, row);
+    if (id) iconEl(bx, ITEMS[id].icon, SLOT_INFO[sl].icon); else h('div', 'ico', SLOT_INFO[sl].icon, bx).style.opacity = '.35';
+    h('div', null, id ? itemName(id) : SLOT_INFO[sl].label, bx);
+    bx.addEventListener('click', function () { bagTab = sl; rerender(); });
+  });
+  h('div', 'sec', SLOT_INFO[bagTab].label + 's owned', body);
+  var any = false;
+  P.owned.forEach(function (id) {
+    var it = ITEMS[id]; if (it.slot !== bagTab) return; any = true;
+    var r = h('div', 'item', null, body); iconEl(r, it.icon, SLOT_INFO[it.slot].icon);
+    var nm = h('div', 'nm', null, r); h('div', it.rare ? 'rare' : null, (it.rare ? '★ ' : '') + itemName(id) + (it.lvl > 1 ? '  (Lv ' + it.lvl + '+)' : ''), nm); h('div', 'ds', it.desc, nm);
+    if (P.equip[it.slot] === id) { h('span', 'tag eq', 'EQUIPPED', r); if (it.slot !== 'weapon') btn(r, 'Remove', function () { unequipSlot(it.slot); rerender(); }); }
+    else btn(r, 'Equip', function () { if (equipItem(id)) rerender(); }, { disabled: P.lvl < it.lvl });
+  });
+  if (!any) h('div', 'ds', 'Nothing yet. Buy or loot some!', body);
+}
+
+/* ---------- skills: loadout + shop ---------- */
+var skillTab = 'mine', pickSlot = 0;
+function openSkills() { openPanel('Skills', renderSkills); }
+function skillRow(parent, id, extra) {
+  var sk = SKILLS[id], r = h('div', 'item' + (P.skills.indexOf(id) < 0 && P.lvl < sk.lvl ? ' locked' : ''), null, parent);
+  iconEl(r, sk.icon, sk.emoji);
+  var nm = h('div', 'nm', null, r);
+  h('div', null, sk.name + '  (Lv ' + sk.lvl + ')', nm);
+  h('div', 'ds', sk.desc + '  MP ' + sk.mp + ' · CD ' + sk.cd + 's', nm);
+  extra(r, sk); return r;
+}
+function renderSkills(body) {
+  var tabs = h('div', 'tabs', null, body);
+  [['mine', 'My skills'], ['shop', 'Skill shop']].forEach(function (t) { var b = h('button', skillTab === t[0] ? 'act' : null, t[1], tabs); b.addEventListener('click', function () { skillTab = t[0]; rerender(); }); });
+  if (skillTab === 'mine') {
+    h('div', 'sec', 'Equipped slots (tap a slot, then "Equip" a skill)', body);
+    var row = h('div', 'slotrow', null, body);
+    for (var i = 0; i < SKILL_SLOTS; i++) (function (i) {
+      var id = P.slots[i], bx = h('div', 'slotbox' + (pickSlot === i ? ' sel' : ''), null, row);
+      if (id) iconEl(bx, SKILLS[id].icon, SKILLS[id].emoji); else h('div', 'ico', '+', bx).style.opacity = '.4';
+      h('div', null, (i + 1) + '. ' + (id ? SKILLS[id].name : 'empty'), bx);
+      bx.addEventListener('click', function () { pickSlot = i; rerender(); });
+    })(i);
+    h('div', 'sec', 'Owned skills (' + P.skills.length + '/' + SKILL_ORDER.length + ')', body);
+    SKILL_ORDER.forEach(function (id) {
+      if (P.skills.indexOf(id) < 0) return;
+      skillRow(body, id, function (r) {
+        var at = P.slots.indexOf(id);
+        if (at >= 0) h('span', 'tag eq', 'SLOT ' + (at + 1), r);
+        btn(r, at === pickSlot ? 'In slot' : 'Equip', function () {
+          var prev = P.slots[pickSlot], old = P.slots.indexOf(id);
+          if (old >= 0) P.slots[old] = prev || null;          // swap if already equipped elsewhere
+          P.slots[pickSlot] = id; refreshSkillButtons(); saveGame(); rerender();
+        }, { disabled: at === pickSlot });
+      });
+    });
+  } else {
+    h('div', 'sec', 'Gold: ' + P.gold, body);
+    SKILL_ORDER.forEach(function (id) {
+      if (P.skills.indexOf(id) >= 0) return;
+      skillRow(body, id, function (r, sk) {
+        h('span', 'tag', sk.price + ' G', r);
+        btn(r, 'Buy', function () {
+          if (P.lvl < sk.lvl) { log('Requires level ' + sk.lvl + '.', '#ff9a9a'); return; }
+          if (P.gold < sk.price) { log('Not enough gold.', '#ff9a9a'); return; }
+          P.gold -= sk.price; P.skills.push(id); sfx('coin'); log('Learned ' + sk.name + '! Equip it in My skills.', '#ffd54f'); saveGame(); rerender();
+        }, { disabled: P.lvl < sk.lvl || P.gold < sk.price, cls: 'good' });
+      });
+    });
+    if (P.skills.length >= SKILL_ORDER.length) h('div', 'ds', 'You know every skill!', body);
+  }
+}
+function refreshSkillButtons() {
+  for (var i = 0; i < SKILL_SLOTS; i++) {
+    var el = $('b-k' + (i + 1)), id = P.slots[i]; el.innerHTML = '';
+    el.classList.toggle('empty', !id);
+    if (id) { var im = h('img', null, null, el); im.src = SKILLS[id].icon; im.draggable = false; im.onerror = (function (e2) { return function () { var p = this.parentNode; if (p) { p.removeChild(this); p.insertBefore(document.createTextNode(e2), p.firstChild); } }; })(SKILLS[id].emoji); h('span', 'kn', String(i + 1), el); }
+    else h('span', 'kn', String(i + 1), el);
+    h('div', 'cd', null, el);
+  }
+}
+
+/* ---------- world map / portals ---------- */
+function openWorldMap() { openPanel('World Map', renderWorldMap); }
+function renderWorldMap(body) {
+  h('div', 'ds', 'Use a portal (glowing ring at the camp) or this map to travel. Your level must meet the map requirement.', body);
+  MAPS.forEach(function (m) {
+    var here = curMap && curMap.id === m.id, ok = P.lvl >= m.min;
+    var r = h('div', 'item' + (ok ? '' : ' locked'), null, body);
+    h('div', 'ico', ok ? '🗺' : '🔒', r);
+    var nm = h('div', 'nm', null, r);
+    h('div', null, m.name + '  (Lv ' + m.min + '+)', nm);
+    var lv = m.enemies.map(function (k) { return ENEMY_TYPES[k].lvl; });
+    if (m.arena) h('div', 'ds', 'PvP arena · 20-25 AI players · FREE PK · no drops', nm);
+    else if (m.mobs) h('div', 'ds', 'Boss: ' + ENEMY_TYPES[m.enemies[0]].name + ' (Lv ' + lv[0] + ') + ' + m.mobs.length + ' Lv ' + ENEMY_TYPES[m.mobs[0]].lvl + ' mob types · mobs drop refine stones + gold, boss drops God of Helmet / Godzilla Sword', nm);
+    else if (m.boss) h('div', 'ds', 'ONE boss: ' + ENEMY_TYPES[m.enemies[0]].name + ' (Lv ' + lv[0] + ') · drops boss-only rare gear', nm);
+    else h('div', 'ds', m.enemies.length + ' monster types · Suggested Lv ' + Math.min.apply(null, lv) + '-' + Math.max.apply(null, lv) + ' · Boss: ' + ENEMY_TYPES[m.enemies[m.enemies.length - 1]].name + (ENEMY_TYPES[m.enemies[m.enemies.length - 1]].celestial ? ' · Drops: Celestial set' : ''), nm);
+    if (here) h('span', 'tag eq', 'HERE', r);
+    else btn(r, 'Travel', function () { closePanel(); travelTo(m.id); }, { disabled: !ok, cls: 'good' });
+  });
+}
+
+/* ---------- quests / npc ---------- */
+function openQuestLog() { openPanel('Quest Log', renderQuests); }
+function questRewardText(q) { var rw = q.rewards, parts = [rw.gold + ' G', rw.xp + ' XP']; for (var id in rw.items) parts.push(rw.items[id] + 'x ' + ITEMS[id].name); return parts.join(', '); }
+function renderQuests(body) {
+  QUESTS.forEach(function (q) {
+    var s = P.quests[q.id], row = h('div', 'item', null, body), nm = h('div', 'nm', null, row);
+    h('div', null, q.title, nm);
+    var status = !s ? 'Not started' : (s.state === 'done' ? 'Completed' : (s.state === 'ready' ? 'Ready to turn in' : 'Progress: ' + s.n + '/' + q.need));
+    h('div', 'ds', 'Defeat ' + q.need + ' ' + ENEMY_TYPES[q.target].name + ' - ' + status, nm);
+    h('div', 'ds', 'Reward: ' + questRewardText(q), nm);
+  });
+}
+function nearestNpc() {
+  var best = null, bd = 3.4;
+  npcs.forEach(function (n) { var d = Math.hypot(n.pos.x - P.pos.x, n.pos.z - P.pos.z); if (d < bd) { bd = d; best = n; } });
+  return best;
+}
+function nearestInteract() {
+  var n = nearestNpc(); if (n) return n;
+  for (var i = 0; i < portals.length; i++) if (Math.hypot(portals[i].x - P.pos.x, portals[i].z - P.pos.z) < 3.6) return { name: 'Portal', kind: 'portal', pos: { x: portals[i].x, z: portals[i].z } };
+  return null;
+}
+function interact(n) {
+  if (P.dead) return;
+  if (n.kind === 'shop') openShop(n); else if (n.kind === 'upgrade') openUpgrade(n); else if (n.kind === 'mount') openMountShop(n); else if (n.kind === 'rebirth') openRebirth(n); else if (n.kind === 'tist') openTist(n); else if (n.kind === 'gm') openGM(n); else if (n.kind === 'craft') openCraft(n); else if (n.kind === 'diamond') openDiamondShop(n); else if (n.kind === 'costume') openCostumeShop(n); else if (n.kind === 'pet') openPetShop(n); else if (n.kind === 'petfood') openPetFoodShop(n); else if (n.kind === 'portal') openWorldMap(); else openQuestDialog(n);
+}
+function openQuestDialog(npc) {
+  openPanel(npc.name, function (body) {
+    var q = currentQuest(), dlg = h('div', 'dlg', null, body), btns;
+    if (!q) { h('p', null, 'You have cleared every threat in the land. The realm is safe, hero.', dlg); return; }
+    var st = P.quests[q.id];
+    h('div', 'sec', q.title, dlg);
+    if (!st) {
+      h('p', null, q.intro, dlg);
+      h('p', null, 'Goal: defeat ' + q.need + ' ' + ENEMY_TYPES[q.target].name + '. Reward: ' + questRewardText(q) + '.', dlg);
+      btns = h('div', 'btns', null, dlg);
+      btn(btns, 'Accept quest', function () { P.quests[q.id] = { state: 'active', n: 0 }; refreshMarkers(); saveGame(); log('Quest accepted: ' + q.title, '#ffd54f'); closePanel(); }, { cls: 'good' });
+    } else if (st.state === 'active') {
+      h('p', null, 'Progress: ' + st.n + '/' + q.need + ' ' + ENEMY_TYPES[q.target].name + '. Keep fighting!', dlg);
+    } else {
+      h('p', null, q.done, dlg); btns = h('div', 'btns', null, dlg);
+      btn(btns, 'Claim reward', function () {
+        var rw = q.rewards; P.gold += rw.gold; for (var id in rw.items) giveItem(id, rw.items[id]);
+        st.state = 'done'; log('Quest reward: ' + rw.gold + ' gold, ' + rw.xp + ' XP.', '#7dff9a');
+        gainXp(rw.xp); sfx('level'); refreshMarkers(); saveGame(); closePanel();
+        if (currentQuest()) schedule(0.5, function () { log('Elder Rowan has a new task for you.', '#ffd54f'); });
+      }, { cls: 'good' });
+    }
+  });
+}
+
+/* ---------- shop ---------- */
+function openShop(npc) { openPanel(npc.name + ' - Shop', renderShop); }
+function renderShop(body) {
+  h('div', 'sec', 'Gold: ' + P.gold, body);
+  var tabs = h('div', 'tabs', null, body);
+  [['potion', 'Potions']].concat(SLOTS.map(function (s) { return [s, SLOT_INFO[s].label]; })).forEach(function (t) {
+    var b = h('button', shopTab === t[0] ? 'act' : null, t[1], tabs); b.addEventListener('click', function () { shopTab = t[0]; rerender(); });
+  });
+  SHOP_STOCK.forEach(function (id) {
+    var it = ITEMS[id]; if ((it.type === 'potion' ? 'potion' : it.slot) !== shopTab) return;
+    var r = h('div', 'item', null, body); iconEl(r, it.icon, '+');
+    var nm = h('div', 'nm', null, r);
+    h('div', null, it.name + (it.lvl > 1 ? '  (Lv ' + it.lvl + '+)' : ''), nm); h('div', 'ds', it.desc + ' - ' + it.price + ' G + 12% tax = ' + buyCost(it.price) + ' G', nm);
+    if (it.type !== 'potion' && P.owned.indexOf(id) >= 0) h('span', 'tag', 'OWNED', r);
+    else btn(r, 'Buy', function () {
+      var cost = buyCost(it.price);
+      if (P.gold < cost) { log('Not enough gold (price + 12% tax = ' + cost + ' G).', '#ff9a9a'); return; }
+      P.gold -= cost; P.taxPaid += cost - it.price; giveItem(id, 1); sfx('coin'); log('Bought ' + it.name + ' for ' + cost + ' G (incl. ' + (cost - it.price) + ' G tax).', '#ffd54f'); saveGame(); rerender();
+    }, { disabled: P.gold < buyCost(it.price) });
+  });
+  h('div', 'sec', 'Sell gear (12% tax deducted)', body);
+  var sold = false;
+  P.owned.forEach(function (id) {
+    var it = ITEMS[id]; if (P.equip[it.slot] === id || id === 'weapon0' || upgLvl(id) > 0) return; sold = true;
+    var r = h('div', 'item', null, body); iconEl(r, it.icon, '?'); var nm = h('div', 'nm', null, r); h('div', null, it.name, nm);
+    btn(r, 'Sell ' + sellNet(sellValue(it)) + ' G', function () { P.owned.splice(P.owned.indexOf(id), 1); P.gold += sellNet(sellValue(it)); P.taxPaid += sellValue(it) - sellNet(sellValue(it)); sfx('coin'); saveGame(); rerender(); });
+  });
+  if (!sold) h('div', 'ds', 'No spare gear to sell.', body);
+}
+var shopTab = 'potion';
+
+/* ---------- settings ---------- */
+function openSettings() { openPanel('Menu', renderSettings); }
+function renderSettings(body) {
+  var r1 = h('div', 'setrow', null, body); h('span', null, 'Camera sensitivity', r1);
+  var rng = h('input', null, null, body); rng.type = 'range'; rng.min = '0.4'; rng.max = '2'; rng.step = '0.1'; rng.value = String(S.sens);
+  rng.addEventListener('input', function () { S.sens = parseFloat(rng.value); saveSettings(); });
+  var rm = h('div', 'setrow', null, body); var ml = h('span', null, 'Music volume: ' + Math.round(S.music * 100) + '%' + (bgmFailed ? '  (could not load)' : ''), rm);
+  var mr = h('input', null, null, body); mr.type = 'range'; mr.min = '0'; mr.max = '1'; mr.step = '0.05'; mr.value = String(S.music);
+  mr.addEventListener('input', function () { S.music = parseFloat(mr.value); ml.textContent = 'Music volume: ' + Math.round(S.music * 100) + '%'; musicApply(); saveSettings(); });
+  var r2 = h('div', 'setrow', null, body); h('span', null, 'Shadows (turn off for speed)', r2);
+  btn(r2, S.shadows ? 'ON' : 'OFF', function () { S.shadows = !S.shadows; applyShadows(); saveSettings(); rerender(); });
+  var r3 = h('div', 'setrow', null, body); h('span', null, 'Sound', r3);
+  btn(r3, S.sound ? 'ON' : 'OFF', function () { S.sound = !S.sound; saveSettings(); rerender(); });
+  var r4 = h('div', 'setrow', null, body); h('span', null, 'Fullscreen', r4);
+  btn(r4, 'TOGGLE', function () { if (document.fullscreenElement || document.webkitFullscreenElement) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); } else goFullscreen(); });
+  h('div', 'sec', 'Controls', body);
+  h('div', 'ds', 'Bottom-left: joystick (touch anywhere in the lower-left area). Right side: drag to turn the camera, pinch or +/- to zoom, tap an enemy to target. Hold ATTACK to auto-attack. Keyboard: WASD, Space, 1-5 skills, Q/E potions, F talk, B bag, K skills, M map, L quests, +/- zoom.', body);
+  h('div', 'sec', 'Progress', body);
+  var r4 = h('div', 'setrow', null, body); h('span', null, 'Erase save and restart', r4);
+  if (!resetArmed) btn(r4, 'Reset', function () { resetArmed = true; rerender(); setTimeout(function () { resetArmed = false; if (ui.open === 'Menu') rerender(); }, 5000); });
+  else btn(r4, 'Tap again to ERASE ALL', function () { resetGame(); }, { cls: 'danger' });
+}
+var resetArmed = false;
+
+/* ---------- camera / HUD / minimap / zone banner ---------- */
+function updateCamera(dt) {
+  var tx = P.pos.x, ty = P.pos.y + 1.5, tz = P.pos.z, cp = Math.cos(cam.pitch);
+  var px = tx + Math.sin(cam.yaw) * cp * cam.dist, py = Math.max(0.6, ty + Math.sin(cam.pitch) * cam.dist), pz = tz + Math.cos(cam.yaw) * cp * cam.dist;
+  var k = 1 - Math.exp(-16 * dt);
+  camera.position.x = lerp(camera.position.x, px, k); camera.position.y = lerp(camera.position.y, py, k); camera.position.z = lerp(camera.position.z, pz, k);
+  camera.lookAt(tx, ty + 0.2, tz);
+  sun.position.set(tx + 30, 50, tz + 20); sun.target.position.set(tx, 0, tz);
+}
+var lastZone = -1, zoneTimer = null;
+function zoneIndex() {
+  if (!curMap) return 0;
+  if (curMap.arena || curMap.boss) return Math.hypot(P.pos.x, P.pos.z) < curMap.safeR ? 0 : 1;
+  var r = Math.hypot(P.pos.x, P.pos.z); if (r < curMap.safeR) return 0;
+  var r0 = curMap.safeR + 6, step = (curMap.R - 12 - r0) / (curMap.enemies.length - 1);
+  return clamp(1 + Math.floor((r - r0) / step + 1e-6) + (r < r0 ? -1 : 0), 1, curMap.enemies.length);
+}
+function showBanner(t, s) {
+  $('zone-t').textContent = t; $('zone-s').textContent = s;
+  var zb = $('zone-banner'); zb.style.opacity = '1'; clearTimeout(zoneTimer); zoneTimer = setTimeout(function () { zb.style.opacity = '0'; }, 2600);
+}
+function updateZone() {
+  if (!curMap) return;
+  var z = zoneIndex();
+  if (z === lastZone) return; lastZone = z;
+  if (curMap.arena) { showBanner('Blood Arena', 'FREE PK  -  no drops'); return; }
+  if (curMap.boss && z === 1) { showBanner(curMap.name, 'Boss: Lv ' + ENEMY_TYPES[curMap.enemies[0]].lvl + ' ' + ENEMY_TYPES[curMap.enemies[0]].name); return; }
+  if (z === 0) { showBanner(curMap.name + (curMap.hub ? ' Village' : ' Camp'), 'Safe Zone'); return; }
+  var T = ENEMY_TYPES[curMap.enemies[Math.min(z - 1, curMap.enemies.length - 1)]];
+  showBanner(T.boss ? 'Boss Lair' : T.name + ' Grounds', 'Level ' + T.lvl + (T.boss ? ' Boss' : ''));
+}
+function setCd(id, remain, total) { var el = $(id).querySelector('.cd'); if (el) el.style.setProperty('--p', total > 0 && remain > 0 ? (remain / total * 100).toFixed(0) : '0'); }
+function updateHud() {
+  $('p-lvl').textContent = P.lvl; $('p-name').textContent = P.name + (P.reb ? ' [R' + P.reb + ']' : '');
+  $('p-hp').style.width = (P.hp / maxHp() * 100) + '%'; $('p-hp-t').textContent = Math.floor(P.hp) + ' / ' + maxHp();
+  $('p-mp').style.width = (P.mp / maxMp() * 100) + '%'; $('p-mp-t').textContent = Math.floor(P.mp) + ' / ' + maxMp();
+  $('p-xp').style.width = (P.lvl >= MAX_LVL ? 100 : P.xp / xpNext(P.lvl) * 100) + '%';
+  refreshPlayerTag(false);
+  var spb = $('p-sp'); spb.textContent = P.sp > 0 ? '+' + P.sp + ' pts' : ''; spb.style.display = P.sp > 0 ? 'block' : 'none';
+  $('gold').textContent = P.gold + ' G'; $('diamond').textContent = P.diamonds + ' \uD83D\uDC8E'; $('mapname').textContent = curMap ? curMap.name : '';
+  $('c-hp').textContent = P.inv.hp_potion || 0; $('c-mp').textContent = P.inv.mp_potion || 0;
+  for (var i = 0; i < SKILL_SLOTS; i++) {
+    var id = P.slots[i], el = $('b-k' + (i + 1));
+    if (id) { setCd('b-k' + (i + 1), P.skcd[id] || 0, SKILLS[id].cd); el.style.opacity = P.mp >= SKILLS[id].mp ? '1' : '0.55'; }
+  }
+  $('b-mount').classList.toggle('on', !!P.mounted); $('b-mount').lastChild.textContent = P.mounted ? 'UNRIDE' : 'RIDE';
+  setCd('b-dash', P.cd.dash, DASH_CD); setCd('b-hp', P.cd.pot, 1.2); setCd('b-mp', P.cd.pot, 1.2);
+  renderBuffs();
+  var tf = $('target-frame');
+  if (P.target && P.target.state !== 'dead') {
+    tf.style.display = 'block'; $('t-name').textContent = 'Lv' + P.target.T.lvl + ' ' + P.target.T.name;
+    $('t-hp').style.width = Math.max(0, P.target.hp / P.target.maxHp * 100) + '%'; $('t-hp-t').textContent = Math.ceil(P.target.hp) + ' / ' + P.target.maxHp;
+  } else tf.style.display = 'none';
+  var pkb = $('btn-pk'), ta = P.target;
+  if (ta && ta.isAI && ta.state !== 'dead' && !ui.open && !P.dead) { pkb.style.display = 'block'; pkb.textContent = ta.hostile > 0 ? 'PK ON' : 'PK  ⚔  ' + ta.name; pkb.classList.toggle('on', ta.hostile > 0); } else pkb.style.display = 'none';
+  var n = nearestInteract(), tb = $('btn-talk');
+  if (n && !ui.open && !P.dead) { tb.style.display = 'block'; tb.textContent = (n.kind === 'portal' ? 'ENTER ' : 'TALK: ') + n.name; } else tb.style.display = 'none';
+}
+var mini = $('minimap'), mctx = mini.getContext('2d');
+function drawMini() {
+  var W = mini.width, R = 46, s = (W / 2) / R;
+  mctx.clearRect(0, 0, W, W); mctx.save(); mctx.translate(W / 2, W / 2);
+  mctx.beginPath(); mctx.arc(0, 0, W / 2 - 2, 0, TAU); mctx.clip();
+  mctx.fillStyle = curMap ? '#' + ('000000' + new THREE.Color(curMap.theme.mount).getHexString()).slice(-6) : '#244'; mctx.globalAlpha = 0.85; mctx.fillRect(-W / 2, -W / 2, W, W); mctx.globalAlpha = 1;
+  var fx = -Math.sin(cam.yaw), fz = -Math.cos(cam.yaw), rx = Math.cos(cam.yaw), rz = -Math.sin(cam.yaw);
+  function toMap(x, z) { var dx = x - P.pos.x, dz = z - P.pos.z; return { x: (dx * rx + dz * rz) * s, y: -(dx * fx + dz * fz) * s }; }
+  var o = toMap(0, 0);
+  mctx.fillStyle = 'rgba(190,180,150,.8)'; mctx.beginPath(); mctx.arc(o.x, o.y, (curMap ? curMap.safeR : 16) * s, 0, TAU); mctx.fill();
+  enemies.forEach(function (e) { if (e.state === 'dead') return; var p = toMap(e.pos.x, e.pos.z); if (p.x * p.x + p.y * p.y > W * W / 4) return; mctx.fillStyle = e.T.boss ? '#ff9a2a' : '#ff4a4a'; mctx.beginPath(); mctx.arc(p.x, p.y, e.T.boss ? 6 : 3, 0, TAU); mctx.fill(); });
+  ais.forEach(function (a) { if (a.state === 'dead') return; var p = toMap(a.pos.x, a.pos.z); if (p.x * p.x + p.y * p.y > W * W / 4) return; mctx.fillStyle = a.hostile > 0 ? '#ff3b6b' : '#c08aff'; mctx.beginPath(); mctx.arc(p.x, p.y, 3.4, 0, TAU); mctx.fill(); });
+  bots.forEach(function (b) { var p = toMap(b.pos.x, b.pos.z); mctx.fillStyle = '#6ab7ff'; mctx.beginPath(); mctx.arc(p.x, p.y, 3, 0, TAU); mctx.fill(); });
+  npcs.forEach(function (n) { var p = toMap(n.pos.x, n.pos.z); mctx.fillStyle = '#ffe066'; mctx.beginPath(); mctx.arc(p.x, p.y, 4, 0, TAU); mctx.fill(); });
+  portals.forEach(function (pt) { var p = toMap(pt.x, pt.z); mctx.fillStyle = '#66ccff'; mctx.fillRect(p.x - 4, p.y - 4, 8, 8); });
+  var a = P.c.g.rotation.y, dx = Math.sin(a), dz = Math.cos(a), ax = dx * rx + dz * rz, ay = -(dx * fx + dz * fz);
+  mctx.rotate(Math.atan2(ay, ax)); mctx.fillStyle = '#fff'; mctx.beginPath(); mctx.moveTo(9, 0); mctx.lineTo(-6, 6); mctx.lineTo(-3, 0); mctx.lineTo(-6, -6); mctx.closePath(); mctx.fill(); mctx.restore();
+}
+$('btn-respawn').addEventListener('click', function () {
+  $('death').style.display = 'none'; if (!(curMap && curMap.arena)) P.gold -= Math.floor(P.gold * 0.05);
+  P.dead = false; P.hp = maxHp(); P.mp = maxMp(); P.c.anim = null; P.pos.set(0, 0, 7); P.c.g.rotation.y = Math.PI;
+  P.c.rig.body.rotation.x = 0; P.c.rig.body.position.y = 0;
+  enemies.forEach(function (e) { if (e.state === 'chase' || e.state === 'attack') e.state = 'return'; }); saveGame();
+});
+
+/* ---------- first launch: enter character name ---------- */
+var NAME_ERR = 'TIST: Special character is not allew in game name';
+var HAIR_STYLES = ['Short', 'Spiky', 'Long', 'Ponytail', 'Buzz cut', 'Mohawk', 'Bun'];
+var HAIR_COLORS = [0x2a1a10, 0x6b3a1a, 0xc8a050, 0xf0e070, 0xe8e8e8, 0x111111, 0xd03030, 0x2f6fd0, 0x9b3fd0, 0xff7ab8];
+var DRESS_COLORS = [0x2f6fd0, 0xd03030, 0x2fa04a, 0xf0c020, 0x9b3fd0, 0xff7ab8, 0xf2f2f2, 0x222222, 0xe07a20, 0x1ab8c8];
+var PANTS_COLORS = [0x353a48, 0x111111, 0x2a4a8a, 0x5a3a22, 0x3f6a3a, 0x7a1f1f, 0xd8d8d8, 0x6a4a9a, 0xc8a050, 0x1a6a7a];
+var crv = null;   // creation-screen 3D preview (own renderer + scene)
+function initCreatorPreview() {
+  if (crv) { crv.fit(); return; }
+  try {
+    var cv = $('cr-canvas'), rd = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
+    var sc = new THREE.Scene(), cam = new THREE.PerspectiveCamera(30, 1, 0.1, 50);
+    sc.add(new THREE.AmbientLight(0xffffff, 0.75)); var dl = new THREE.DirectionalLight(0xffffff, 0.9); dl.position.set(2, 4, 5); sc.add(dl);
+    var hm = makeHumanoid({ hairStyles: true, scale: 1, skin: 0xf0c8a0, shirt: 0x2f6fd0, pants: 0x353a48, hair: 0x2a1a10, pads: true, padColor: 0x8a97a6, boots: 0x3a2a1a });
+    setWeapon({ rig: hm.rig }, 'sword', 0x9b7653); sc.add(hm.root);
+    crv = { rd: rd, sc: sc, cam: cam, rig: hm.rig, root: hm.root, ry: 0.5, drag: null, run: false };
+    crv.fit = function () {
+      var w = cv.clientWidth || 140, hh = cv.clientHeight || 300; rd.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); rd.setSize(w, hh, false);
+      cam.aspect = w / hh; cam.fov = cam.aspect < 0.6 ? 38 : 30; cam.updateProjectionMatrix(); cam.position.set(0, 1.0, 6.2); cam.lookAt(0, 0.95, 0);
+    };
+    crv.fit();
+    cv.addEventListener('pointerdown', function (e) { crv.drag = e.clientX; try { cv.setPointerCapture(e.pointerId); } catch (x) {} });
+    cv.addEventListener('pointermove', function (e) { if (crv.drag !== null) { crv.ry += (e.clientX - crv.drag) * 0.012; crv.drag = e.clientX; } });
+    cv.addEventListener('pointerup', function () { crv.drag = null; });
+    cv.addEventListener('pointercancel', function () { crv.drag = null; });
+    window.addEventListener('resize', function () { if (crv.run) crv.fit(); });
+  } catch (e) { crv = null; }
+}
+function creatorLoop() {
+  if (!crv || !crv.run) return;
+  if (crv.drag === null) crv.ry += 0.012;
+  crv.root.rotation.y = crv.ry; try { crv.rd.render(crv.sc, crv.cam); } catch (e) {}
+  requestAnimationFrame(creatorLoop);
+}
+function previewLook() { applyLook(); applyEquipVisuals(); if (crv) applyLook(crv.rig); }
+function buildCreator() {
+  var L = P.look;
+  function swatches(id, list, key) {
+    var box = $(id); box.innerHTML = '';
+    list.forEach(function (col) {
+      var i = document.createElement('i'); i.style.background = '#' + ('000000' + col.toString(16)).slice(-6);
+      if (L[key] === col) i.className = 'on';
+      i.addEventListener('click', function () { L[key] = col; Array.prototype.forEach.call(box.children, function (x) { x.className = ''; }); i.className = 'on'; previewLook(); });
+      box.appendChild(i);
+    });
+  }
+  swatches('sw-hair', HAIR_COLORS, 'hair'); swatches('sw-shirt', DRESS_COLORS, 'shirt'); swatches('sw-pants', PANTS_COLORS, 'pants');
+  var sb = $('cr-sex').querySelectorAll('button');
+  Array.prototype.forEach.call(sb, function (b) {
+    b.className = b.getAttribute('data-sex') === L.sex ? 'on' : '';
+    b.onclick = function () { L.sex = b.getAttribute('data-sex'); Array.prototype.forEach.call(sb, function (x) { x.className = x === b ? 'on' : ''; }); previewLook(); };
+  });
+  var st = $('cr-style'); st.innerHTML = '';
+  HAIR_STYLES.forEach(function (nm, idx) {
+    var b = document.createElement('button'); b.textContent = nm; b.className = L.style === idx ? 'on' : '';
+    b.onclick = function () { L.style = idx; Array.prototype.forEach.call(st.children, function (x) { x.className = x === b ? 'on' : ''; }); previewLook(); };
+    st.appendChild(b);
+  });
+  previewLook();
+}
+function openNameScreen() {
+  ui.open = 'name'; $('name-screen').style.display = 'flex'; var inp = $('name-input'); inp.value = ''; $('name-err').textContent = '';
+  initCreatorPreview(); buildCreator();
+  if (crv) { crv.run = true; crv.fit(); creatorLoop(); }
+}
+function cleanNameInput() {
+  var inp = $('name-input'), raw = inp.value, v = raw.replace(/[^A-Za-z0-9]/g, '');
+  if (v !== raw) { inp.value = v; $('name-err').textContent = NAME_ERR; clearTimeout(cleanNameInput.t); cleanNameInput.t = setTimeout(function () { if ($('name-err').textContent === NAME_ERR) $('name-err').textContent = ''; }, 3500); }
+}
+$('name-input').addEventListener('input', cleanNameInput);
+function confirmName() {
+  var raw = $('name-input').value, v = raw.replace(/[^A-Za-z0-9]/g, '').slice(0, 14);
+  if (v !== raw.trim() && raw.length) { $('name-input').value = v; $('name-err').textContent = NAME_ERR; return; }
+  if (v.length < 2) { $('name-err').textContent = 'Name must be 2-14 characters.'; return; }
+  P.name = v; P.c.name = v; refreshPlayerTag(true);
+  $('name-screen').style.display = 'none'; ui.open = null; if (crv) crv.run = false; saveGame(); sfx('level');
+  log('Welcome, ' + v + '! Talk to Elder Rowan (!) to begin.', '#ffe066');
+}
+$('name-go').addEventListener('click', confirmName);
+$('name-input').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); try { $('name-input').blur(); } catch (x) {} } });   // Enter does NOT create the hero; only START ADVENTURE does
+
+/* ---------- character stats popup (tap the player frame) ---------- */
+function openStats() { openPanel('Character Stats', renderStats); }
+function renderStats(body) {
+  var g = h('div', 'grid2', null, body);
+  [['Name', P.name], ['Level', P.lvl], ['Rebirth', P.reb + ' / 50'], ['Gold', P.gold], ['XP', P.xp + ' / ' + (P.lvl >= MAX_LVL ? 'MAX' : xpNext(P.lvl))],
+   ['HP', Math.floor(P.hp) + ' / ' + maxHp()], ['MP', Math.floor(P.mp) + ' / ' + maxMp()], ['Attack', Math.round(atkVal())], ['Defense', Math.round(defVal() * 10) / 10],
+   ['HP regen', '+' + (Math.round(gearSum('hpr') * 10) / 10) + '/s (gear)'], ['MP regen', '+' + (Math.round((2 + maxMp() * 0.012 + gearSum('mpr')) * 10) / 10) + '/s'],
+   ['Move speed', '+' + Math.round((moveMul() - 1) * 100) + '%'], ['Crit chance', Math.round(critChance() * 1000) / 10 + '%'], ['Crit damage', Math.round(critMul() * 100) + '%'], ['EXP cutoff', 'mobs ' + XP_CUTOFF + '+ lvls below you']
+  ].forEach(function (r) { h('div', null, r[0] + ': ' + r[1], g); });
+  h('div', 'sec', 'Stat points: ' + P.sp + '   (+' + SP_PER_LEVEL + ' every level)', body);
+  [['hp', 'HP', '+' + SP_HP + ' max HP per point'], ['dmg', 'Damage', '+' + SP_DMG + ' attack per point'], ['def', 'Defence', '+' + SP_DEF + ' defence per point'], ['crit', 'Crit Rate', '+' + SP_CRIT + '% crit chance per point (max 90% total)'], ['cdmg', 'Crit Damage', '+' + SP_CDMG + '% crit damage per point']].forEach(function (st) {
+    var r = h('div', 'item', null, body), nm = h('div', 'nm', null, r);
+    h('div', null, st[1] + '   (points: ' + P.alloc[st[0]] + ')', nm); h('div', 'ds', st[2], nm);
+    [1, 5, 25].forEach(function (n) { btn(r, '+' + n, function () { var k = Math.min(n, P.sp); if (k <= 0) return; P.alloc[st[0]] += k; P.sp -= k; if (st[0] === 'hp') P.hp += SP_HP * k; saveGame(); rerender(); }, { disabled: P.sp <= 0, cls: 'good' }); });
+  });
+}
+tapBtn('player-frame', function () { openStats(); });
+(function () { var b = h('div', null, null, $('player-frame')); b.id = 'p-sp'; b.textContent = ''; })();
+
+
+/* ---------- Upgrade NPC (Smith Brannock): +1 ... +50 for weapon, items and wings ---------- */
+var upTab = 'weapon';
+var UP_TABS = [['weapon', 'Sword', ['weapon']], ['item', 'Item', ['helmet', 'armor', 'pants', 'gloves']], ['wings', 'Wings', ['wings']]];
+function openUpgrade(npc) { openPanel(npc.name + ' - Upgrade', renderUpgrade); }
+function doUpgrade(id) {
+  var it = ITEMS[id], l = upgLvl(id), mat = upgMat(it.slot), g = upgGold(it, l), n = upgStones(l);
+  if (l >= MAX_UPG) return;
+  if (P.gold < g) { log('Not enough gold.', '#ff9a9a'); return; }
+  if ((P.inv[mat] || 0) < n) { log('Not enough ' + ITEMS[mat].name + '.', '#ff9a9a'); return; }
+  P.gold -= g; P.inv[mat] -= n; P.upg[id] = l + 1;
+  var col = upgColor(l + 1, performance.now() / 1000);
+  if (P.equip[it.slot] === id) {
+    applyEquipVisuals(); ringFx(P.pos.x, P.pos.z, 2.4, col, 0.7); pillarFx(P.pos.x, P.pos.z, col);
+    burst({ x: P.pos.x, y: 1, z: P.pos.z }, col, 16, 4, 3);
+  }
+  sfx('level'); spawnText(itemName(id), P.pos, 'xp', 2.6);
+  log('Upgraded ' + it.name + ' to +' + (l + 1) + '!' + ((l + 1) % 10 === 0 ? '  The glow changes colour!' : ''), '#ffd54f');
+  saveGame(); rerender();
+}
+function renderUpgrade(body) {
+  h('div', 'sec', 'Gold: ' + P.gold + '    |    ' + MATERIAL_IDS.map(function (m) { return ITEMS[m].name + ' x' + (P.inv[m] || 0); }).join('  ·  '), body);
+  h('div', 'ds', 'Each + adds 5% to the item\'s stats and makes it glow brighter (colour changes every +10). Max +' + MAX_UPG + '.', body);
+  var tabs = h('div', 'tabs', null, body);
+  UP_TABS.forEach(function (t) { var b = h('button', upTab === t[0] ? 'act' : null, t[1], tabs); b.addEventListener('click', function () { upTab = t[0]; rerender(); }); });
+  var slots = UP_TABS.filter(function (t) { return t[0] === upTab; })[0][2], any = false;
+  var ids = P.owned.filter(function (id) { return ITEMS[id] && slots.indexOf(ITEMS[id].slot) >= 0; });
+  ids.sort(function (a, b) { return (P.equip[ITEMS[b].slot] === b ? 1 : 0) - (P.equip[ITEMS[a].slot] === a ? 1 : 0); });
+  ids.forEach(function (id) {
+    any = true; var it = ITEMS[id], l = upgLvl(id), mat = upgMat(it.slot);
+    var r = h('div', 'item', null, body); iconEl(r, it.icon, SLOT_INFO[it.slot].icon);
+    var nm = h('div', 'nm', null, r);
+    h('div', it.rare ? 'rare' : null, (it.rare ? '★ ' : '') + itemName(id), nm);
+    if (P.equip[it.slot] === id) h('span', 'tag eq', 'EQUIPPED', nm);
+    if (l >= MAX_UPG) { h('div', 'ds', 'MAX +' + MAX_UPG + '  (stats x' + upgMul(id).toFixed(2) + ')', nm); return; }
+    var g = upgGold(it, l), n = upgStones(l), ok = P.gold >= g && (P.inv[mat] || 0) >= n;
+    h('div', 'ds', 'Now x' + upgMul(id).toFixed(2) + ' → x' + (upgMul(id) + UPG_BONUS).toFixed(2) + '  ·  ' + g + ' G + ' + n + ' ' + ITEMS[mat].name, nm);
+    btn(r, '+' + (l + 1), function () { doUpgrade(id); }, { disabled: !ok, cls: ok ? 'good' : '' });
+  });
+  if (!any) h('div', 'ds', 'You have nothing of this kind to upgrade.', body);
+  h('div', 'sec', 'Materials shop', body);
+  MATERIAL_IDS.forEach(function (m) {
+    var it = ITEMS[m], r = h('div', 'item', null, body); iconEl(r, it.icon, '◆');
+    var nm = h('div', 'nm', null, r); h('div', null, it.name + '  (owned ' + (P.inv[m] || 0) + ')', nm); h('div', 'ds', it.desc + '  ·  ' + it.price + ' G', nm);
+    btn(r, 'Buy', function () { if (P.gold < it.price) return; P.gold -= it.price; giveItem(m, 1); sfx('coin'); saveGame(); rerender(); }, { disabled: P.gold < it.price });
+  });
+}
+
+/* ---------- side navigation + Redeem Code + Support popups ---------- */
+function openNav() { $('sidenav').classList.add('open'); $('nav-back').style.display = 'block'; releaseInputs(); }
+function closeNav() { $('sidenav').classList.remove('open'); $('nav-back').style.display = 'none'; }
+
+var REDEEM = { 'free12': { gold: 1000000 }, 'xpmax': { xp: 120000 }, 'beta123': { gold: 500000, xp: 20000 }, 'tagalog.moviex': { gold: 10000000, xp: 20000 }, 'diamond123': { diamonds: 100000 } };
+var redeemMsg = '';
+function openRedeem() { redeemMsg = ''; openPanel('Redeem Code', renderRedeem); }
+function doRedeem(raw) {
+  var code = String(raw || '').trim().toLowerCase(), r = REDEEM[code];
+  if (!code) { redeemMsg = 'Enter a code first.'; return; }
+  if (!r) { redeemMsg = 'Invalid code.'; return; }
+  if (P.codes[code]) { redeemMsg = 'You already redeemed this code.'; return; }
+  P.codes[code] = true; var got = [];
+  if (r.gold) { P.gold += r.gold; got.push(r.gold.toLocaleString() + ' Gold'); }
+  if (r.diamonds) { P.diamonds += r.diamonds; got.push(r.diamonds.toLocaleString() + ' Diamonds'); }
+  if (r.xp) { if (P.lvl >= MAX_LVL) got.push(r.xp.toLocaleString() + ' EXP (not applied: max level)'); else { gainXp(r.xp); got.push(r.xp.toLocaleString() + ' EXP'); } }
+  redeemMsg = 'Code redeemed! You got ' + got.join(' + ') + '.'; log(redeemMsg, '#ffe066'); sfx('coin'); saveGame();
+}
+function renderRedeem(body) {
+  h('div', 'ds', 'Enter a code to get rewards. Each code can be used once.', body);
+  var inp = h('input', null, null, body); inp.id = 'redeem-in'; inp.type = 'text'; inp.placeholder = 'Enter code'; inp.autocomplete = 'off'; inp.autocapitalize = 'off'; inp.spellcheck = false;
+  var row = h('div', 'setrow', null, body);
+  btn(row, 'REDEEM', function () { doRedeem(inp.value); rerender(); }, { cls: 'good' });
+  if (redeemMsg) h('div', 'ds', redeemMsg, body);
+  h('div', 'sec', 'Your gold: ' + P.gold.toLocaleString() + '  ·  Level ' + P.lvl, body);
+}
+var QR_URL = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgzsQpH4IJNOiMZp1c-T8ZytpxsBFlFB-e3l-wm_gmG3cQAz6RRwVAI6qa6OMe9TeVnHWhAMj9bNWAl0UkmlCcsm8s8bVXoXmQbBTMmp22Rau3Mw4LunXBd0DDHOI-dMJFl_ZumjlkiYUw4lV5K3EWMuWGh1pvmg8HXhBAJRiHiGcHYnUZfs7Tfl9P_45vl/s1339/GCash_QR_Code%20%281%29.png';
+function openSupport() { openPanel('Support Game', renderSupport); }
+function renderSupport(body) {
+  h('div', 'sec', 'Support Game', body);
+  var im = h('img', 'qrimg', null, body); im.src = QR_URL; im.alt = 'Support QR code'; im.draggable = false;
+  var n = h('div', 'qrnote', null, body); n.appendChild(document.createTextNode('Scan QR or '));
+  var a = document.createElement('a'); a.href = QR_URL; a.target = '_blank'; a.rel = 'noopener'; a.setAttribute('download', 'Support_QR.png'); a.textContent = 'Download QR'; n.appendChild(a);
+}
+
+/* ---------- Rebirth (max 50): needs level 100 + gold; resets level to 1, strips gear that needs a higher level, sends you to the first map ---------- */
+var MAX_REBIRTH = 50, rebConfirm = false;
+function rebirthCost(n) { return n <= 5 ? 1000000 : n <= 10 ? 3000000 : n <= 15 ? 6000000 : n <= 25 ? 10000000 : 15000000; }
+function openRebirth(npc) { rebConfirm = false; openPanel(npc.name + ' - Rebirth', renderRebirth); }
+function doRebirth() {
+  var n = P.reb + 1, cost = rebirthCost(n);
+  if (P.reb >= MAX_REBIRTH || P.lvl < MAX_LVL || P.gold < cost) return;
+  P.gold -= cost; P.reb = n; P.lvl = 1; P.xp = 0;
+  var removed = [];
+  SLOTS.forEach(function (sl) { var id = P.equip[sl]; if (id && ITEMS[id] && (ITEMS[id].lvl || 1) > P.lvl) { removed.push(ITEMS[id].name); P.equip[sl] = (sl === 'weapon') ? 'weapon0' : null; } });
+  dismount(); P.buffs.length = 0; P.shield = 0; P.hot = null; P.slowT = 0; P.poisonT = 0; P.target = null;
+  applyEquipVisuals(); P.c.lvl = P.lvl; P.hp = maxHp(); P.mp = maxMp(); refreshPlayerTag(true);
+  ringFx(P.pos.x, P.pos.z, 5, 0xffd54f, 0.9); pillarFx(P.pos.x, P.pos.z, 0xffd54f); sfx('level');
+  loadMap(MAPS[0].id, true);
+  log('REBIRTH ' + n + '! You are level 1 again in ' + MAPS[0].name + '.' + (removed.length ? ' Unequipped: ' + removed.join(', ') + '.' : ''), '#ffd54f');
+  saveGame(); closePanel();
+}
+function renderRebirth(body) {
+  var n = P.reb + 1, maxed = P.reb >= MAX_REBIRTH;
+  h('div', 'sec', 'Rebirth: ' + P.reb + ' / ' + MAX_REBIRTH, body);
+  h('div', 'ds', 'On rebirth your level returns to 1 (EXP 0), gear that needs a higher level is unequipped (it stays in your bag), and you return to the first map\'s safe zone. Gold is spent; items, skills, stat points, upgrades and mounts are kept.', body);
+  if (maxed) { h('div', 'sec', 'You reached the maximum rebirth.', body); return; }
+  var cost = rebirthCost(n), okLv = P.lvl >= MAX_LVL, okG = P.gold >= cost;
+  h('div', 'sec', 'Rebirth ' + n + ' requires:', body);
+  h('div', null, (okLv ? '✔ ' : '✘ ') + 'Level ' + MAX_LVL + '  (you: ' + P.lvl + ')', body);
+  h('div', null, (okG ? '✔ ' : '✘ ') + cost.toLocaleString() + ' Gold  (you: ' + P.gold.toLocaleString() + ')', body);
+  var row = h('div', 'setrow', null, body);
+  btn(row, rebConfirm ? 'TAP AGAIN TO CONFIRM' : 'REBIRTH', function () { if (!rebConfirm) { rebConfirm = true; rerender(); return; } doRebirth(); }, { disabled: !(okLv && okG), cls: 'good' });
+  h('div', 'sec', 'Costs', body);
+  h('div', 'ds', 'Rebirth 1-5: 1M · 6-10: 3M · 11-15: 6M · 16-25: 10M · 26-50: 15M gold (each also needs level 100)', body);
+}
+
+/* ---------- minimap popup: tap anywhere on the big map and the hero walks there ---------- */
+var MAP_PX = 300, mapTimer = null;
+function openMapPopup() {
+  if (P.dead || ui.open) return;
+  openPanel('Map - tap to move', function (body) {
+    h('div', 'ds', 'Tap a spot on the map and your hero will walk there (touch the joystick to cancel).', body);
+    var cv = h('canvas', 'bigmap', null, body); cv.width = cv.height = MAP_PX * 2; cv.style.width = cv.style.height = MAP_PX + 'px';
+    drawBigMap(cv);
+    cv.addEventListener('click', function (e) {
+      var r = cv.getBoundingClientRect(), px = (e.clientX - r.left) / r.width * 2 - 1, pz = (e.clientY - r.top) / r.height * 2 - 1;
+      var k = (WORLD_R - 2) / (1 - 0.04), wx = px * k, wz = pz * k, d = Math.hypot(wx, wz), lim = WORLD_R - 2;
+      if (d > lim) { wx *= lim / d; wz *= lim / d; }
+      P.dest = { x: wx, z: wz }; P.destChk = 0; P.destX0 = P.pos.x; P.destZ0 = P.pos.z;
+      sfx('ui'); closePanel(); log('Moving to the selected spot...', '#9fe3ff');
+    });
+    clearInterval(mapTimer); mapTimer = setInterval(function () { if (ui.open !== 'Map - tap to move') { clearInterval(mapTimer); return; } drawBigMap(cv); }, 400);
+  });
+}
+function drawBigMap(cv) {
+  var W = cv.width, c = cv.getContext('2d'), k = (W / 2) * 0.96 / (WORLD_R - 2);
+  function T(x, z) { return { x: W / 2 + x * k, y: W / 2 + z * k }; }
+  c.clearRect(0, 0, W, W); c.save(); c.beginPath(); c.arc(W / 2, W / 2, W / 2 - 2, 0, TAU); c.clip();
+  c.fillStyle = curMap ? '#' + ('000000' + new THREE.Color(curMap.theme.mount).getHexString()).slice(-6) : '#244'; c.fillRect(0, 0, W, W);
+  c.fillStyle = 'rgba(0,0,0,.25)'; c.fillRect(0, 0, W, W);
+  var o = T(0, 0); c.fillStyle = 'rgba(190,180,150,.75)'; c.beginPath(); c.arc(o.x, o.y, (curMap ? curMap.safeR : 16) * k, 0, TAU); c.fill();
+  function dot(x, z, col, r) { var p = T(x, z); c.fillStyle = col; c.beginPath(); c.arc(p.x, p.y, r, 0, TAU); c.fill(); }
+  enemies.forEach(function (e) { if (e.state !== 'dead') dot(e.pos.x, e.pos.z, e.T.boss ? '#ff9a2a' : '#ff4a4a', e.T.boss ? 9 : 4); });
+  ais.forEach(function (a) { if (a.state !== 'dead') dot(a.pos.x, a.pos.z, a.hostile > 0 ? '#ff3b6b' : '#c08aff', 4); });
+  npcs.forEach(function (n) { dot(n.pos.x, n.pos.z, '#ffe066', 6); });
+  portals.forEach(function (pt) { var p = T(pt.x, pt.z); c.fillStyle = '#66ccff'; c.fillRect(p.x - 7, p.y - 7, 14, 14); });
+  if (P.dest) { var d = T(P.dest.x, P.dest.z); c.strokeStyle = '#7dff9a'; c.lineWidth = 3; c.beginPath(); c.arc(d.x, d.y, 9, 0, TAU); c.stroke(); }
+  dot(P.pos.x, P.pos.z, '#ffffff', 7); c.restore();
+  c.strokeStyle = 'rgba(255,255,255,.6)'; c.lineWidth = 4; c.beginPath(); c.arc(W / 2, W / 2, W / 2 - 2, 0, TAU); c.stroke();
+}
+mini.addEventListener('click', openMapPopup);
+
+/* ---------- They I See Tea (TIST): 1000-gold prize roulette ---------- */
+var ROULETTE_COST = 1000, spinning = false;
+var ROULETTE = [
+  { id: 'hp_potion', n: 2, p: 22, label: '2 HP Potions' }, { id: 'mp_potion', n: 2, p: 22, label: '2 MP Potions' },
+  { id: 'hp_potion', n: 5, p: 12, label: '5 HP Potions' }, { id: 'luxury_stone', n: 2, p: 14.5, label: 'Luxury Stone x2' },
+  { id: 'burr_stone', n: 2, p: 14.5, label: 'Burr Stone x2' }, { id: 'feather', n: 2, p: 13.7, label: 'Feather x2' },
+  { id: 'santa_weapon', n: 1, p: 1.0, label: 'Crimson Eye Blade' }, { id: 'godset_wings', n: 1, p: 0.3, label: 'Godzilla Wings', jackpot: true }];
+function rollRoulette() { var r = Math.random() * 100, a = 0; for (var i = 0; i < ROULETTE.length; i++) { a += ROULETTE[i].p; if (r < a) return i; } return 0; }
+function openTist(npc) { spinning = false; openPanel(npc.name, renderTist); }
+function renderTist(body) {
+  var dlg = h('div', 'dlg', null, body);
+  h('p', null, 'They I See Tea (TIST) is the guardian of this realm: game security, patches, updates and much more. Fancy a shot at the legendary Godzilla Wings? Spin the roulette below and try your luck!', dlg);
+  h('div', 'sec', 'Prizes', body);
+  var grid = h('div', 'rgrid', null, body), cells = [];
+  ROULETTE.forEach(function (rw, i) {
+    var cell = h('div', 'rcell' + (rw.jackpot ? ' jack' : ''), null, grid); cells.push(cell);
+    iconEl(cell, ITEMS[rw.id].icon, '?');
+    h('div', 'rn', rw.label, cell); h('div', 'rp', (rw.jackpot ? 'JACKPOT ' : '') + rw.p + '%', cell);
+  });
+  var res = h('div', 'rres', 'Cost per spin: ' + ROULETTE_COST.toLocaleString() + ' gold', body);
+  var gl = h('div', 'ds', 'Your gold: ' + P.gold.toLocaleString(), body);
+  var row = h('div', 'setrow', null, body), sp;
+  sp = btn(row, 'SPIN (' + ROULETTE_COST + ' G)', function () {
+    if (spinning || P.gold < ROULETTE_COST) return;
+    spinning = true; sp.disabled = true; P.gold -= ROULETTE_COST; gl.textContent = 'Your gold: ' + P.gold.toLocaleString();
+    var t = rollRoulette(), rw = ROULETTE[t], steps = 24 + t + 1, i = 0;
+    if (rw.id === 'godset_wings' || rw.id === 'santa_weapon') giveDrop(rw.id); else giveItem(rw.id, rw.n);   // prize is granted immediately
+    saveGame(); res.textContent = 'Spinning...'; res.className = 'rres';
+    (function tick() {
+      cells.forEach(function (c2) { c2.classList.remove('on'); }); cells[i % 8].classList.add('on'); sfx('ui');
+      if (i >= steps - 1) {
+        spinning = false; sp.disabled = P.gold < ROULETTE_COST; res.textContent = (rw.jackpot ? 'JACKPOT! ' : 'You won: ') + rw.label + '!'; res.className = 'rres win' + (rw.jackpot ? ' jp' : '');
+        cells[t].classList.add('won'); sfx('level'); log('TIST Roulette: ' + rw.label + '!', rw.jackpot ? '#ffd54f' : '#9fe3ff'); return;
+      }
+      var delay = 45 + 260 * Math.pow(i / steps, 3); i++; setTimeout(tick, delay);
+    })();
+  }, { disabled: P.gold < ROULETTE_COST, cls: 'good' });
+}
+
+/* ---------- The Game Master: asset management + tax collector ---------- */
+function openGM(npc) { openPanel(npc.name, function (body) {
+  var d = h('div', 'dlg', null, body);
+  h('p', null, 'The Game Master handles the realm\'s asset management and collects the taxes. Nothing moves in this land without a small cut.', d);
+  h('div', 'sec', 'Tax rules', body);
+  h('div', 'ds', '• Buying from NPC shops: price + 12% tax (e.g. a 2,000 G sword costs 2,240 G).', body);
+  h('div', 'ds', '• Selling to NPC shops: selling price - 12% tax.', body);
+  h('div', 'ds', '• Staying inside a safe zone: ' + SAFE_TAX + ' gold every ' + SAFE_TAX_EVERY + ' seconds (not in the Blood Arena).', body);
+  h('div', 'sec', 'Your tax record', body);
+  h('div', null, 'Total tax paid: ' + P.taxPaid.toLocaleString() + ' G', body);
+}); }
+
+/* ---------- buff HUD: skill icon + vertical time bar ---------- */
+var buffEls = {};
+function buffIcon(name) { for (var id in SKILLS) if (SKILLS[id].name === name) return SKILLS[id]; return null; }
+function renderBuffs() {
+  var host = $('buffs'), list = activeBuffs();
+  for (var k in buffEls) if (!list.some(function (b) { return b.key === k; })) { host.removeChild(buffEls[k].el); delete buffEls[k]; }
+  list.forEach(function (b) {
+    var e = buffEls[b.key];
+    if (!e) {
+      var el = h('div', 'bf', null, host), ic = h('div', 'bfi', null, el), sk = buffIcon(b.name);
+      if (sk) iconEl(ic, sk.icon, sk.emoji); else ic.textContent = '✨';
+      var bar = h('div', 'bfbar', null, el), fill = h('div', 'bfill', null, bar), tx = h('div', 'bft', null, ic);
+      e = buffEls[b.key] = { el: el, fill: fill, tx: tx };
+    }
+    e.fill.style.height = Math.max(0, Math.min(100, b.t / b.dur * 100)) + '%'; e.fill.style.background = '#' + ('000000' + b.col.toString(16)).slice(-6);
+    e.tx.textContent = Math.ceil(b.t);
+  });
+  var st = '';
+  if (P.slowT > 0) st += 'Slowed ' + Math.ceil(P.slowT) + 's  '; if (P.poisonT > 0) st += 'Poisoned ' + Math.ceil(P.poisonT) + 's';
+  var se = host.querySelector('.bfst'); if (!se) { se = h('div', 'bfst', null, host); } se.textContent = st; se.style.display = st ? 'block' : 'none';
+}
+
+/* ---------- Item Craft NPC: Godzilla Fragments -> Godzilla Armor / Gloves / Pants ---------- */
+var CRAFT_RECIPES = [
+  { id: 'god_helmet', frag: 110, gold: 700000 },
+  { id: 'godset_armor', frag: 100, gold: 600000 },
+  { id: 'godset_pants', frag: 90, gold: 550000 },
+  { id: 'godset_gloves', frag: 80, gold: 500000 }];
+function openCraft(npc) { openPanel(npc.name + ' - Crafting', renderCraft); }
+function renderCraft(body) {
+  var d = h('div', 'dlg', null, body);
+  h('p', null, 'Bring me Godzilla Fragments from the mobs of Promise Wonderland and I will forge the Godzilla set (helmet, armor, pants and gloves) for you.', d);
+  h('div', 'ds', 'Godzilla Fragments: ' + (P.inv.godzilla_fragment || 0) + '   ·   Gold: ' + P.gold.toLocaleString(), body);
+  CRAFT_RECIPES.forEach(function (rc) {
+    var it = ITEMS[rc.id], r = h('div', 'item', null, body); iconEl(r, it.icon, '?');
+    var nm = h('div', 'nm', null, r); h('div', null, it.name, nm); h('div', 'ds', it.baseDesc + '  (random bonus stats)  ·  Lv ' + it.lvl, nm);
+    var okF = (P.inv.godzilla_fragment || 0) >= rc.frag, okG = P.gold >= rc.gold;
+    h('div', 'ds', (okF ? '✔ ' : '✘ ') + rc.frag + ' Godzilla Fragments   ' + (okG ? '✔ ' : '✘ ') + rc.gold.toLocaleString() + ' Gold', nm);
+    btn(r, 'Craft', function () {
+      if ((P.inv.godzilla_fragment || 0) < rc.frag || P.gold < rc.gold) return;
+      P.inv.godzilla_fragment -= rc.frag; P.gold -= rc.gold; giveDrop(rc.id); sfx('coin');
+      log('Crafted ' + it.name + '!', '#1adcff'); saveGame(); rerender();
+    }, { disabled: !(okF && okG), cls: 'good' });
+  });
+}
+
+/* ---------- Diamond Shop NPC ---------- */
+function openDiamondShop(npc) { openPanel(npc.name + ' - Diamond Shop', renderDiamondShop); }
+function renderDiamondShop(body) {
+  var d = h('div', 'dlg', null, body);
+  h('p', null, 'Spend your Diamonds here. More goods coming soon!', d);
+  h('div', 'ds', 'Diamonds: ' + P.diamonds.toLocaleString() + '   ·   Godzilla Fragments: ' + (P.inv.godzilla_fragment || 0), body);
+  var it = ITEMS.godzilla_fragment, r = h('div', 'item', null, body); iconEl(r, it.icon, '?');
+  var nm = h('div', 'nm', null, r); h('div', null, it.name, nm); h('div', 'ds', '1 Diamond = 1 Fragment', nm);
+  [1, 10, 100].forEach(function (n) {
+    btn(r, 'Buy ' + n, function () {
+      if (P.diamonds < n) return;
+      P.diamonds -= n; P.inv.godzilla_fragment = (P.inv.godzilla_fragment || 0) + n; sfx('coin');
+      log('Bought ' + n + ' Godzilla Fragment' + (n > 1 ? 's' : '') + ' for ' + n + ' Diamond' + (n > 1 ? 's' : ''), '#7fe8ff'); saveGame(); updateHud(); rerender();
+    }, { disabled: P.diamonds < n, cls: 'good' });
+  });
+}
+
+/* ---------- Pets: PetMaloo (pet shop), Kibble Kay (pet food), pet panel ---------- */
+function petIcon(parent, id) { var d = h('div', 'ico', null, parent); d.textContent = PETS[id].emoji; d.style.cssText = 'font-size:30px;display:flex;align-items:center;justify-content:center;width:48px;height:48px;flex:none'; return d; }
+function openPetShop(npc) { openPanel(npc.name + ' - Pets', renderPetShop); }
+function renderPetShop(body) {
+  h('div', 'sec', 'Gold: ' + P.gold.toLocaleString(), body);
+  h('p', null, 'Hi! I am PetMaloo. A pet follows you everywhere. Only one pet can be out at a time - switch with the paw button at the top-left.', body);
+  Object.keys(PETS).forEach(function (id) {
+    var pt = PETS[id], r = h('div', 'item', null, body); petIcon(r, id);
+    var nm = h('div', 'nm', null, r); h('div', null, pt.name + ' (' + pt.type + ')', nm);
+    h('div', 'ds', pt.desc + '  Lv1: ' + pt.lines(1).join(', '), nm);
+    if (P.pets[id]) { h('div', 'ds', 'Owned - Lv ' + P.pets[id].lvl, nm); return; }
+    var cost = buyCost(pt.price); h('div', 'ds', pt.price.toLocaleString() + ' G + 12% tax = ' + cost.toLocaleString() + ' G', nm);
+    btn(r, 'Buy', function () {
+      if (P.gold < cost) { log('Not enough gold (price + 12% tax = ' + cost + ' G).', '#ff9a9a'); return; }
+      P.gold -= cost; P.pets[id] = { lvl: 1 }; if (!P.pet) setActivePet(id); sfx('coin'); log('You got a ' + pt.name + '! Open the paw button to manage pets.', '#ffd54f'); saveGame(); updateHud(); rerender();
+    }, { disabled: P.gold < cost, cls: 'good' });
+  });
+}
+function openPetFoodShop(npc) { openPanel(npc.name + ' - Pet Food', renderPetFoodShop); }
+function renderPetFoodShop(body) {
+  h('div', 'sec', 'Gold: ' + P.gold.toLocaleString() + '   ·   Pet Food Upgrade: ' + P.petFood, body);
+  h('p', null, 'Pet Food Upgrade levels up your pets (max Lv ' + PET_MAX + '): Lv N to N+1 costs N x 2. Each pet also gets hungry after 5 hours out, and needs its own food.', body);
+  var r = h('div', 'item', null, body), ic = h('div', 'ico', null, r); ic.textContent = '🍖'; ic.style.cssText = 'font-size:30px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;flex:none';
+  var nm = h('div', 'nm', null, r); h('div', null, 'Pet Food Upgrade', nm); h('div', 'ds', 'Pet level up · ' + PET_FOOD_PRICE + ' G + 12% tax = ' + buyCost(PET_FOOD_PRICE) + ' G each', nm);
+  [1, 10, 50].forEach(function (n) {
+    var cost = buyCost(PET_FOOD_PRICE) * n;
+    btn(r, 'x' + n, function () {
+      if (P.gold < cost) { log('Not enough gold.', '#ff9a9a'); return; }
+      P.gold -= cost; P.petFood += n; sfx('coin'); log('Bought ' + n + ' Pet Food Upgrade.', '#ffd54f'); saveGame(); updateHud(); rerender();
+    }, { disabled: P.gold < cost, cls: 'good' });
+  });
+  h('div', 'sec', 'Pet meals (stops hunger for 5 hours)', body);
+  Object.keys(PETS).forEach(function (id) {
+    var ml = PET_MEALS[id], r2 = h('div', 'item', null, body), ic2 = h('div', 'ico', null, r2); ic2.textContent = ml.emoji; ic2.style.cssText = ic.style.cssText;
+    var n2 = h('div', 'nm', null, r2); h('div', null, ml.name + '  (for ' + PETS[id].name + ')', n2); h('div', 'ds', 'You have ' + (P.petMeal[id] || 0) + ' · ' + ml.price + ' G + 12% tax = ' + buyCost(ml.price) + ' G each', n2);
+    [1, 10].forEach(function (n) {
+      var cost = buyCost(ml.price) * n;
+      btn(r2, 'x' + n, function () {
+        if (P.gold < cost) { log('Not enough gold.', '#ff9a9a'); return; }
+        P.gold -= cost; P.petMeal[id] = (P.petMeal[id] || 0) + n; sfx('coin'); log('Bought ' + n + ' ' + ml.name + '.', '#ffd54f'); saveGame(); updateHud(); rerender();
+      }, { disabled: P.gold < cost, cls: 'good' });
+    });
+  });
+}
+function openPets() { openPanel('My Pets', renderPets); }
+function renderPets(body) {
+  h('div', 'sec', 'Pet Food Upgrade: ' + P.petFood, body);
+  var have = Object.keys(P.pets);
+  if (!have.length) { h('p', null, 'You have no pets yet. Visit PetMaloo in the safe zone to buy one.', body); return; }
+  have.forEach(function (id) {
+    var pt = PETS[id], L = P.pets[id].lvl, active = P.pet === id, r = h('div', 'item', null, body); petIcon(r, id);
+    var nm = h('div', 'nm', null, r); h('div', null, pt.name + '  Lv ' + L + (L >= PET_MAX ? ' (MAX)' : '') + (active ? '  - ACTIVE' : ''), nm);
+    h('div', 'ds', pt.type + ' · ' + pt.lines(L).join(' · '), nm);
+    if (L < PET_MAX) h('div', 'ds', 'Next Lv ' + (L + 1) + ': ' + pt.lines(L + 1).join(' · '), nm);
+    var ml = PET_MEALS[id], hung = petHungry(id);
+    h('div', 'ds', hung ? '😢 HUNGRY - no bonuses until fed' : (active ? 'Hungry in ' + fmtHours(petHungerLeft(id)) : 'Not hungry'), nm);
+    btn(r, (P.petMeal[id] || 0) > 0 ? 'Give ' + ml.name + ' (' + P.petMeal[id] + ')' : 'No ' + ml.name, function () { if ((P.petMeal[id] || 0) < 1) return; P.petMeal[id]--; feedPetMeal(id); sfx('coin'); log(pt.name + ' ate ' + ml.name + '. Not hungry for 5 hours!', '#9ff59f'); saveGame(); rerender(); }, { disabled: (P.petMeal[id] || 0) < 1 || (P.petHunger[id] || 0) < 600, cls: 'good' });
+    btn(r, active ? 'Dismiss' : 'Summon', function () { setActivePet(active ? null : id); rerender(); });
+    if (L < PET_MAX) { var need = petFoodNeed(L); btn(r, 'Feed (' + need + ')', function () {
+      if (P.petFood < need || P.pets[id].lvl >= PET_MAX) return;
+      P.petFood -= need; P.pets[id].lvl++; sfx('level'); log(pt.name + ' reached Lv ' + P.pets[id].lvl + '!', '#9ff59f'); saveGame(); rerender();
+    }, { disabled: P.petFood < need, cls: 'good' }); }
+  });
+}
+function refreshPetBtn() { var e = $('pet-ico'); if (e) e.textContent = P.pet ? PETS[P.pet].emoji : '\uD83D\uDC3E'; }
+$('pet-btn').addEventListener('click', openPets);
+refreshPetBtn();
+
+/* ---------- Bag > Costume tab (owned costumes) + Costume Shop NPC ---------- */
+function renderCostumes(body) {
+  h('div', 'sec', 'My costumes', body);
+  if (!P.costumes.length) { h('p', null, 'You have no costumes yet. Visit the Costume Shop NPC in the safe zone to buy one with Diamonds.', body); return; }
+  h('div', 'ds', 'A worn costume hides the gear you equip in the same slot (gear stats still apply) and adds its own bonus stats.', body);
+  P.costumes.forEach(function (id) {
+    var cd = COSTUME_DEFS[id], r = h('div', 'item', null, body), ic = h('div', 'ico', cd.emoji, r); ic.style.cssText = 'font-size:28px;display:flex;align-items:center;justify-content:center;width:48px;height:48px;flex:none';
+    var nm = h('div', 'nm', null, r); h('div', 'rare', '★ ' + cd.name + '  (' + SLOT_INFO[cd.slot].label + ' costume)', nm); h('div', 'ds', cd.desc, nm); h('div', 'ds', '✨ ' + costumeStatText(cd), nm).style.color = '#9fe59f';
+    if (P.costumeWorn[cd.slot] === id) { h('span', 'tag eq', 'WORN', r); btn(r, 'Remove', function () { delete P.costumeWorn[cd.slot]; applyEquipVisuals(); saveGame(); rerender(); }); }
+    else btn(r, 'Wear', function () { P.costumeWorn[cd.slot] = id; applyEquipVisuals(); saveGame(); sfx('ui'); rerender(); }, { cls: 'good' });
+  });
+}
+var costumeTab = 'helmet';
+function openCostumeShop(npc) { openPanel(npc.name, renderCostumeShop, { preview: true }); }
+function renderCostumeShop(body) {
+  var tabs = h('div', 'tabs', null, body);
+  COSTUME_SLOTS.forEach(function (t) { var b = h('button', costumeTab === t[0] ? 'act' : null, t[1], tabs); b.addEventListener('click', function () { costumeTab = t[0]; rerender(); }); });
+  h('div', 'sec', 'Diamonds: ' + P.diamonds.toLocaleString() + ' 💎', body);
+  var any = false;
+  Object.keys(COSTUME_DEFS).forEach(function (id) {
+    var cd = COSTUME_DEFS[id]; if (cd.slot !== costumeTab) return; any = true;
+    var r = h('div', 'item', null, body), ic = h('div', 'ico', cd.emoji, r); ic.style.cssText = 'font-size:28px;display:flex;align-items:center;justify-content:center;width:48px;height:48px;flex:none';
+    var nm = h('div', 'nm', null, r); h('div', 'rare', '★ ' + cd.name, nm); h('div', 'ds', cd.desc, nm); h('div', 'ds', '✨ When worn: ' + costumeStatText(cd), nm).style.color = '#9fe59f'; h('div', 'ds', cd.diamonds.toLocaleString() + ' 💎', nm);
+    var pvOn = pvOverride[cd.slot] === id;
+    btn(r, pvOn ? 'Stop' : 'Preview', function () { if (pvOn) delete pvOverride[cd.slot]; else pvOverride[cd.slot] = id; rerender(); }, { cls: pvOn ? 'danger' : null });
+    if (P.costumes.indexOf(id) >= 0) h('span', 'tag eq', 'OWNED', r);
+    else btn(r, 'Buy', function () {
+      if (P.diamonds < cd.diamonds) { log('Not enough Diamonds.', '#ff9a9a'); return; }
+      P.diamonds -= cd.diamonds; P.costumes.push(id); sfx('coin'); log('Bought costume: ' + cd.name + '! Wear it from Bag > Costume.', '#7fe8ff'); saveGame(); updateHud(); rerender();
+    }, { disabled: P.diamonds < cd.diamonds, cls: 'good' });
+  });
+  if (!any) h('p', null, 'No costumes in this category yet. More are coming soon!', body);
+}
+
+/* ---------- live character preview inside popups (Bag, Costume Shop) ---------- */
+function initPanelPreview() {
+  if (pvw) return true;
+  try {
+    var cv = $('pv-canvas'), rd = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
+    var sc = new THREE.Scene(), cam = new THREE.PerspectiveCamera(32, 1, 0.1, 60);
+    sc.add(new THREE.AmbientLight(0xffffff, 0.8)); var dl = new THREE.DirectionalLight(0xffffff, 0.9); dl.position.set(2, 4, 5); sc.add(dl);
+    var hm = makeHumanoid({ hairStyles: true, scale: 1, skin: 0xf0c8a0, shirt: 0x2f6fd0, pants: 0x353a48, hair: 0x2a1a10, pads: true, padColor: 0x8a97a6, boots: 0x3a2a1a, gear: true });
+    var pc = { rig: hm.rig, mats: hm.mats, g: hm.root, rare: [], upg: [], wMat: null }; sc.add(hm.root);
+    pvw = { rd: rd, sc: sc, cam: cam, c: pc, root: hm.root, ry: 0.4, drag: null, run: false, w: 0, h: 0 };
+    cv.addEventListener('pointerdown', function (e) { pvw.drag = e.clientX; try { cv.setPointerCapture(e.pointerId); } catch (x) {} });
+    cv.addEventListener('pointermove', function (e) { if (pvw.drag !== null) { pvw.ry += (e.clientX - pvw.drag) * 0.012; pvw.drag = e.clientX; } });
+    cv.addEventListener('pointerup', function () { pvw.drag = null; }); cv.addEventListener('pointercancel', function () { pvw.drag = null; });
+  } catch (e) { pvw = null; return false; }
+  return true;
+}
+function pvFit() {
+  var cv = $('pv-canvas'), w = cv.clientWidth, hh = cv.clientHeight; if (!w || !hh || (w === pvw.w && hh === pvw.h)) return;
+  pvw.w = w; pvw.h = hh; pvw.rd.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); pvw.rd.setSize(w, hh, false);
+  pvw.cam.aspect = w / hh; pvw.cam.fov = pvw.cam.aspect < 0.7 ? 40 : 32; pvw.cam.updateProjectionMatrix(); pvw.cam.position.set(0, 1.15, 6.6); pvw.cam.lookAt(0, 1.0, 0);
+}
+function updatePanelPreview() {
+  if (!initPanelPreview()) return;
+  pvFit(); applyEquipVisuals(pvw.c, pvOverride);
+  if (!pvw.run) { pvw.run = true; pvLoop(); }
+}
+function pvLoop() {
+  if (!pvw || !pvw.run) return;
+  pvFit(); if (pvw.drag === null) pvw.ry += 0.012; pvw.root.rotation.y = pvw.ry;
+  updateCostumeFx(0.016, pvw.c); try { pvw.rd.render(pvw.sc, pvw.cam); } catch (e) {}
+  requestAnimationFrame(pvLoop);
+}

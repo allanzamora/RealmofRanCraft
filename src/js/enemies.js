@@ -153,3 +153,7 @@ E('croczilla', 'Croczilla', 100, 'b', 5.4, W('fist', 0xffd54f), { skin: 0x2a6a30
 ENEMY_TYPES.croczilla.hp = 700000;   // Croczilla: 700,000 HP
 ENEMY_TYPES.croczilla.croc = true; ENEMY_TYPES.croczilla.range = 10; ENEMY_TYPES.croczilla.lootPool = ['godzilla_sword', 'godset_wings'];   // helmet / armor / gloves / pants are crafted (Item Craft NPC)
 ENEMY_TYPES.croczilla.skills = ['slam', 'gifts', 'nova']; ENEMY_TYPES.croczilla.skillNames = { slam: 'Crown Crush!', gifts: 'Gold Rain!', nova: 'Royal Roar!' };
+
+/* ---------- World boss: Dark Swordman (appears at random times in a random normal map) ---------- */
+E('darksword', 'Dark Swordman', 100, 'b', 4.4, W('greatsword', 0x1a0a22, true), { skin: 0x2a2030, shirt: 0x0e0a14, pants: 0x0a0810, hair: null, bald: true, helmet: true, eye: 0xff2222, eyeGlow: true, bulk: 1.3, pads: true, padColor: 0x14101c, armor: 0x16101e, cape: 0x3a0a18 }, { boss: true });
+(function (T) { T.hp = 15000000; T.atk = 20000; T.cd = 2.2; T.speed = 3.2; T.aggro = 26; T.world = true; T.skills = ['leap', 'leap', 'slam']; T.skillNames = { leap: 'JUMPING STRIKE!', slam: 'Dark Slam!' }; T.fragDrop = [10, 15]; })(ENEMY_TYPES.darksword);

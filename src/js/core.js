@@ -1,1 +1,93 @@
-var _0x188017=_0x194e;(function(_0x2dda5a,_0x4e7119){var _0x878538=_0x194e,_0x303e3b=_0x2dda5a();while(!![]){try{var _0x463f1f=parseInt(_0x878538(0x207))/0x1+-parseInt(_0x878538(0x1da))/0x2+-parseInt(_0x878538(0x20e))/0x3+parseInt(_0x878538(0x1f1))/0x4+-parseInt(_0x878538(0x1dc))/0x5*(-parseInt(_0x878538(0x1fe))/0x6)+-parseInt(_0x878538(0x1f0))/0x7*(parseInt(_0x878538(0x1ed))/0x8)+parseInt(_0x878538(0x217))/0x9*(parseInt(_0x878538(0x20a))/0xa);if(_0x463f1f===_0x4e7119)break;else _0x303e3b['push'](_0x303e3b['shift']());}catch(_0x425ace){_0x303e3b['push'](_0x303e3b['shift']());}}}(_0x3044,0xe8906),(function(){var _0x44a1ae=_0x194e;const _0x3ff478=_0x44a1ae(0x21d),_0x472159=window[_0x44a1ae(0x1f3)][_0x44a1ae(0x1ee)],_0x1c37f2=_0x472159===_0x3ff478||_0x472159===_0x44a1ae(0x214)+_0x3ff478;if(!_0x1c37f2){window[_0x44a1ae(0x1f3)]=_0x44a1ae(0x213);throw new Error(_0x44a1ae(0x1ea)+_0x472159);}}()));if(typeof THREE===_0x188017(0x226)){document[_0x188017(0x1ec)](_0x188017(0x204))['textContent']=_0x188017(0x222);throw new Error(_0x188017(0x205));}var $=function(_0x4acfd9){var _0x4486bf=_0x188017;return document[_0x4486bf(0x1ec)](_0x4acfd9);},clamp=function(_0x34c7a8,_0x50157e,_0xeef03){return _0x34c7a8<_0x50157e?_0x50157e:_0x34c7a8>_0xeef03?_0xeef03:_0x34c7a8;},lerp=function(_0x485767,_0x57de6d,_0x258d2f){return _0x485767+(_0x57de6d-_0x485767)*_0x258d2f;},rand=function(_0x55e4e3,_0xf878ff){var _0x2a0fef=_0x188017;return _0x55e4e3+Math[_0x2a0fef(0x20b)]()*(_0xf878ff-_0x55e4e3);},randInt=function(_0x4694af,_0x3f94c1){var _0x4dd959=_0x188017;return Math[_0x4dd959(0x206)](rand(_0x4694af,_0x3f94c1+0x1));},TAU=Math['PI']*0x2,ease=function(_0x37dd18){return 0x1-(0x1-_0x37dd18)*(0x1-_0x37dd18);};function angDiff(_0x2f84e6,_0x416d0f){var _0x22e72a=(_0x416d0f-_0x2f84e6)%TAU;if(_0x22e72a>Math['PI'])_0x22e72a-=TAU;if(_0x22e72a<-Math['PI'])_0x22e72a+=TAU;return _0x22e72a;}function turnToward(_0x182ca1,_0x5d83fa,_0x40bc8a){return _0x182ca1+angDiff(_0x182ca1,_0x5d83fa)*_0x40bc8a;}function h(_0x11995e,_0x3fbf77,_0x2aec2c,_0x569400){var _0x310268=_0x188017,_0x407df1=document[_0x310268(0x1f6)](_0x11995e);if(_0x3fbf77)_0x407df1['className']=_0x3fbf77;if(_0x2aec2c!==undefined&&_0x2aec2c!==null)_0x407df1['textContent']=_0x2aec2c;if(_0x569400)_0x569400['appendChild'](_0x407df1);return _0x407df1;}function iconUrl(_0x1fda98){return typeof ICON_DATA!=='undefined'&&ICON_DATA[_0x1fda98]||_0x1fda98;}var MAPS=[],S={'shadows':!![],'sound':!![],'sens':0x1,'music':0.5};try{var _s=JSON[_0x188017(0x1e3)](localStorage[_0x188017(0x1f9)](_0x188017(0x1e5))||_0x188017(0x210));if(_s)Object[_0x188017(0x1e0)](S,_s);}catch(_0x207288){}function saveSettings(){var _0x4956ac=_0x188017;try{localStorage[_0x4956ac(0x215)]('moviex_settings',JSON[_0x4956ac(0x218)](S));}catch(_0x3c5b01){}}var canvas=$(_0x188017(0x220)),dpr=window[_0x188017(0x1fb)]||0x1,renderer=new THREE[(_0x188017(0x200))]({'canvas':canvas,'antialias':dpr<0x2,'powerPreference':_0x188017(0x227)});renderer['setPixelRatio'](Math[_0x188017(0x1eb)](dpr,1.75)),renderer['setSize'](window['innerWidth'],window['innerHeight']),renderer['shadowMap'][_0x188017(0x216)]=S['shadows'],renderer[_0x188017(0x223)][_0x188017(0x1e7)]=THREE[_0x188017(0x202)];var SKY=0x9cc7f0,scene=new THREE[(_0x188017(0x21a))]();scene[_0x188017(0x203)]=new THREE[(_0x188017(0x20d))](SKY),scene['fog']=new THREE[(_0x188017(0x21b))](SKY,0x32,0xbe);var camera=new THREE['PerspectiveCamera'](0x3a,window[_0x188017(0x1f7)]/window['innerHeight'],0.1,0x1f4),cam={'yaw':0x0,'pitch':0.42,'dist':9.5},CAM_MIN=0x3,CAM_MAX=0x18,BASE_R=0xaa,AREA=0x1,WORLD_R=0xaa,SAFE_R=0x10,hemi=new THREE[(_0x188017(0x1e8))](0xdfefff,0x4a6b3a,0.78);scene[_0x188017(0x1e1)](hemi);var sun=new THREE[(_0x188017(0x1fc))](0xfff2d0,0.95);sun[_0x188017(0x1e9)][_0x188017(0x221)](0x1e,0x32,0x14),sun['castShadow']=S['shadows'],sun[_0x188017(0x1e4)][_0x188017(0x211)][_0x188017(0x221)](0x400,0x400),(function(){var _0x35005e=_0x188017,_0x277163=sun[_0x35005e(0x1e4)][_0x35005e(0x1df)];_0x277163[_0x35005e(0x1e6)]=-0x1c,_0x277163[_0x35005e(0x1de)]=0x1c,_0x277163[_0x35005e(0x201)]=0x1c,_0x277163[_0x35005e(0x1fd)]=-0x1c,_0x277163[_0x35005e(0x20f)]=0x1,_0x277163['far']=0x8c;}()),sun[_0x188017(0x1e4)]['bias']=-0.0006,scene['add'](sun),scene[_0x188017(0x1e1)](sun[_0x188017(0x21e)]);function applyShadows(){var _0x1666f8=_0x188017;renderer[_0x1666f8(0x223)][_0x1666f8(0x216)]=S[_0x1666f8(0x1dd)],sun['castShadow']=S['shadows'],scene['traverse'](function(_0x5a302f){var _0x1815dc=_0x1666f8;if(_0x5a302f[_0x1815dc(0x225)]){var _0x59df99=Array[_0x1815dc(0x1e2)](_0x5a302f[_0x1815dc(0x225)])?_0x5a302f[_0x1815dc(0x225)]:[_0x5a302f[_0x1815dc(0x225)]];_0x59df99['forEach'](function(_0x58c142){_0x58c142['needsUpdate']=!![];});}});}var MUSIC_URL=_0x188017(0x224),bgm=null,bgmFailed=![];function musicInit(){var _0x185409=_0x188017;if(bgm)return;try{bgm=new Audio(MUSIC_URL),bgm[_0x185409(0x1fa)]=!![],bgm[_0x185409(0x1f8)]=_0x185409(0x209),bgm['volume']=clamp(S[_0x185409(0x20c)],0x0,0x1),bgm['addEventListener'](_0x185409(0x1db),function(){bgmFailed=!![];});}catch(_0x9ac536){bgm=null;}}function musicApply(){var _0x116e1c=_0x188017;musicInit();if(!bgm)return;bgm[_0x116e1c(0x219)]=clamp(S[_0x116e1c(0x20c)],0x0,0x1);if(S[_0x116e1c(0x20c)]<=0x0){bgm['pause']();return;}var _0xfd30f6=bgm['play']();if(_0xfd30f6&&_0xfd30f6['catch'])_0xfd30f6['catch'](function(){});}function _0x3044(){var _0x3e020c=['PCFShadowMap','background','boot','three.js\x20missing','floor','130886JmrqFn','click','auto','21782610AGjxTZ','random','music','Color','5653203qUFTKa','near','null','mapSize','forEach','https://realmofrancraft.vercel.app/','www.','setItem','enabled','9kRyzyr','stringify','volume','Scene','Fog','catch','realmofrancraft.vercel.app','target','keydown','game','set','Could\x20not\x20load\x20three.js.\x20Check\x20your\x20internet\x20connection\x20and\x20reopen\x20the\x20game.','shadowMap','https://archive.org/download/background22_202611/background22.mp3','material','undefined','high-performance','1240528rLtXqs','error','61855vfGNTA','shadows','right','camera','assign','add','isArray','parse','shadow','moviex_settings','left','type','HemisphereLight','position','Unauthorized\x20domain:\x20','min','getElementById','96ZwVqzq','hostname','pointerdown','685811OgMGEk','7464196XfpCLc','hidden','location','visibilitychange','removeEventListener','createElement','innerWidth','preload','getItem','loop','devicePixelRatio','DirectionalLight','bottom','222XRCPQh','addEventListener','WebGLRenderer','top'];_0x3044=function(){return _0x3e020c;};return _0x3044();}function _0x194e(_0x5cc3f5,_0x234ce1){_0x5cc3f5=_0x5cc3f5-0x1da;var _0x3044eb=_0x3044();var _0x194ed6=_0x3044eb[_0x5cc3f5];return _0x194ed6;}[_0x188017(0x1ef),'touchend',_0x188017(0x208),_0x188017(0x21f)][_0x188017(0x212)](function(_0x303930){var _0x557a74=_0x188017,_0x405bbc=function(){var _0x532915=_0x194e;musicApply(),document[_0x532915(0x1f5)](_0x303930,_0x405bbc,!![]);};document[_0x557a74(0x1ff)](_0x303930,_0x405bbc,!![]);}),document['addEventListener'](_0x188017(0x1f4),function(){var _0x33db31=_0x188017;if(!bgm)return;if(document[_0x33db31(0x1f2)])bgm['pause']();else{if(S['music']>0x0){var _0x3d3254=bgm['play']();if(_0x3d3254&&_0x3d3254[_0x33db31(0x21c)])_0x3d3254[_0x33db31(0x21c)](function(){});}}});
+/* core.js - helpers, settings, renderer, scene, camera (classic script: everything is global) */
+if (typeof THREE === 'undefined') { document.getElementById('boot').textContent = 'Could not load three.js. Check your internet connection and reopen the game.'; throw new Error('three.js missing'); }
+
+/* =====================================================================
+   HELPERS
+   ===================================================================== */
+var $ = function (id) { return document.getElementById(id); };
+var clamp = function (v, a, b) { return v < a ? a : (v > b ? b : v); };
+var lerp = function (a, b, t) { return a + (b - a) * t; };
+var rand = function (a, b) { return a + Math.random() * (b - a); };
+var randInt = function (a, b) { return Math.floor(rand(a, b + 1)); };
+var TAU = Math.PI * 2;
+var ease = function (t) { return 1 - (1 - t) * (1 - t); };
+function angDiff(a, b) { var d = (b - a) % TAU; if (d > Math.PI) d -= TAU; if (d < -Math.PI) d += TAU; return d; }
+function turnToward(cur, target, k) { return cur + angDiff(cur, target) * k; }
+function h(tag, cls, text, parent) {
+  var el = document.createElement(tag);
+  if (cls) el.className = cls;
+  if (text !== undefined && text !== null) el.textContent = text;
+  if (parent) parent.appendChild(el);
+  return el;
+}
+
+/* icons: plain file path normally; inlined data-URI when built into one file */
+function iconUrl(p) { return (typeof ICON_DATA !== 'undefined' && ICON_DATA[p]) || p; }
+var MAPS = [];            // filled by map_01.js ... map_06.js
+var S = { shadows: true, sound: true, sens: 1, music: 0.5 };
+try { var _s = JSON.parse(localStorage.getItem('moviex_settings') || 'null'); if (_s) Object.assign(S, _s); } catch (e) {}
+function saveSettings() { try { localStorage.setItem('moviex_settings', JSON.stringify(S)); } catch (e) {} }
+
+
+/* =====================================================================
+   RENDERER / SCENE / CAMERA
+   ===================================================================== */
+var canvas = $('game');
+var dpr = window.devicePixelRatio || 1;
+var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: dpr < 2, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(dpr, 1.75));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = S.shadows;
+renderer.shadowMap.type = THREE.PCFShadowMap;
+
+var SKY = 0x9cc7f0;
+var scene = new THREE.Scene();
+scene.background = new THREE.Color(SKY);
+scene.fog = new THREE.Fog(SKY, 50, 190);
+var camera = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 500);
+var cam = { yaw: 0, pitch: 0.42, dist: 9.5 };
+var CAM_MIN = 3, CAM_MAX = 24;
+
+var BASE_R = 170, AREA = 1;     // AREA = (map radius / BASE_R)^2 : scales prop counts so bigger maps stay populated
+var WORLD_R = 170, SAFE_R = 16;   // reassigned by loadMap()
+
+var hemi = new THREE.HemisphereLight(0xdfefff, 0x4a6b3a, 0.78);
+scene.add(hemi);
+var sun = new THREE.DirectionalLight(0xfff2d0, 0.95);
+sun.position.set(30, 50, 20);
+sun.castShadow = S.shadows;
+sun.shadow.mapSize.set(1024, 1024);
+(function () { var c = sun.shadow.camera; c.left = -28; c.right = 28; c.top = 28; c.bottom = -28; c.near = 1; c.far = 140; })();
+sun.shadow.bias = -0.0006;
+scene.add(sun); scene.add(sun.target);
+
+function applyShadows() {
+  renderer.shadowMap.enabled = S.shadows;
+  sun.castShadow = S.shadows;
+  scene.traverse(function (o) {
+    if (o.material) {
+      var ms = Array.isArray(o.material) ? o.material : [o.material];
+      ms.forEach(function (m) { m.needsUpdate = true; });
+    }
+  });
+}
+
+
+/* ---------- background music (volume slider in the Menu; browsers need a tap before audio can start) ---------- */
+var MUSIC_URL = 'https://archive.org/download/background22_202611/background22.mp3';
+var bgm = null, bgmFailed = false;
+function musicInit() {
+  if (bgm) return;
+  try {
+    bgm = new Audio(MUSIC_URL); bgm.loop = true; bgm.preload = 'auto'; bgm.volume = clamp(S.music, 0, 1);
+    bgm.addEventListener('error', function () { bgmFailed = true; });
+  } catch (e) { bgm = null; }
+}
+function musicApply() {
+  musicInit(); if (!bgm) return;
+  bgm.volume = clamp(S.music, 0, 1);
+  if (S.music <= 0) { bgm.pause(); return; }
+  var p = bgm.play(); if (p && p.catch) p.catch(function () {});
+}
+['pointerdown', 'touchend', 'click', 'keydown'].forEach(function (ev) { var once = function () { musicApply(); document.removeEventListener(ev, once, true); }; document.addEventListener(ev, once, true); });
+document.addEventListener('visibilitychange', function () { if (!bgm) return; if (document.hidden) bgm.pause(); else if (S.music > 0) { var p = bgm.play(); if (p && p.catch) p.catch(function () {}); } });

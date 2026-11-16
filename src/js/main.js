@@ -1,5 +1,5 @@
-
-MAPS.forEach(function (m) { if (!m.arena && !m.safe2x) { m.safeR *= 2; m.safe2x = true; } }); 
+/* main.js - map loading / travel, main loop, boot */
+MAPS.forEach(function (m) { if (!m.arena && !m.safe2x) { m.safeR *= 2; m.safe2x = true; } });   // safe zones are 2x bigger
 function mapById(id) { for (var i = 0; i < MAPS.length; i++) if (MAPS[i].id === id) return MAPS[i]; return MAPS[0]; }
 function loadMap(id, quiet) {
   var m = mapById(id);
@@ -7,9 +7,9 @@ function loadMap(id, quiet) {
   clearPopulation(); clearPickups(); P.target = null;
   timers.length = 0;
   clearWorld(); buildEnvironment(m);
-  makePortal(worldGroup, m.arena ? 0 : 9.5, m.arena ? 0 : 9.5); 
+  makePortal(worldGroup, m.arena ? 0 : 9.5, m.arena ? 0 : 9.5);   // Blood Arena: only the portal, in the centre
   P.dest = null;
-  if (!m.arena) populateTown(m); spawnEnemies(m); spawnAIs(m);
+  if (!m.arena) populateTown(m); spawnEnemies(m); spawnAIs(m); worldBossOnMap(m);
   P.pos.set(0, 0, 7); P.c.g.rotation.y = Math.PI;
   camera.position.set(P.pos.x, 4, P.pos.z + 9);
   lastZone = -1; refreshMarkers(); saveGame();
@@ -36,8 +36,8 @@ function frame(now) {
   fpsAcc += dt; fpsN++;
   if (fpsAcc > 1) { $('fps').textContent = Math.round(fpsN / fpsAcc) + ' FPS'; fpsAcc = 0; fpsN = 0; }
   updateZoomHold(dt);
-  if (ui.open !== 'name') { 
-    gameTime += dt; updateTimers(dt); updatePlayer(dt); updateEnemies(dt); updateAIs(dt); updateBots(dt); updatePickups(dt);
+  if (ui.open !== 'name') {      // popups no longer pause the game (only the first-launch name screen does)
+    gameTime += dt; updateTimers(dt); updatePlayer(dt); updatePets(dt); updateCostumeFx(dt); updateEnemies(dt); updateWorldBoss(dt); updateAIs(dt); updateBots(dt); updatePickups(dt);
     saveT += dt; if (saveT > 15) { saveT = 0; saveGame(); }
   }
   npcs.forEach(function (n) {
@@ -62,7 +62,7 @@ window.addEventListener('resize', function () { camera.aspect = window.innerWidt
 /* ---- start ---- */
 var freshGame = true;
 try { freshGame = !localStorage.getItem(SAVE_KEY); } catch (e) {}
-loadGame();
+loadGame(); refreshPetBtn();
 P.c.name = P.name;
 applyEquipVisuals(); P.c.lvl = P.lvl; 
 P.hp = maxHp(); P.mp = maxMp(); refreshPlayerTag(true);
@@ -71,7 +71,7 @@ layoutActions(); refreshSkillButtons();
 updateHud();
 log('Welcome to Realm of RanCraft! Talk to Elder Rowan (!) to begin.', '#ffe066');
 log('Joystick: bottom-left. Pinch or +/- to zoom. Portal ring = World Map.', '#cfd8ff');
-(function () { 
+(function () {     // loading bar finishes, then the splash fades out
   var boot = $('boot'), fill = $('boot-fill'), pct = $('boot-pct'), t0 = performance.now(), DUR = 1600;
   (function step() {
     var p = Math.min(1, (performance.now() - t0) / DUR); fill.style.width = (p * 100).toFixed(0) + '%'; pct.textContent = 'Loading... ' + (p * 100).toFixed(0) + '%';

@@ -1,4 +1,4 @@
-
+/* ai_players.js - AI "players" that level/farm in every map, use skills, can be PK'd by the real player */
 var ais = [];
 function ARENA() { return !!(curMap && curMap.arena); }
 var AI_NAMES = ['ShadowBlade', 'NoobSlayer', 'KuyaBen', 'Lyra', 'DragonX', 'Mikay', 'Zephyr', 'AteRina', 'JuanPogi', 'Nyx', 'Rafa', 'Tala', 'Bryx', 'Cassie', 'Dodong', 'PogiMark', 'IceQueen', 'Vexor', 'Aria', 'Kiko', 'Blaze', 'Moonlit', 'Ghost', 'Sakura', 'Rex', 'Pinoy_Warrior', 'Xander', 'Mara', 'Titan', 'Elora', 'Jin', 'Odin', 'Bea', 'Crimson', 'Lucky', 'Hana', 'Storm', 'Ryu', 'Mang_Tomas', 'Selene'];
@@ -62,7 +62,7 @@ function aiRareGear(a, role) {
 function spawnAIs(m) {
   if (m.noAI) return;
   if (m.arena) {
-    var na = randInt(20, 25), used0 = {}, nGz = randInt(4, 5), nCr = randInt(2, 4); 
+    var na = randInt(20, 25), used0 = {}, nGz = randInt(4, 5), nCr = randInt(2, 4);   // 4-5 bots wear Godzilla gear, 2-4 wield the Crimson Eye Blade
     for (var q = 0; q < na; q++) {
       var nm0; do { nm0 = AI_NAMES[randInt(0, AI_NAMES.length - 1)]; } while (used0[nm0]); used0[nm0] = 1;
       var role = q < nGz ? 'gz' : (q < nGz + nCr ? 'cr' : null);
@@ -133,6 +133,7 @@ function aiFindTarget(a) {
   return best;
 }
 
+/* ----- skill casting (simplified versions of the player skills) ----- */
 function aiCast(a, id, tgt) {
   var sk = SKILLS[id], near = aiNear(a), px = tgt.pos.x, pz = tgt.pos.z;
   a.mp -= sk.mp; a.cd[id] = sk.cd * 1.1; aiFace(a, px, pz);
@@ -196,6 +197,7 @@ function aiCast(a, id, tgt) {
     case 'buff': startAnim(a.c, 'cast', 0.7); a.boostT = gameTime + sk.dur; a.atkBoost = sk.buff.atk || 0; a.defBoost = sk.buff.def || 0; if (near) ringFx(a.pos.x, a.pos.z, 2.6, 0xffb04a, 0.6); break;
   }
 }
+/* simplified big skills for AI (target is always required) */
 function aiBigSkill(a, sk, tgt, near) {
   var px = tgt.pos.x, pz = tgt.pos.z, m = sk.mult * 0.6;
   function area(x, z, r, mult, o) {
@@ -245,6 +247,7 @@ function aiThink(a, tgt, d) {
   }
 }
 
+/* AI mounts: bots of level 30+ ride a crocodile (x1.2 speed) when travelling and get off to fight */
 function aiMount(a, on, vis) {
   if (a.lvl < AI_MOUNT_LVL) return;
   if (!!a.mounted === on) return;
@@ -252,7 +255,7 @@ function aiMount(a, on, vis) {
   if (on && vis && !a.mount) { a.mount = makeCrocMount(); a.c.g.add(a.mount.g); }
   if (a.mount) a.mount.g.visible = on;
   if (!on) a.c.rig.body.position.y = 0;
-  if (a.c.tag && a.c.tag.spr) a.c.tag.spr.position.y = on ? 2.45 : 2.3;
+  if (a.c.tag && a.c.tag.spr) a.c.tag.spr.position.y = on ? 2.75 : 2.6;
 }
 function aiMountAnim(a, dt) {
   if (!a.mounted || !a.mount) { if (a.mount && a.mount.g.visible && !a.mounted) a.mount.g.visible = false; return; }
@@ -322,6 +325,7 @@ function updateAIs(dt) {
           a.atkCd = 0.75; startAnim(c, 'attack', 0.5);
           (function (a, tgt) { schedule(0.22, function () { if (a.state === 'dead' || (tgt.state === 'dead')) return; var dd = Math.hypot(tgt.pos.x - a.pos.x, tgt.pos.z - a.pos.z); if (dd <= meleeR + 1.4) aiHit(a, tgt, 1); }); })(a, tgt);
         }
+        // the mob we are fighting hits back (works even when it is far from the real player)
         if (!tgt.isP && d <= tgt.T.range + 1.3 && !(tgt.stun > 0)) {
           a.hitCd -= dt;
           if (a.hitCd <= 0) { a.hitCd = tgt.T.cd; var dm = Math.max(1, tgt.T.atk * rand(0.85, 1.15) - a.def * (a.boostT > gameTime ? 0.6 + a.defBoost : 0.6)); damageAI(a, dm); }

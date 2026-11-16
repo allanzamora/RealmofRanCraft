@@ -1,4 +1,7 @@
-
+/* world.js - shared world building: obstacles, textures, scatter, portal, camp, environment, weather */
+/* =====================================================================
+   WORLD: every map is built on demand (terrain, props, camp/village, portal, weather)
+   ===================================================================== */
 var obstacles = [], bigObs = [], obGrid = {};
 var OB_CELL = 12;
 function addObstacle(x, z, r) {

@@ -1,4 +1,4 @@
-
+/* input.js - fixed joystick, multitouch camera (drag + pinch), zoom, action buttons, keyboard */
 var joy = { id: null, cx: 0, cy: 0, x: 0, y: 0, R: 40 };
 var kb = { x: 0, y: 0 }, keys = {};
 var camPtrs = {}, camCount = 0, pinchDist = 0;
@@ -166,12 +166,12 @@ function layoutActions() {
   var m = 8, cx = W - m - sa / 2, cy = H - m - sa / 2 - 2;
   function put(id, size, x, y) { var el = $(id); el.style.width = el.style.height = size + 'px'; el.style.left = (x - size / 2).toFixed(1) + 'px'; el.style.top = (y - size / 2).toFixed(1) + 'px'; }
   put('b-attack', sa, cx, cy);
-  var x1 = cx - sa / 2 - 4 - sk / 2;                      
+  var x1 = cx - sa / 2 - 4 - sk / 2;                      // bottom row (right -> left): ATTACK, SKILL1, SKILL2, DASH, HP, MP
   var row0 = [x1, x1 - g]; put('b-k1', sk, row0[0], cy); put('b-k2', sk, row0[1], cy);
   put('b-dash', sk, x1 - 2 * g, cy); put('b-mount', sk, x1 - 3 * g, cy); put('b-hp', sk, x1 - 4 * g, cy); put('b-mp', sk, x1 - 5 * g, cy);
-  var y1 = cy - sa / 2 - 4 - sk / 2;                      
+  var y1 = cy - sa / 2 - 4 - sk / 2;                      // second row: 2 skills
   put('b-k3', sk, row0[0], y1); put('b-k4', sk, row0[1], y1);
-  var y2 = y1 - g;                                      
+  var y2 = y1 - g;                                        // top row: 4 skills
   for (var j = 0; j < 4; j++) put('b-k' + (5 + j), sk, x1 - j * g, y2);
   joyBase.style.width = joyBase.style.height = Math.round(104 * s) + 'px';
   joyStick.style.width = joyStick.style.height = Math.round(42 * s) + 'px';
@@ -180,7 +180,7 @@ function layoutActions() {
 }
 window.addEventListener('resize', function () { layoutActions(); });
 
-
+/* ---------- fullscreen on open (browsers need a user gesture, so it also fires on the first touch/click) ---------- */
 function goFullscreen() {
   var el = document.documentElement, rq = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
   try { if (rq && !document.fullscreenElement && !document.webkitFullscreenElement) { var p = rq.call(el); if (p && p.catch) p.catch(function () {}); } } catch (e) {}

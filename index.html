@@ -12,6 +12,7 @@
 <div id="boot"><div id="boot-bg"></div><div id="boot-bottom"><div id="boot-title">Realm of RanCraft - 3D MMORPG</div><div id="boot-note">This a work of fiction, Any name, items, maps etc. are fictional</div><div id="boot-bar"><div id="boot-fill"></div></div><div id="boot-pct">Loading... 0%</div></div></div>
 <canvas id="game"></canvas>
 <div id="vignette"></div>
+<div id="boss-alert"><div class="ba1">&#9888; BIG BOSS IS COMING &#9888;</div><div class="ba2" id="ba-sub"></div></div>
 <div id="floaters"></div>
 <div id="zone-banner"><div class="zt" id="zone-t"></div><div class="zs" id="zone-s"></div></div>
 <div id="levelup">LEVEL UP!</div>
@@ -34,6 +35,7 @@
   <div class="bar hp"><div class="fill" id="t-hp"></div><span id="t-hp-t"></span></div>
 </div>
 
+<div id="pet-btn" class="ui box"><span id="pet-ico">&#128062;</span></div>
 <div id="tracker" class="ui box"></div>
 <div id="log" class="ui"></div>
 
@@ -87,7 +89,8 @@
 
 <div id="panel"><div id="panel-box">
   <div id="panel-head"><div id="panel-title"></div><button id="panel-close">X</button></div>
-  <div id="panel-body"></div>
+  <div id="panel-tabs"></div>
+  <div id="panel-main"><div id="panel-prev"><canvas id="pv-canvas"></canvas><div id="pv-hint">Preview</div></div><div id="panel-body"></div></div>
 </div></div>
 
 <div id="name-screen"><div id="cr-prev"><canvas id="cr-canvas"></canvas><div id="cr-hint">Your hero</div></div><div class="nbox"><h2>Realm of RanCraft - 3D MMORPG</h2><p>Create your hero</p>
@@ -125,6 +128,7 @@
 <script src="src/js/combat.js"></script>
 <script src="src/js/enemy_ai.js"></script>
 <script src="src/js/ai_players.js"></script>
+<script src="src/js/pets.js"></script>
 <script src="src/js/input.js"></script>
 <script src="src/js/ui.js"></script>
 <script src="src/js/main.js"></script>

@@ -1,4 +1,7 @@
-
+/* fx.js - floating text, particles, rings, sound, log, timers */
+/* =====================================================================
+   FX, FLOATING TEXT, SOUND
+   ===================================================================== */
 var fxList = [];
 var floaters = [];
 var floatLayer = $('floaters');
@@ -105,6 +108,9 @@ function sfx(name) {
   }
 }
 
+/* =====================================================================
+   LOG / HUD HELPERS
+   ===================================================================== */
 var logEl = $('log');
 function log(text, color) {
   var d = h('div', null, text, logEl);
