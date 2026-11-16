@@ -72,7 +72,6 @@ function clearWorld() {
   portals.length = 0; clouds = []; weather = null;
 }
 
-/* scatter instanced props. parts: [{geo, mat, tint}]  o: {rMin, rMax, sMin, sMax, obs, gap, color(i), scaleFn(s), clear(x,z), shadow, y} */
 var _dm = new THREE.Object3D();
 function scatter(g, parts, n, o) {
   n = Math.round(n * AREA); var gridG = {}, GC = 8;

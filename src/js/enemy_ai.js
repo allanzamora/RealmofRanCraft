@@ -193,7 +193,7 @@ var WB = { map: null, t: 240, life: 0, e: null };   // first appearance ~4 minut
 var wbAlertT = null;
 function bossAlert(sub) {
   var el = $('boss-alert'); if (!el) return; $('ba-sub').textContent = sub; el.className = 'show'; clearTimeout(wbAlertT);
-  wbAlertT = setTimeout(function () { el.className = ''; }, 7000);
+  wbAlertT = setTimeout(function () { el.className = ''; }, 10000);
 }
 function wbMaps() { return MAPS.filter(function (m) { return !m.arena && !m.boss && !m.bossR; }); }
 function wbSpawn(m) {
@@ -210,8 +210,8 @@ function updateWorldBoss(dt) {
     if (WB.t <= 0) {
       var ms = wbMaps(); if (!ms.length) { WB.t = 600; return; }
       var m = ms[randInt(0, ms.length - 1)]; WB.map = m.id; WB.life = 1500; sfx('level');
-      log('⚠ WORLD BOSS: Dark Swordman has appeared in ' + m.name + '! Defeat him for 10-15 Godzilla Fragments.', '#ff5a5a');
-      bossAlert('Dark Swordman has appeared in ' + m.name + ' - 10-15 Godzilla Fragments!');
+      log('⚠ WORLD BOSS: Dark Swordman has appeared in ' + m.name + '! Defeat him for Exclusive rewards.', '#ff5a5a');
+      bossAlert('Dark Swordman has appeared in ' + m.name + ' - Exclusive rewards');
       if (curMap && curMap.id === m.id) wbSpawn(m);
     }
     return;

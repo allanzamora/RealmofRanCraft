@@ -1,7 +1,4 @@
-/* characters.js - procedural humanoid rig, weapons, name tags, animation, NPCs/bots/enemy creation */
-/* =====================================================================
-   HUMANOID CHARACTER RIG (procedural, articulated)
-   ===================================================================== */
+
 function makeHumanoid(o) {
   var def = { scale: 1, bulk: 1, thin: false, skin: 0xffcc99, shirt: 0x3366cc, pants: 0x333344, boots: 0x2a1c10, hair: 0x3a2616, eye: 0x111111 };
   for (var key in def) if (o[key] === undefined) o[key] = def[key];
@@ -77,7 +74,7 @@ function makeHumanoid(o) {
       [[-0.18, -0.18], [0.18, -0.18], [-0.18, 0.18], [0.18, 0.18], [0, 0.2], [0, -0.2], [-0.2, 0], [0.2, 0]].forEach(function (q, i) { cb(0.08, i < 4 ? 0.2 : 0.14, 0.08, gm2, q[0], i < 4 ? 0.14 : 0.11, q[1]); cb(0.045, 0.045, 0.045, i % 2 ? bl : rb, q[0], i < 4 ? 0.27 : 0.2, q[1]); });
       cb(0.07, 0.07, 0.03, rb, 0, 0.0, 0.225);
       cg.position.y = 0.42; cg.visible = false; head.add(cg); crownG = cg;
-      // Super Saiyan Hair (from the side-view picture): swept-back golden spikes + a long flat lock down the back
+
       var sg = new THREE.Group(), gold = M(0xc8c81a); gold.emissive.setHex(0x5a5a00); gold.userData.em = 0x5a5a00; gold.userData.emi = 1;
       var pale = M(0xdcdc3a); pale.emissive.setHex(0x6a6a00); pale.userData.em = 0x6a6a00; pale.userData.emi = 1;
       sg.userData.gold = gold; sg.userData.sway = []; sg.userData.arcs = [];
@@ -124,7 +121,7 @@ function makeHumanoid(o) {
       var auraM = new THREE.MeshBasicMaterial({ color: 0xffd54f, transparent: true, opacity: 0.28, side: THREE.DoubleSide, depthWrite: false });
       var au = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 0.75, 2.6, 18, 1, true), auraM); au.position.y = 1.0; au.visible = false; root.add(au); aura = au;
     }
-    if (o.hairStyles) {   // player hair styles: 0 short, 1 spiky, 2 long, 3 ponytail, 4 buzz, 5 mohawk, 6 bun
+    if (o.hairStyles) {  
       hairStyles = [hairMeshes.slice()];
       var hs = function (list) { list.forEach(function (m) { m.visible = false; }); hairStyles.push(list); };
       var sp = []; for (var si = -1; si <= 1; si++) for (var sj = -1; sj <= 1; sj++) sp.push(add(box(0.09, 0.14 + ((si + sj) & 1) * 0.06, 0.09), hm, head, si * 0.12, 0.47, sj * 0.12, true));
@@ -207,7 +204,7 @@ function makeHumanoid(o) {
     var kn = new THREE.Group(); kn.position.y = -0.46; hp.add(kn);
     add(box(0.22 * th, 0.36, 0.23 * th), (o.shin !== undefined ? M(o.shin) : pantsMat), kn, 0, -0.18, 0);
     add(box(0.25, 0.1, 0.3), M(o.boots), kn, 0, -0.41, 0.03);
-    if (o.gear) {   // Godzilla pants: cyan knee plate + thigh stripes
+    if (o.gear) {   
       gz(gzPantsMeshes, box(0.27, 0.1, 0.27), gzTrim, kn, 0, 0.02, 0);
       gz(radPantsMeshes, box(0.27, 0.1, 0.27), radGold, kn, 0, 0.02, 0); gz(radPantsMeshes, box(0.05, 0.3, 0.03), radTeal, hp, 0, -0.22, 0.125); gz(radPantsMeshes, box(0.27, 0.06, 0.26), radGold, kn, 0, -0.3, 0);
       for (var ti = 0; ti < 3; ti++) gz(gzPantsMeshes, box(0.2 - ti * 0.05, 0.03, 0.02), gzTrim, hp, 0, -0.1 - ti * 0.07, 0.125);
