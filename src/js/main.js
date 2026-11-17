@@ -30,13 +30,16 @@ var last = performance.now(), fpsAcc = 0, fpsN = 0, saveT = 0, hudT = 0, miniT =
 var targetRing = new THREE.Mesh(new THREE.RingGeometry(0.9, 1.1, 32), new THREE.MeshBasicMaterial({ color: 0xff4a4a, side: THREE.DoubleSide, transparent: true, opacity: 0.9, depthWrite: false }));
 targetRing.rotation.x = -Math.PI / 2; targetRing.visible = false; scene.add(targetRing);
 
+var welcomeOn = true;
+cam.dist = 85; cam.pitch = 0.78;      // welcome backdrop: Moviex Plains fully zoomed out
 function frame(now) {
   requestAnimationFrame(frame);
   var dt = Math.min(0.05, (now - last) / 1000); last = now;
   fpsAcc += dt; fpsN++;
   if (fpsAcc > 1) { $('fps').textContent = Math.round(fpsN / fpsAcc) + ' FPS'; fpsAcc = 0; fpsN = 0; }
-  updateZoomHold(dt);
-  if (ui.open !== 'name') {      // popups no longer pause the game (only the first-launch name screen does)
+  updateZoomHold(dt); updateAntiCheat(dt);
+  if (welcomeOn) cam.yaw += dt * 0.05;
+  if (ui.open !== 'name' && !welcomeOn) {      // popups no longer pause the game (only the first-launch name screen does)
     gameTime += dt; updateTimers(dt); updatePlayer(dt); updatePets(dt); updateCostumeFx(dt); updateEnemies(dt); updateWorldBoss(dt); updateAIs(dt); updateBots(dt); updatePickups(dt);
     saveT += dt; if (saveT > 15) { saveT = 0; saveGame(); }
   }
@@ -63,6 +66,7 @@ window.addEventListener('resize', function () { camera.aspect = window.innerWidt
 var freshGame = true;
 try { freshGame = !localStorage.getItem(SAVE_KEY); } catch (e) {}
 loadGame(); refreshPetBtn();
+freshGame = !P.named;
 P.c.name = P.name;
 applyEquipVisuals(); P.c.lvl = P.lvl; 
 P.hp = maxHp(); P.mp = maxMp(); refreshPlayerTag(true);
@@ -71,7 +75,7 @@ layoutActions(); refreshSkillButtons();
 updateHud();
 log('Welcome to Realm of RanCraft! Talk to Elder Rowan (!) to begin.', '#ffe066');
 log('Joystick: bottom-left. Pinch or +/- to zoom. Portal ring = World Map.', '#cfd8ff');
-(function () {     // loading bar finishes, then the splash fades out
+function runBoot() {     // loading bar finishes, then the splash fades out
   var boot = $('boot'), fill = $('boot-fill'), pct = $('boot-pct'), t0 = performance.now(), DUR = 1600;
   (function step() {
     var p = Math.min(1, (performance.now() - t0) / DUR); fill.style.width = (p * 100).toFixed(0) + '%'; pct.textContent = 'Loading... ' + (p * 100).toFixed(0) + '%';
@@ -79,5 +83,10 @@ log('Joystick: bottom-left. Pinch or +/- to zoom. Portal ring = World Map.', '#c
     boot.style.opacity = '0'; setTimeout(function () { boot.style.display = 'none'; }, 650);
     if (freshGame) openNameScreen();
   })();
-})();
+}
+$('w-play').addEventListener('click', function () {
+  var w = $('welcome'); w.style.opacity = '0'; setTimeout(function () { w.style.display = 'none'; }, 500);
+  cam.dist = 9.5; cam.pitch = 0.42; cam.yaw = 0; welcomeOn = false;
+  var b = $('boot'); b.style.display = 'block'; b.style.opacity = '1'; runBoot();
+});
 requestAnimationFrame(frame);

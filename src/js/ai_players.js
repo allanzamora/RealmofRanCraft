@@ -27,6 +27,7 @@ function makeAI(name, lvl, m) {
     hair: pick([0x2a1a10, 0x1a1a1a, 0xd8c040, 0x6a3a1a, 0xaa3a3a, 0x3a5aa0]), boots: 0x3a2a1a, gear: semi };
   if (t >= 2) { look.pads = true; look.padColor = tc; look.armor = tc; }
   var c = newChar(look, name, lvl, '#9be3ff', true, { kind: t >= 4 ? 'greatsword' : (Math.random() < 0.2 ? 'dagger' : 'sword'), color: tc, glow: t >= 5 });
+  c.sheath = true;
   if (semi) {
     var r = c.rig;
     r.armor.visible = true; r.armorMat.color.setHex(tc); r.padMeshes.forEach(function (x) { x.visible = true; }); r.padMat.color.setHex(tc);
@@ -251,7 +252,7 @@ function aiThink(a, tgt, d) {
 function aiMount(a, on, vis) {
   if (a.lvl < AI_MOUNT_LVL) return;
   if (!!a.mounted === on) return;
-  a.mounted = on;
+  a.mounted = on; a.c.forceSheath = on;
   if (on && vis && !a.mount) { a.mount = makeCrocMount(); a.c.g.add(a.mount.g); }
   if (a.mount) a.mount.g.visible = on;
   if (!on) a.c.rig.body.position.y = 0;
@@ -260,7 +261,7 @@ function aiMount(a, on, vis) {
 function aiMountAnim(a, dt) {
   if (!a.mounted || !a.mount) { if (a.mount && a.mount.g.visible && !a.mounted) a.mount.g.visible = false; return; }
   var r = a.c.rig, t = performance.now() / 1000, mv = a.c.mv, ph = a.c.phase * 0.9, m = a.mount; m.g.visible = true;
-  r.body.position.y += MOUNT_H; r.legR.hp.rotation.x = r.legL.hp.rotation.x = -1.15; r.legR.kn.rotation.x = r.legL.kn.rotation.x = 0.8;
+  r.body.position.y += MOUNT_H; r.armR.sh.rotation.x = -0.9; r.armR.el.rotation.x = -0.9; r.armL.sh.rotation.x = -0.45; r.armL.el.rotation.x = -0.8; r.torso.rotation.y = 0; r.legR.hp.rotation.x = r.legL.hp.rotation.x = -1.15; r.legR.kn.rotation.x = r.legL.kn.rotation.x = 0.8;
   for (var i = 0; i < m.tail.length; i++) m.tail[i].rotation.y = Math.sin(t * (2.2 + mv * 5) - i * 0.7) * (0.12 + 0.2 * mv);
   for (var k = 0; k < 4; k++) m.legs[k].rotation.x = Math.sin(ph + (k === 0 || k === 3 ? 0 : Math.PI)) * 0.6 * Math.min(1, mv);
 }

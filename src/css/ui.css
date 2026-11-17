@@ -313,3 +313,28 @@ input[type=range]{width:100%}
 #panel.hasprev .item .nm{flex:1 1 90px;min-width:0}
 #panel.hasprev .item>button,#panel.hasprev .item>.tag{margin:4px 4px 0 0}
 #panel.hasprev .slotrow{flex-wrap:wrap}
+
+/* welcome page */
+#welcome{position:fixed;z-index:150;left:0;top:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:14px;box-sizing:border-box;background:radial-gradient(ellipse at center,rgba(8,12,28,.45),rgba(8,12,28,.82));transition:opacity .5s;color:#f1f1f1;font-family:system-ui,Arial,sans-serif}
+#welcome-card{width:min(560px,100%);max-height:100%;display:flex;flex-direction:column;align-items:center;text-align:center;background:rgba(12,16,34,.72);border:1px solid rgba(255,224,130,.45);border-radius:16px;padding:18px 18px 12px;box-shadow:0 8px 40px rgba(0,0,0,.6);backdrop-filter:blur(3px)}
+#w-logo{max-width:min(220px,55%);max-height:22vh;object-fit:contain;margin-bottom:6px}
+#welcome h1{margin:4px 0 6px;font-size:clamp(22px,6vw,34px);color:#ffe9a8;text-shadow:0 0 14px #ff9800,0 3px 6px #000;line-height:1.15}
+#welcome h2{margin:10px 0 6px;font-size:clamp(17px,4.5vw,22px);color:#ffd54f}
+#welcome p{margin:4px 0 10px;font-size:clamp(14px,3.8vw,16px);line-height:1.4;color:#e6e6e6}
+#w-play{font-size:clamp(18px,5vw,22px);font-weight:900;padding:12px 34px;border:0;border-radius:30px;color:#2a1700;background:linear-gradient(#ffe066,#ffa000);box-shadow:0 4px 0 #a15c00,0 0 18px rgba(255,170,0,.6);cursor:pointer;animation:wpulse 1.6s infinite}
+#w-play:active{transform:translateY(3px);box-shadow:0 1px 0 #a15c00}
+@keyframes wpulse{50%{box-shadow:0 4px 0 #a15c00,0 0 30px rgba(255,200,0,.95)}}
+#w-scroll{width:100%;margin-top:10px;overflow-y:auto;-webkit-overflow-scrolling:touch;text-align:left;padding-right:4px}
+#w-scroll ul{margin:0;padding-left:20px;font-size:clamp(13px,3.6vw,15px);line-height:1.45}
+#w-scroll li{margin-bottom:5px}
+#w-scroll b{color:#ffe066}
+#welcome .w-small{font-size:12px;color:#aab;text-align:center;margin:8px 0 2px}
+/* whole welcome content scrolls together */
+#welcome-card{display:block;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+#welcome-card #w-logo{display:block;margin:0 auto 6px}
+#welcome-card #w-play{display:block;margin:6px auto 0}
+#w-scroll{overflow:visible}
+
+#ac-banner{position:fixed;z-index:400;left:50%;top:14%;transform:translateX(-50%);max-width:88%;padding:10px 16px;border-radius:10px;background:rgba(120,10,10,.92);border:2px solid #ff5a5a;color:#fff;font-weight:700;font-size:14px;text-align:center;opacity:0;transition:opacity .4s;pointer-events:none}
+#b-walk{background:#1f8a8a;border-color:#0b3d3d}
+#b-attack .ic{font-size:28px}#b-attack .lb{font-size:9px}

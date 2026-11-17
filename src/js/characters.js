@@ -1,4 +1,7 @@
-
+/* characters.js - procedural humanoid rig, weapons, name tags, animation, NPCs/bots/enemy creation */
+/* =====================================================================
+   HUMANOID CHARACTER RIG (procedural, articulated)
+   ===================================================================== */
 function makeHumanoid(o) {
   var def = { scale: 1, bulk: 1, thin: false, skin: 0xffcc99, shirt: 0x3366cc, pants: 0x333344, boots: 0x2a1c10, hair: 0x3a2616, eye: 0x111111 };
   for (var key in def) if (o[key] === undefined) o[key] = def[key];
@@ -74,7 +77,7 @@ function makeHumanoid(o) {
       [[-0.18, -0.18], [0.18, -0.18], [-0.18, 0.18], [0.18, 0.18], [0, 0.2], [0, -0.2], [-0.2, 0], [0.2, 0]].forEach(function (q, i) { cb(0.08, i < 4 ? 0.2 : 0.14, 0.08, gm2, q[0], i < 4 ? 0.14 : 0.11, q[1]); cb(0.045, 0.045, 0.045, i % 2 ? bl : rb, q[0], i < 4 ? 0.27 : 0.2, q[1]); });
       cb(0.07, 0.07, 0.03, rb, 0, 0.0, 0.225);
       cg.position.y = 0.42; cg.visible = false; head.add(cg); crownG = cg;
-
+      // Super Saiyan Hair (from the side-view picture): swept-back golden spikes + a long flat lock down the back
       var sg = new THREE.Group(), gold = M(0xc8c81a); gold.emissive.setHex(0x5a5a00); gold.userData.em = 0x5a5a00; gold.userData.emi = 1;
       var pale = M(0xdcdc3a); pale.emissive.setHex(0x6a6a00); pale.userData.em = 0x6a6a00; pale.userData.emi = 1;
       sg.userData.gold = gold; sg.userData.sway = []; sg.userData.arcs = [];
@@ -121,7 +124,7 @@ function makeHumanoid(o) {
       var auraM = new THREE.MeshBasicMaterial({ color: 0xffd54f, transparent: true, opacity: 0.28, side: THREE.DoubleSide, depthWrite: false });
       var au = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 0.75, 2.6, 18, 1, true), auraM); au.position.y = 1.0; au.visible = false; root.add(au); aura = au;
     }
-    if (o.hairStyles) {  
+    if (o.hairStyles) {   // player hair styles: 0 short, 1 spiky, 2 long, 3 ponytail, 4 buzz, 5 mohawk, 6 bun
       hairStyles = [hairMeshes.slice()];
       var hs = function (list) { list.forEach(function (m) { m.visible = false; }); hairStyles.push(list); };
       var sp = []; for (var si = -1; si <= 1; si++) for (var sj = -1; sj <= 1; sj++) sp.push(add(box(0.09, 0.14 + ((si + sj) & 1) * 0.06, 0.09), hm, head, si * 0.12, 0.47, sj * 0.12, true));
@@ -204,7 +207,7 @@ function makeHumanoid(o) {
     var kn = new THREE.Group(); kn.position.y = -0.46; hp.add(kn);
     add(box(0.22 * th, 0.36, 0.23 * th), (o.shin !== undefined ? M(o.shin) : pantsMat), kn, 0, -0.18, 0);
     add(box(0.25, 0.1, 0.3), M(o.boots), kn, 0, -0.41, 0.03);
-    if (o.gear) {   
+    if (o.gear) {   // Godzilla pants: cyan knee plate + thigh stripes
       gz(gzPantsMeshes, box(0.27, 0.1, 0.27), gzTrim, kn, 0, 0.02, 0);
       gz(radPantsMeshes, box(0.27, 0.1, 0.27), radGold, kn, 0, 0.02, 0); gz(radPantsMeshes, box(0.05, 0.3, 0.03), radTeal, hp, 0, -0.22, 0.125); gz(radPantsMeshes, box(0.27, 0.06, 0.26), radGold, kn, 0, -0.3, 0);
       for (var ti = 0; ti < 3; ti++) gz(gzPantsMeshes, box(0.2 - ti * 0.05, 0.03, 0.02), gzTrim, hp, 0, -0.1 - ti * 0.07, 0.125);
@@ -309,8 +312,9 @@ function makeHumanoid(o) {
     hairMeshes: hairMeshes, hairStyles: hairStyles, crownG: crownG, maskG: maskG, ssjWings: ssjWings, ssjG: ssjG, aura: aura, skirt: skirt, hairMat: hm, shirtMats: shirtMats, wingMat: wingMat, wingsG: wingsG, wingsG2: wingsG2, wingsG3: wingsG3, wingMat2: wingMat2, gzTrim: gzTrim, radArmorMeshes: radArmorMeshes, radGloveMeshes: radGloveMeshes, radPantsMeshes: radPantsMeshes, gzArmorMeshes: gzArmorMeshes, gzGloveMeshes: gzGloveMeshes, gzPantsMeshes: gzPantsMeshes, wings: wings, godG: godG, godMat: godMat, flameMat: flameMat } };
 }
 
+
 function setWeapon(c, kind, color, glow) {
-  var holder = c.rig.wpn; c.wMat = null;
+  var holder = c.rig.wpn; c.wMat = null; c.wSpikes = null;
   while (holder.children.length) {
     var o = holder.children[0]; holder.remove(o);
     if (o.geometry) o.geometry.dispose();
@@ -453,15 +457,30 @@ function startDeath(c, pos) {
   });
 }
 
+
+/* ---- weapon on the back when not fighting / riding (player + AI players: c.sheath = true) ---- */
+function setSheath(c, mode) {            // mode: 'hand' | 'back' | 'shoulder' (walk carry)
+  if (c.sheathed === mode) return; c.sheathed = mode;
+  var w = c.rig.wpn; if (w.parent) w.parent.remove(w);
+  if (mode === 'back') { c.rig.torso.add(w); w.position.set(0.28, 0.72, -0.3); w.rotation.set(0.05, 0, Math.PI - 0.55); w.scale.setScalar(0.72); }   // handle level with the helmet, blade points down across the back
+  else if (mode === 'carry') { c.rig.armR.el.add(w); w.position.set(0, -0.26, 0); w.rotation.set(4.0, 0, 0.1); w.scale.setScalar(1); }   // walk: relaxed grip, blade trails pointing down/back (Ran Online style)
+  else { c.rig.armR.el.add(w); w.position.set(0, -0.26, 0); w.rotation.set(1.9, 0, 0); w.scale.setScalar(1); }
+}
+function updateSheath(c, a, dt) {
+  if (!c.sheath) return;
+  if (a && (a.type === 'attack' || a.type === 'spin' || a.type === 'cast')) c.drawT = 1.0; else c.drawT = Math.max(0, (c.drawT || 0) - dt);
+  var busy = a && (a.type === 'attack' || a.type === 'spin' || a.type === 'cast');
+  setSheath(c, busy ? 'hand' : (c.carry || c.forceSheath || c.drawT <= 0) ? 'back' : 'hand');
+}
 function animateChar(c, dt, spd) {
   if (c.croc) animCroc(c, dt, spd);
   var r = c.rig, t = performance.now() / 1000;
   c.mv = lerp(c.mv, clamp(spd / 4.2, 0, 1.3), Math.min(1, dt * 12));
-  c.phase += dt * spd * 1.9 / Math.sqrt(c.scale);
+  c.phase += dt * spd * (c.carry ? 3.0 : 1.9) / Math.sqrt(c.scale);
   var mv = c.mv, sw = Math.sin(c.phase), co = Math.cos(c.phase);
   var aR = -0.2 + sw * 0.25 * mv, eR = -0.9 - 0.15 * mv;
   var aL = -sw * 0.55 * mv, eL = -0.25 - 0.25 * mv * (sw > 0 ? 1 : 0.3);
-  var tw = sw * 0.1 * mv, lean = 0.04 * mv, lunge = 0, bodyYaw = 0, bodyRX = 0, bodyY = 0, armLZ = 0, armRZ = 0, headX = 0;
+  var tw = sw * 0.1 * mv, lean = 0.26 * mv, lunge = 0, bodyYaw = 0, bodyRX = 0, bodyY = 0, armLZ = 0, armRZ = 0, headX = 0;
   var a = c.anim;
   if (a) {
     a.t += dt;
@@ -480,16 +499,21 @@ function animateChar(c, dt, spd) {
     }
     if (a.type !== 'death' && a.t >= a.dur) c.anim = null;
   }
+  updateSheath(c, a, dt);
   if (c.hitT > 0) { c.hitT -= dt; lean -= c.hitT * 1.2; }
+  var carry = !!c.carry && !a && mv > 0.05, kneeB = 0, hipK = 1;
+  if (carry) {      // shoulder-carry jog: right arm up/back holding the sword on the shoulder, left arm swings, forward lean, bent knees, head down
+    lean = 0.1; tw = sw * 0.1 * mv; kneeB = 0.12; hipK = 1.1; headX = 0.04;      // walk: relaxed natural arm swing, small forward lean (run leans more); sword stays on the back
+  }
 
-  r.legR.hp.rotation.x = -sw * 0.75 * mv; r.legL.hp.rotation.x = sw * 0.75 * mv;
-  r.legR.kn.rotation.x = Math.max(0, co) * 0.95 * mv; r.legL.kn.rotation.x = Math.max(0, -co) * 0.95 * mv;
+  r.legR.hp.rotation.x = -sw * 0.75 * hipK * mv; r.legL.hp.rotation.x = sw * 0.75 * hipK * mv;
+  r.legR.kn.rotation.x = kneeB + Math.max(0, co) * 0.95 * mv; r.legL.kn.rotation.x = kneeB + Math.max(0, -co) * 0.95 * mv;
   r.armR.sh.rotation.x = aR; r.armR.el.rotation.x = eR; r.armR.sh.rotation.z = 0.08 + armRZ;
   r.armL.sh.rotation.x = aL; r.armL.el.rotation.x = eL; r.armL.sh.rotation.z = -0.08 + armLZ;
   r.torso.rotation.y = tw; r.torso.rotation.x = lean;
   r.head.rotation.y = -tw * 0.5; r.head.rotation.x = headX - lean * 0.5;
   r.torso.scale.y = 1 + Math.sin(t * 2 + c.phase * 0.0) * 0.012;
-  r.hips.position.y = 0.97 + Math.abs(co) * 0.035 * mv;
+  r.hips.position.y = 0.97 - kneeB * 0.12 + Math.abs(co) * 0.035 * mv;
   if (a && a.type === 'death') { var dk = c.deathKnee || 0; r.legR.hp.rotation.x = r.legL.hp.rotation.x = -1.0 * dk; r.legR.kn.rotation.x = r.legL.kn.rotation.x = 1.7 * dk; r.hips.position.y = 0.97 - 0.4 * dk; }
   r.body.rotation.y = bodyYaw; r.body.rotation.x = bodyRX; r.body.position.y = bodyY; r.body.position.z = lunge * 0.3;
   if (r.cape) r.cape.rotation.x = 0.08 + mv * 0.5 + Math.sin(t * 3 + c.phase) * 0.05;
@@ -529,7 +553,7 @@ function disposeChar(c) {
 /* ---------- player / NPC / bots / enemies ---------- */
 function wItem() { return ITEMS[P.equip.weapon] || ITEMS.weapon0; }
 var playerChar = newChar({ hairStyles: true, scale: 1, skin: 0xf0c8a0, shirt: 0x2f6fd0, pants: 0x353a48, hair: 0x2a1a10, pads: true, padColor: 0x8a97a6, boots: 0x3a2a1a, gear: true }, P.name, 1, '#7fd1ff', false, { kind: 'sword', color: 0x9b7653 });
-playerChar.tag.spr.visible = true;
+playerChar.sheath = true; playerChar.tag.spr.visible = true;
 P.c = playerChar; P.pos = playerChar.g.position;
 
 function applyLook(rig) {   // apply P.look (sex, hair style, colors) to a model (default: the player)
@@ -597,7 +621,23 @@ function applyEquipVisuals(tc, ov) {   // tc: optional preview character; ov: co
 }
 var UPG_COL = [0x9bd0ff, 0x6dff9a, 0xffd54f, 0xff7a2a, 0xff4fd8];
 function upgColor(l, t) { return l >= MAX_UPG ? new THREE.Color().setHSL((t * 0.6) % 1, 1, 0.6).getHex() : UPG_COL[Math.min(4, Math.floor(l / 10))]; }
+function updateWeaponSpikes(c, t) {      // +50 weapon: rotating rainbow spiky light rays around the blade
+  var w50 = c.upg && c.upg.some(function (u) { return u.lvl >= MAX_UPG && u.m === c.wMat; });
+  if (!w50) { if (c.wSpikes) { c.wSpikes.visible = false; } return; }
+  if (!c.wSpikes || !c.wSpikes.parent) {
+    var g = new THREE.Group(), ms = [];
+    for (var i = 0; i < 12; i++) {
+      var m = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55, depthWrite: false, blending: THREE.AdditiveBlending }); ms.push(m);
+      var long = i % 2 === 0, cone = new THREE.Mesh(new THREE.ConeGeometry(long ? 0.07 : 0.05, long ? 1.0 : 0.6, 4), m), a = i / 12 * TAU, rr = long ? 0.5 : 0.3;
+      cone.position.set(-Math.sin(a) * rr, 0.75 + Math.cos(a) * rr, 0); cone.rotation.z = a; g.add(cone);
+    }
+    g.userData.ms = ms; c.rig.wpn.add(g); c.wSpikes = g;
+  }
+  var s = c.wSpikes; s.visible = true; s.rotation.y = t * 2.5; var p = 0.85 + 0.25 * Math.sin(t * 6); s.scale.set(p, p, p);
+  s.userData.ms.forEach(function (m, i) { m.color.setHSL((t * 0.5 + i / 12) % 1, 1, 0.65); });
+}
 function updateUpg(c, dt, t) {
+  updateWeaponSpikes(c, t);
   if (!c.upg || !c.upg.length || c.flash > 0) return;
   var maxL = 0;
   for (var i = 0; i < c.upg.length; i++) {
@@ -656,6 +696,7 @@ function makeNpc(name, kind, x, z, look) {
   npcs.push(n); addObstacle(x, z, 0.6); return n;
 }
 function populateTown(m) {
+  if (m.noNPC) { npcQuest = null; return; }
   var hub = m.hub, RR = Math.max(10, m.safeR - 4);
   function rp(i) { var an = i / 11 * TAU + 0.5; return [Math.cos(an) * RR, Math.sin(an) * RR]; }   // NPCs stand on the edge of the safe zone
   var q0 = rp(0), q1 = rp(1), q2 = rp(2), q3 = rp(3), q4 = rp(4), q5 = rp(5), q6 = rp(6), q7 = rp(7), q8 = rp(8), q9 = rp(9), q10 = rp(10);

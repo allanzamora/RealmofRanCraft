@@ -129,6 +129,7 @@ function killEnemy(e, by) {
   startDeath(e.c, e.pos); e.c.tag.spr.visible = false;
   if (P.target === e) P.target = null;
   if (by) { aiGainXp(by, e.T); return; }       // an AI player got the kill: no loot/XP/quest for you
+  achCount(e);
   var xp = xpFor(e.T); if (xp > 0) xp = Math.round(xp * (1 + costumeSum('exp') / 100));   // costume EXP boost
   if (xp > 0) { spawnText('+' + xp + ' XP', P.pos, 'xp', 2.4); log('Defeated ' + e.T.name + '. +' + xp + ' XP', '#9fe3ff'); gainXp(xp); }
   else { spawnText('No EXP', P.pos, 'info', 2.4); log('Defeated ' + e.T.name + ' (level too low for EXP - loot only).', '#b8b8b8'); }
@@ -142,6 +143,7 @@ function killEnemy(e, by) {
     refreshMarkers(); saveGame();
   }
   if (e.T.boss) log(e.T.name + ' has fallen!', '#ff9a3a');
+  if (e.T.boss && curMap && curMap.bossRoom && Math.random() < 0.7) { P.diamonds += 1; spawnText('+1 Diamond', P.pos, 'xp', 3.0); log('The boss dropped 1 Diamond!', '#7fe9ff'); saveGame(); }
 }
 
 /* ---------- basic attack ---------- */
@@ -387,7 +389,12 @@ function tryDash() {
 
 /* ---------- mounts: buy at the Stable Master, ride with the RIDE button; attacking dismounts you ---------- */
 var MOUNT_SPEED = 1.7, AI_MOUNT_SPEED = 1.2, MOUNT_H = -0.12;
-var MOUNTS = { croc: { name: 'Crocodile', price: 25000, desc: 'Ride speed x1.7. You dismount automatically when you attack.' } };
+var MOUNTS = {
+  croc: { name: 'Crocodile', price: 25000, speed: 1.7, icon: '🐊', desc: 'Ride speed x1.7. You dismount automatically when you attack.' },
+  dragon: { name: 'Dragon', diamonds: 100, speed: 1.9, regen: 100, hover: 0.95, icon: '🐉', desc: 'A flying dragon! Ride speed x1.9 and +100 HP regen per second while riding it.' }
+};
+function mountSpeed() { var m = MOUNTS[P.mountSel]; return m ? m.speed : MOUNT_SPEED; }
+function mountRegen() { var m = MOUNTS[P.mountSel]; return (P.mounted && m && m.regen) ? m.regen : 0; }
 var mountObj = null;
 function makeCrocMount(crown) {
   var g = new THREE.Group(), tail = [], legs = [];
@@ -418,19 +425,59 @@ function makeCrocMount(crown) {
     box(0.24, 0.34, 0.3, dark, p[0] > 0 ? 0.08 : -0.08, -0.15, 0, lg); box(0.3, 0.07, 0.38, green, p[0] > 0 ? 0.12 : -0.12, -0.31, 0.06, lg);
     lg.userData.k = k; legs.push(lg);
   });
-  return { g: g, tail: tail, legs: legs };
+  var hd = new THREE.Group(); hd.position.set(0, 0.55, 2.3); g.add(hd);
+  return { g: g, tail: tail, legs: legs, head: hd };
+}
+
+/* ---------- Dragon mount (flying): flapping wings, long neck, horned head, wagging tail, fire glow ---------- */
+function makeDragonMount() {
+  var g = new THREE.Group(), tail = [], wings = [];
+  function M(c, ex) { var q = { color: c, roughness: 0.55, metalness: 0.15 }; if (ex) for (var k in ex) q[k] = ex[k]; return new THREE.MeshStandardMaterial(q); }
+  var red = M(0xc0261c), dark = M(0x6a120e), belly = M(0xf0c060, { emissive: 0x805010, emissiveIntensity: 0.4 }), horn = M(0xf4e8c0), eye = M(0xffee00, { emissive: 0xffcc00, emissiveIntensity: 1 });
+  var mem = M(0xff6a2a, { emissive: 0xff3a00, emissiveIntensity: 0.55, transparent: true, opacity: 0.82, side: THREE.DoubleSide }), fire = new THREE.MeshBasicMaterial({ color: 0xffa030, transparent: true, opacity: 0.85 });
+  function box(w, h, d, mat, x, y, z, par) { var m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat); m.position.set(x, y, z); m.castShadow = true; (par || g).add(m); return m; }
+  box(1.0, 0.62, 2.0, red, 0, 0.62, 0); box(0.8, 0.2, 1.8, belly, 0, 0.27, 0);                      // body + belly
+  for (var i = 0; i < 7; i++) { var sp = box(0.14, 0.26, 0.22, dark, 0, 1.0, -0.8 + i * 0.3); sp.rotation.x = -0.35; }   // back spikes
+  box(0.52, 0.5, 0.6, red, 0, 0.9, 1.2); box(0.44, 0.44, 0.55, red, 0, 1.25, 1.55);               // neck
+  box(0.52, 0.42, 0.7, red, 0, 1.52, 1.95); box(0.36, 0.24, 0.55, red, 0, 1.44, 2.5); box(0.32, 0.08, 0.5, belly, 0, 1.28, 2.45);   // head, snout, jaw
+  for (var t = 0; t < 4; t++) { box(0.05, 0.08, 0.06, horn, 0.15, 1.34, 2.3 + t * 0.12); box(0.05, 0.08, 0.06, horn, -0.15, 1.34, 2.3 + t * 0.12); }  // teeth
+  var h1 = box(0.1, 0.1, 0.55, horn, 0.18, 1.82, 1.7), h2 = box(0.1, 0.1, 0.55, horn, -0.18, 1.82, 1.7); h1.rotation.x = h2.rotation.x = -0.6;   // horns
+  box(0.12, 0.12, 0.12, eye, 0.27, 1.62, 2.12); box(0.12, 0.12, 0.12, eye, -0.27, 1.62, 2.12);
+  var fl = box(0.16, 0.16, 0.4, fire, 0, 1.46, 2.9, g); g.userData.fl = fl;                          // flickering fire at the snout
+  var par = g, wd = [0.7, 0.55, 0.42, 0.3, 0.2, 0.12], L = 0.5;                                       // tail: 6 tapering segments
+  for (var k = 0; k < 6; k++) {
+    var sg = new THREE.Group(); sg.position.set(0, k === 0 ? 0.65 : 0.02, k === 0 ? -1.0 : -L); par.add(sg);
+    box(wd[k], wd[k] * 0.7, L + 0.04, k % 2 ? dark : red, 0, 0, -L / 2, sg); box(0.08, 0.14, 0.16, dark, 0, wd[k] * 0.4, -L / 2, sg);
+    tail.push(sg); par = sg;
+  }
+  var tip = box(0.1, 0.3, 0.5, fire, 0, 0, -L - 0.2, par);                                           // flame tail tip
+  [1, -1].forEach(function (s) {                                                                     // wings (right wing built, left mirrored)
+    var w = new THREE.Group(); w.position.set(s * 0.5, 1.0, 0.1); w.scale.x = s; g.add(w);
+    box(2.0, 0.09, 0.09, dark, 1.0, 0, 0, w);
+    box(1.9, 0.02, 1.1, mem, 1.05, 0, -0.55, w); box(1.0, 0.02, 0.8, mem, 0.6, 0, -1.2, w);
+    var f1 = box(1.7, 0.05, 0.05, dark, 1.0, 0, -0.5, w); f1.rotation.y = 0.45; var f2 = box(1.3, 0.05, 0.05, dark, 0.8, 0, -0.9, w); f2.rotation.y = 0.9;
+    box(0.12, 0.12, 0.3, horn, 2.0, 0, 0.1, w);                                                      // wing claw
+    wings.push({ g: w, s: s });
+  });
+  var hd = new THREE.Group(); hd.position.set(0, 1.4, 2.7); g.add(hd);
+  return { g: g, tail: tail, legs: [], wings: wings, dragon: true, tip: tip, fl: fl, head: hd };
 }
 function applyMountVisual() {
-  if (!mountObj) { mountObj = makeCrocMount(); P.c.g.add(mountObj.g); }
-  mountObj.g.visible = !!P.mounted;
-  if (P.c.tag && P.c.tag.spr) P.c.tag.spr.position.y = P.mounted ? 2.75 : 2.6;
+  var wantD = P.mountSel === 'dragon';
+  if (mountObj && !!mountObj.dragon !== wantD) { P.c.g.remove(mountObj.g); if (mountObj.rope) mountObj.rope.forEach(function (s) { P.c.g.remove(s); }); if (mountObj.handAnchor && mountObj.handAnchor.parent) mountObj.handAnchor.parent.remove(mountObj.handAnchor); mountObj = null; }
+  if (!mountObj) { mountObj = wantD ? makeDragonMount() : makeCrocMount(); P.c.g.add(mountObj.g); }
+  mountObj.g.visible = !!P.mounted; P.c.forceSheath = !!P.mounted;
+  if (mountObj.rope) mountObj.rope.forEach(function (s) { s.visible = !!P.mounted; });
+  if (P.c.tag && P.c.tag.spr) P.c.tag.spr.position.y = P.mounted ? 2.75 + (wantD ? MOUNTS.dragon.hover : 0) : 2.6;
   if (!P.mounted) { P.c.rig.body.position.y = 0; }
 }
 function toggleMount() {
   if (P.dead) return;
-  if (P.mounted) { dismount('You get off your Crocodile.'); return; }
-  if (!P.mounts.croc) { log('You have no mount. Visit the Stable Master (Garrick) at the camp.', '#ffcc88'); return; }
-  P.mounted = true; applyMountVisual(); sfx('ui'); log('You ride your Crocodile! Speed x' + MOUNT_SPEED + '.', '#9ff59f');
+  var mm = MOUNTS[P.mountSel] || MOUNTS.croc;
+  if (P.mounted) { dismount('You get off your ' + mm.name + '.'); return; }
+  if (!P.mounts[P.mountSel]) { var any = Object.keys(P.mounts)[0]; if (any) P.mountSel = any; mm = MOUNTS[P.mountSel] || MOUNTS.croc; }
+  if (!P.mounts[P.mountSel]) { log('You have no mount. Visit the Stable Master (Garrick) at the camp.', '#ffcc88'); return; }
+  P.mounted = true; applyMountVisual(); sfx('ui'); log('You ride your ' + mm.name + '! Speed x' + mm.speed + (mm.regen ? ', +' + mm.regen + ' HP regen/s' : '') + '.', '#9ff59f');
 }
 function dismount(msg) {
   if (!P.mounted) return;
@@ -439,20 +486,53 @@ function dismount(msg) {
 function updateMount(dt, spd) {
   if (!P.mounted || !mountObj) return;
   var r = P.c.rig, t = performance.now() / 1000, mv = P.c.mv, ph = P.c.phase * 0.9;
-  r.body.position.y += MOUNT_H;                                   // rider sits on the croc's back
+  var hov = mountObj.dragon ? MOUNTS.dragon.hover + Math.sin(t * 2.4) * 0.1 : 0;
+  r.armR.sh.rotation.x = -0.95; r.armR.el.rotation.x = -0.85; r.armR.sh.rotation.z = 0.08;       // right hand holds the reins, left rests - no swinging while riding
+  r.armL.sh.rotation.x = -0.45; r.armL.el.rotation.x = -0.8; r.torso.rotation.y = 0;
+  r.body.position.y += MOUNT_H + hov;                             // rider sits on the mount's back (dragon hovers)
   r.legR.hp.rotation.x = -1.15; r.legL.hp.rotation.x = -1.15; r.legR.kn.rotation.x = 0.8; r.legL.kn.rotation.x = 0.8;
   for (var i = 0; i < mountObj.tail.length; i++) mountObj.tail[i].rotation.y = Math.sin(t * (2.2 + mv * 5) - i * 0.7) * (0.12 + 0.2 * mv);
-  for (var k = 0; k < 4; k++) { var lg = mountObj.legs[k]; lg.rotation.x = Math.sin(ph + (k === 0 || k === 3 ? 0 : Math.PI)) * 0.6 * Math.min(1, mv); }
-  mountObj.g.position.y = Math.abs(Math.sin(ph)) * 0.03 * mv;
+  for (var k = 0; k < mountObj.legs.length; k++) { var lg = mountObj.legs[k]; lg.rotation.x = Math.sin(ph + (k === 0 || k === 3 ? 0 : Math.PI)) * 0.6 * Math.min(1, mv); }
+  if (mountObj.dragon) {
+    mountObj.g.position.y = hov; mountObj.g.rotation.x = -0.1 * mv;
+    var fa = Math.sin(t * (4.5 + mv * 3)) * 0.6 + 0.2;                  // wing flap
+    mountObj.wings.forEach(function (w) { w.g.rotation.z = fa * w.s; });
+    var fs = 0.75 + Math.sin(t * 22) * 0.25; mountObj.fl.scale.set(fs, fs, 0.8 + fs * 0.5); mountObj.tip.scale.y = 0.8 + Math.sin(t * 17) * 0.3;
+  } else mountObj.g.position.y = Math.abs(Math.sin(ph)) * 0.03 * mv;
+  updateMountRope();
+}
+/* rope from the rider's right hand to the mount's head (6 sagging segments, positions computed in the rider's local space) */
+var ropeV = null, ropeUp = null, ropeA = null, ropeB = null;
+function updateMountRope() {
+  if (!mountObj || !mountObj.head || !(THREE.Quaternion && THREE.Quaternion.prototype.setFromUnitVectors)) return;
+  if (!ropeV) { ropeV = new THREE.Vector3(); ropeUp = new THREE.Vector3(0, 1, 0); ropeA = new THREE.Vector3(); ropeB = new THREE.Vector3(); }
+  var g = P.c.g, N = 6;
+  if (!mountObj.rope) {
+    mountObj.rope = []; var rm = new THREE.MeshStandardMaterial({ color: 0x8a5a2a, roughness: 0.9 });
+    mountObj.handAnchor = new THREE.Group(); mountObj.handAnchor.position.set(0, -0.3, 0.02); P.c.rig.armR.el.add(mountObj.handAnchor);
+    for (var i = 0; i < N; i++) { var s = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 1, 5), rm); g.add(s); mountObj.rope.push(s); }
+  }
+  g.updateMatrixWorld(true);
+  ropeA.setFromMatrixPosition(mountObj.handAnchor.matrixWorld); g.worldToLocal(ropeA);
+  ropeB.setFromMatrixPosition(mountObj.head.matrixWorld); g.worldToLocal(ropeB);
+  var prev = ropeA.clone(), dist = ropeA.distanceTo(ropeB), sag = 0.12 + dist * 0.06;
+  for (var k = 1; k <= N; k++) {
+    var u = k / N, nx = ropeA.x + (ropeB.x - ropeA.x) * u, ny = ropeA.y + (ropeB.y - ropeA.y) * u - Math.sin(u * Math.PI) * sag, nz = ropeA.z + (ropeB.z - ropeA.z) * u;
+    var seg = mountObj.rope[k - 1], dx = nx - prev.x, dy = ny - prev.y, dz = nz - prev.z, len = Math.sqrt(dx * dx + dy * dy + dz * dz) || 0.001;
+    seg.position.set((nx + prev.x) / 2, (ny + prev.y) / 2, (nz + prev.z) / 2); seg.scale.set(1, len, 1);
+    ropeV.set(dx / len, dy / len, dz / len); seg.quaternion.setFromUnitVectors(ropeUp, ropeV); seg.visible = true;
+    prev.set(nx, ny, nz);
+  }
 }
 function openMountShop(npc) { openPanel(npc.name + ' - Mounts', renderMountShop); }
 function renderMountShop(body) {
-  h('div', 'sec', 'Gold: ' + P.gold, body);
+  h('div', 'sec', 'Gold: ' + P.gold + '   ·   Diamonds: ' + P.diamonds, body);
   h('div', 'ds', 'Press RIDE (next to DASH) to mount or dismount. Attacking or using a skill makes you dismount automatically.', body);
   for (var id in MOUNTS) (function (id) {
-    var m = MOUNTS[id], r = h('div', 'item', null, body); iconEl(r, null, '🐊');
-    var nm = h('div', 'nm', null, r); h('div', null, m.name, nm); h('div', 'ds', m.desc + (P.mounts[id] ? '' : '  ·  ' + m.price + ' G + 12% tax = ' + buyCost(m.price) + ' G'), nm);
-    if (P.mounts[id]) { h('span', 'tag eq', 'OWNED', r); btn(r, P.mounted ? 'Dismount' : 'Ride', function () { toggleMount(); closePanel(); }, { cls: 'good' }); }
+    var m = MOUNTS[id], r = h('div', 'item', null, body); iconEl(r, null, m.icon);
+    var nm = h('div', 'nm', null, r); h('div', null, m.name, nm); h('div', 'ds', m.desc + (P.mounts[id] ? '' : (m.diamonds ? '  ·  ' + m.diamonds + ' 💎 Diamonds' : '  ·  ' + m.price + ' G + 12% tax = ' + buyCost(m.price) + ' G')), nm);
+    if (P.mounts[id]) { h('span', 'tag eq', 'OWNED', r); btn(r, (P.mounted && P.mountSel === id) ? 'Dismount' : 'Ride', function () { if (P.mounted && P.mountSel === id) { toggleMount(); } else { if (P.mounted) dismount(); P.mountSel = id; toggleMount(); } saveGame(); closePanel(); }, { cls: 'good' }); }
+    else if (m.diamonds) btn(r, 'Buy', function () { if (P.diamonds < m.diamonds) { log('Not enough Diamonds (' + m.diamonds + ' needed).', '#ff9a9a'); return; } P.diamonds -= m.diamonds; P.mounts[id] = true; P.mountSel = id; sfx('coin'); log('You got a ' + m.name + '! Press RIDE to fly.', '#ffe066'); saveGame(); rerender(); }, { disabled: P.diamonds < m.diamonds });
     else btn(r, 'Buy', function () { var cost = buyCost(m.price); if (P.gold < cost) { log('Not enough gold (price + 12% tax = ' + cost + ' G).', '#ff9a9a'); return; } P.gold -= cost; P.taxPaid += cost - m.price; P.mounts[id] = true; sfx('coin'); log('You bought a ' + m.name + '!', '#ffe066'); saveGame(); rerender(); }, { disabled: P.gold < buyCost(m.price), cls: 'good' });
   })(id);
 }
@@ -645,17 +725,22 @@ SKILL_EXEC.skelly = function (sk) {
   [[sk.radius, 0xb58cff, 0.5], [sk.radius * 0.72, 0xe8e4d0, -0.7], [sk.radius * 0.45, 0xb58cff, 0.9]].forEach(function (r, i) {
     schedule(i * 0.2, function () { groundRing(a.x, a.z, r[0], r[1], 5.2 - i * 0.2, r[2]); });
   });
-  var hm = makeHumanoid({ scale: 5, skin: 0xe8e4d0, shirt: 0xd8d2bc, pants: 0xcfc9b2, hair: null, bald: true, bone: true, eye: 0x9b6bff, eyeGlow: true, boots: 0xcfc9b2, sleeve: 0xd8d2bc, thin: true });
-  var sk3 = hm.root, r = hm.rig, T = 5.4, SM = [1.2, 1.9, 2.6, 3.3, 4.0];
-  setWeapon({ rig: r }, 'greatsword', 0x8a8f99);
-  sk3.position.set(a.x, -26, a.z); sk3.rotation.y = Math.atan2(P.pos.x - a.x, P.pos.z - a.z);
+  var hm = makeHumanoid({ scale: 10, skin: 0xf2f4f8, shirt: 0xe8ecf4, pants: 0xe0e4ee, hair: null, bald: true, bone: true, eye: 0x9b6bff, eyeGlow: true, boots: 0xe0e4ee, sleeve: 0xe8ecf4, thin: true });
+  var sk3 = hm.root, r = hm.rig, T = 5.4, SM = [1.2, 1.9, 2.6, 3.3, 4.0], BY = -9.5, BY0 = -40;   // 2x size; only the upper half of the body rises out of the ground
+  setWeapon({ rig: r }, 'fist');                                                                  // no weapon: smashes with its hands
+  sk3.traverse(function (o) {                                                                     // semi-transparent white ghost body, bones visible
+    if (!o.isMesh || !o.material) return;
+    var mm = o.material.clone ? o.material.clone() : o.material; mm.transparent = true; mm.opacity = 0.5; mm.depthWrite = false;
+    if (mm.emissive) { mm.emissive.setHex(0x9fb4d8); mm.emissiveIntensity = 0.35; } o.material = mm; o.castShadow = false; o.renderOrder = 3;
+  });
+  sk3.position.set(a.x, BY0, a.z); sk3.rotation.y = Math.atan2(P.pos.x - a.x, P.pos.z - a.z);
   schedule(0.5, function () {
     gfx(sk3, T, function (k) {
       var tt = k * T;
-      sk3.position.y = tt < 0.7 ? lerp(-26, 0, 1 - Math.pow(1 - tt / 0.7, 2)) : (tt > 4.7 ? -(tt - 4.7) * 40 : 0);
+      sk3.position.y = tt < 0.9 ? lerp(BY0, BY, 1 - Math.pow(1 - tt / 0.9, 2)) : (tt > 4.7 ? BY - (tt - 4.7) * 40 : BY);
       var up = 0;
       for (var q = 0; q < SM.length; q++) { var d = tt - (SM[q] - 0.6); if (d >= 0 && d < 0.6) up = d / 0.6; else if (d >= 0.6 && d < 0.8) up = 1 - (d - 0.6) / 0.2; }
-      var ang = lerp(-0.3, -2.8, up); r.armR.sh.rotation.x = ang; r.armL.sh.rotation.x = ang; r.torso.rotation.x = lerp(0, -0.25, up) + (up === 0 && tt > 1 ? 0.12 : 0);
+      var ang = lerp(-0.9, -2.8, up); r.armR.sh.rotation.x = ang; r.armL.sh.rotation.x = ang; r.torso.rotation.x = lerp(0, -0.25, up) + (up === 0 && tt > 1 ? 0.12 : 0);
     });
   });
   SM.forEach(function (t, i) {

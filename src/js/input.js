@@ -93,6 +93,8 @@ bindBtn('b-attack', function () { P.attackHeld = true; tryBasic(); }, function (
 for (var _i = 0; _i < SKILL_SLOTS; _i++) (function (i) { bindBtn('b-k' + (i + 1), function () { useSkillSlot(i); }); })(_i);
 bindBtn('b-dash', function () { tryDash(); });
 bindBtn('b-mount', function () { toggleMount(); });
+function refreshWalkBtn() { var b = $('b-walk'); b.querySelector('.ic').innerHTML = P.walk ? '&#128694;' : '&#127939;'; b.querySelector('.lb').textContent = P.walk ? 'WALK' : 'RUN'; }
+bindBtn('b-walk', function () { P.walk = !P.walk; refreshWalkBtn(); sfx('ui'); });
 bindBtn('b-hp', function () { usePotion('hp_potion'); });
 bindBtn('b-mp', function () { usePotion('mp_potion'); });
 tapBtn('m-nav', function () { openNav(); });
@@ -103,6 +105,7 @@ tapBtn('m-support', function () { openSupport(); });
 tapBtn('m-bag', function () { openBag(); });
 tapBtn('m-skill', function () { openSkills(); });
 tapBtn('m-quest', function () { openQuestLog(); });
+tapBtn('m-ach', function () { openAchievements(); });
 tapBtn('m-map', function () { openWorldMap(); });
 tapBtn('m-menu', function () { openSettings(); });
 tapBtn('btn-pk', function () { if (P.target && P.target.isAI) startPK(P.target); });
@@ -162,17 +165,17 @@ function getMove() {
 function layoutActions() {
   var W = window.innerWidth, H = window.innerHeight;
   var s = clamp(Math.min(W, H) / 380, 0.8, 1.15);
-  var sa = Math.round(54 * s), sk = Math.round(38 * s), g = sk + Math.round(6 * s);
+  var sa = Math.round(54 * s) + 20, sk = Math.round(38 * s), g = sk + Math.round(6 * s);
   var m = 8, cx = W - m - sa / 2, cy = H - m - sa / 2 - 2;
   function put(id, size, x, y) { var el = $(id); el.style.width = el.style.height = size + 'px'; el.style.left = (x - size / 2).toFixed(1) + 'px'; el.style.top = (y - size / 2).toFixed(1) + 'px'; }
   put('b-attack', sa, cx, cy);
-  var x1 = cx - sa / 2 - 4 - sk / 2;                      // bottom row (right -> left): ATTACK, SKILL1, SKILL2, DASH, HP, MP
-  var row0 = [x1, x1 - g]; put('b-k1', sk, row0[0], cy); put('b-k2', sk, row0[1], cy);
-  put('b-dash', sk, x1 - 2 * g, cy); put('b-mount', sk, x1 - 3 * g, cy); put('b-hp', sk, x1 - 4 * g, cy); put('b-mp', sk, x1 - 5 * g, cy);
-  var y1 = cy - sa / 2 - 4 - sk / 2;                      // second row: 2 skills
-  put('b-k3', sk, row0[0], y1); put('b-k4', sk, row0[1], y1);
+  var x1 = cx - sa / 2 - 4 - sk / 2;                      // bottom row (right -> left): ATTACK, DASH, RIDE, HP, MP
+  put('b-dash', sk, x1, cy); put('b-mount', sk, x1 - g, cy); put('b-hp', sk, x1 - 2 * g, cy); put('b-mp', sk, x1 - 3 * g, cy);
+  var y1 = cy - sa / 2 - 4 - sk / 2;                      // second row: 4 skills (+ WALK/RUN above ATTACK)
+  for (var j = 0; j < 4; j++) put('b-k' + (1 + j), sk, x1 - j * g, y1);
+  put('b-walk', sk, cx, y1);
   var y2 = y1 - g;                                        // top row: 4 skills
-  for (var j = 0; j < 4; j++) put('b-k' + (5 + j), sk, x1 - j * g, y2);
+  for (var q = 0; q < 4; q++) put('b-k' + (5 + q), sk, x1 - q * g, y2);
   joyBase.style.width = joyBase.style.height = Math.round(104 * s) + 'px';
   joyStick.style.width = joyStick.style.height = Math.round(42 * s) + 'px';
   joyStick.style.left = joyStick.style.top = Math.round((104 * s - 42 * s) / 2) + 'px';

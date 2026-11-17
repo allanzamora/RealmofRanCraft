@@ -1,6 +1,14 @@
 /* enemy_ai.js - per-map enemy spawning (radial level bands), enemy AI, bots + chat */
 function spawnEnemies(m) {
   if (m.arena) return;
+  if (m.bossRoom) {              // Boss Room: every boss spread on rings around the centre
+    var list = []; m.bossList.forEach(function (b) { for (var n0 = 0; n0 < b[1]; n0++) list.push(b[0]); });
+    list.forEach(function (key, i) {
+      var be = makeEnemy(key, 60, 60, true), ang = i / list.length * TAU + 0.4, rr = (i % 2 ? 62 : 100);
+      be.pos.set(Math.cos(ang) * rr, 0, Math.sin(ang) * rr); be.spawn.copy(be.pos); be.wx = be.pos.x; be.wz = be.pos.z; be.c.g.rotation.y = rand(0, TAU);
+    });
+    return;
+  }
   if (m.bossR) {
     makeEnemy(m.enemies[0], m.bossR, m.bossR, true);
     if (m.mobs) m.mobs.forEach(function (key) {              // mobs surround the boss area (never on the dais)
@@ -193,7 +201,7 @@ var WB = { map: null, t: 240, life: 0, e: null };   // first appearance ~4 minut
 var wbAlertT = null;
 function bossAlert(sub) {
   var el = $('boss-alert'); if (!el) return; $('ba-sub').textContent = sub; el.className = 'show'; clearTimeout(wbAlertT);
-  wbAlertT = setTimeout(function () { el.className = ''; }, 10000);
+  wbAlertT = setTimeout(function () { el.className = ''; }, 7000);
 }
 function wbMaps() { return MAPS.filter(function (m) { return !m.arena && !m.boss && !m.bossR; }); }
 function wbSpawn(m) {
@@ -210,8 +218,8 @@ function updateWorldBoss(dt) {
     if (WB.t <= 0) {
       var ms = wbMaps(); if (!ms.length) { WB.t = 600; return; }
       var m = ms[randInt(0, ms.length - 1)]; WB.map = m.id; WB.life = 1500; sfx('level');
-      log('⚠ WORLD BOSS: Dark Swordman has appeared in ' + m.name + '! Defeat him for Exclusive rewards.', '#ff5a5a');
-      bossAlert('Dark Swordman has appeared in ' + m.name + ' - Exclusive rewards');
+      log('⚠ WORLD BOSS: Dark Swordman has appeared in ' + m.name + '! Defeat him for 10-15 Godzilla Fragments.', '#ff5a5a');
+      bossAlert('Dark Swordman has appeared in ' + m.name + ' - 10-15 Godzilla Fragments!');
       if (curMap && curMap.id === m.id) wbSpawn(m);
     }
     return;
