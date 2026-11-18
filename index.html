@@ -4,12 +4,52 @@
 <meta charset="UTF-8">
 <meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#000000">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Realm of RanCraft - 3D MMORPG</title>
+<title>Realm of RanCraft - 3D MMORPG | Free Mobile Browser RPG</title>
+<meta name="description" content="Realm of RanCraft is a free 3D mobile MMORPG you play in your browser. Explore 12 maps, fight bosses, tame pets, collect costumes, craft gear and rebirth your hero. Tap Play Now!">
+<meta name="keywords" content="Realm of RanCraft, RanCraft, 3D MMORPG, mobile MMORPG, browser RPG, free online RPG, three.js game, boss fights, pets, costumes, Moviex Plains">
+<meta name="author" content="RanCraft">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#0b1020">
+<link rel="canonical" href="https://realmofrancraft.vercel.app/">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Realm of RanCraft">
+<meta property="og:title" content="Realm of RanCraft - 3D MMORPG">
+<meta property="og:description" content="Free 3D mobile MMORPG in your browser: 12 maps, world bosses, pets, costumes, crafting and rebirth.">
+<meta property="og:url" content="https://realmofrancraft.vercel.app/">
+<meta property="og:image" content="https://realmofrancraft.vercel.app/rancraft.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Realm of RanCraft - 3D MMORPG">
+<meta name="twitter:description" content="Free 3D mobile MMORPG in your browser. Fight bosses, tame pets, collect costumes.">
+<meta name="twitter:image" content="https://realmofrancraft.vercel.app/rancraft.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Realm of RanCraft - 3D MMORPG","url":"https://realmofrancraft.vercel.app/","image":"https://realmofrancraft.vercel.app/rancraft.png","description":"A free 3D mobile MMORPG played in the browser with 12 maps, bosses, pets, costumes and crafting.","genre":["MMORPG","Action RPG"],"gamePlatform":["Web browser","Android"],"applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <link rel="stylesheet" href="src/css/ui.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-<div id="boot"><div id="boot-bg"></div><div id="boot-bottom"><div id="boot-title">Realm of RanCraft - 3D MMORPG</div><div id="boot-note">This a work of fiction, Any name, items, maps etc. are fictional</div><div id="boot-bar"><div id="boot-fill"></div></div><div id="boot-pct">Loading... 0%</div></div></div>
+<div id="welcome"><div id="welcome-card">
+<img id="w-logo" src="rancraft.png" alt="Realm of RanCraft logo" onerror="this.style.display='none'">
+<h1>Realm of RanCraft - 3D MMORPG</h1>
+<p>Step into a free 3D fantasy world made for your phone. Fight monsters, defeat giant bosses, tame loyal pets and become a legend of the Realm - right in your browser, no download needed.</p>
+<button id="w-play">Play Now &raquo;</button>
+<br>
+<p>Follow us on <a href="https://www.facebook.com/realmofrancraft" target="_blank">Facebook</a> & <a href="https://youtube.com/realmofrancraft" target="_blank">Youtube</a>.</p>
+<div id="w-scroll">
+<h2>Game Features</h2>
+<ul>
+<li><b>12 Maps</b> - from peaceful Moviex Plains to dangerous boss lands and the Blood Arena.</li>
+<li><b>30+ Skills</b> - summon a giant skeleton, call down anvils and unleash energy waves.</li>
+<li><b>World Bosses</b> - Big Boss alerts appear at random, with big Godzilla Fragment loot.</li>
+<li><b>Pets</b> - healers, robots, dogs, fairies and birds that follow and help you.</li>
+<li><b>Costumes &amp; Diamonds</b> - wings, crowns, masks, swords and armor with special bonuses.</li>
+<li><b>Gear &amp; Crafting</b> - random stats, upgrades, rebirth and mounts.</li>
+<li><b>AI Players</b> - a lively world with bots, quests and NPC shops.</li>
+<li><b>Mobile First</b> - touch joystick, pinch zoom, auto-save in your browser.</li>
+</ul>
+<p class="w-small">This a work of fiction, any name, items, maps etc. are fictional.</p>
+</div></div></div>
+<div id="boot" style="display:none;opacity:0"><div id="boot-bg"></div><div id="boot-bottom"><div id="boot-title">Realm of RanCraft - 3D MMORPG</div><div id="boot-note">This a work of fiction, Any name, items, maps etc. are fictional</div><div id="boot-bar"><div id="boot-fill"></div></div><div id="boot-pct">Loading... 0%</div></div></div>
 <canvas id="game"></canvas>
 <div id="vignette"></div>
 <div id="boss-alert"><div class="ba1">&#9888; BIG BOSS IS COMING &#9888;</div><div class="ba2" id="ba-sub"></div></div>
@@ -55,6 +95,7 @@
   <div class="navbtn" id="m-bag"><b>&#127890;</b>Bag</div>
   <div class="navbtn" id="m-skill"><b>&#9876;</b>Skills</div>
   <div class="navbtn" id="m-quest"><b>&#128220;</b>Quest</div>
+  <div class="navbtn" id="m-ach"><b>&#127942;</b>Achievements</div>
   <div class="navbtn" id="m-map"><b>&#128506;</b>Map</div>
   <div class="navbtn" id="m-redeem"><b>&#127873;</b>Redeem Code</div>
   <div class="navbtn" id="m-support"><b>&#128153;</b>Support</div>
@@ -70,6 +111,7 @@
 <!-- Actions -->
 <div id="actions">
   <div class="abtn" id="b-attack"><span class="ic">&#9876;</span><span class="lb">ATTACK</span></div>
+  <div class="abtn" id="b-walk"><span class="ic">&#127939;</span><span class="lb">RUN</span></div>
   <div class="abtn" id="b-k1"></div>
   <div class="abtn" id="b-k2"></div>
   <div class="abtn" id="b-k3"></div>
@@ -111,6 +153,7 @@
 <script src="src/js/enemies.js"></script>
 <script src="src/js/quests.js"></script>
 <script src="src/js/player.js"></script>
+<script src="src/js/anticheat.js"></script>
 <script src="src/js/fx.js"></script>
 <script src="src/js/characters.js"></script>
 <script src="src/js/map_01.js"></script>
@@ -125,11 +168,13 @@
 <script src="src/js/map_10.js"></script>
 <script src="src/js/map_11.js"></script>
 <script src="src/js/map_12.js"></script>
+<script src="src/js/map_13.js"></script>
 <script src="src/js/combat.js"></script>
 <script src="src/js/enemy_ai.js"></script>
 <script src="src/js/ai_players.js"></script>
 <script src="src/js/pets.js"></script>
 <script src="src/js/input.js"></script>
+<script src="src/js/achievements.js"></script>
 <script src="src/js/ui.js"></script>
 <script src="src/js/main.js"></script>
 </body>
