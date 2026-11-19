@@ -75,7 +75,14 @@ function clearWorld() {
 /* scatter instanced props. parts: [{geo, mat, tint}]  o: {rMin, rMax, sMin, sMax, obs, gap, color(i), scaleFn(s), clear(x,z), shadow, y} */
 var _dm = new THREE.Object3D();
 function scatter(g, parts, n, o) {
-  n = Math.round(n * AREA); var gridG = {}, GC = 8;
+  n = Math.max(1, Math.round(n * AREA * GQ().prop)); var gridG = {}, GC = 8;
+  if (S.gfx === 'low') {                                    // Low graphics: every prop becomes one semi-transparent box (1 draw call per prop group)
+    var bb = null; try { parts.forEach(function (p) { p.geo.computeBoundingBox(); var b = p.geo.boundingBox; if (!bb) bb = { x0: b.min.x, x1: b.max.x, y0: b.min.y, y1: b.max.y, z0: b.min.z, z1: b.max.z }; else { bb.x0 = Math.min(bb.x0, b.min.x); bb.x1 = Math.max(bb.x1, b.max.x); bb.y0 = Math.min(bb.y0, b.min.y); bb.y1 = Math.max(bb.y1, b.max.y); bb.z0 = Math.min(bb.z0, b.min.z); bb.z1 = Math.max(bb.z1, b.max.z); } }); } catch (e) { bb = null; }
+    if (!bb) bb = { x0: -0.5, x1: 0.5, y0: 0, y1: 1, z0: -0.5, z1: 0.5 };
+    var bg = geoUp(new THREE.BoxGeometry(bb.x1 - bb.x0, bb.y1 - bb.y0, bb.z1 - bb.z0), (bb.y0 + bb.y1) / 2);
+    var bc = parts[0].mat && parts[0].mat.color ? parts[0].mat.color.getHex() : 0x888888;
+    parts = [{ geo: bg, mat: new THREE.MeshBasicMaterial({ color: bc, transparent: true, opacity: 0.38, depthWrite: false }) }]; o = Object.assign({}, o, { shadow: false, color: null });
+  }
   var ims = parts.map(function (p) {
     var im = new THREE.InstancedMesh(p.geo, p.mat, n);
     im.frustumCulled = false; im.castShadow = o.shadow !== false; im.receiveShadow = !!o.receive;
@@ -148,7 +155,7 @@ function buildCamp(g, m) {
 
 function buildEnvironment(m) {
   var T = m.theme, g = worldGroup;
-  scene.background = new THREE.Color(T.sky); scene.fog = new THREE.Fog(T.sky, T.fog[0], T.fog[1]);
+  scene.background = new THREE.Color(T.sky); scene.fog = new THREE.Fog(T.sky, T.fog[0] * GQ().fog, T.fog[1] * GQ().fog);
   hemi.color.setHex(T.hemi[0]); hemi.groundColor.setHex(T.hemi[1]); hemi.intensity = T.hemi[2]; sun.color.setHex(T.sun);
   var ground = new THREE.Mesh(new THREE.PlaneGeometry(m.R * 2 + 600, m.R * 2 + 600), new THREE.MeshStandardMaterial({ map: groundTexture(m), roughness: 1 }));
   ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; g.add(ground);
@@ -169,7 +176,7 @@ function buildEnvironment(m) {
   // weather particles (snow / embers / spores)
   var kind = m.weather;
   if (kind) {
-    var N = 320, pos = new Float32Array(N * 3);
+    var N = Math.max(40, Math.round(320 * GQ().wx)), pos = new Float32Array(N * 3);
     for (var p = 0; p < N; p++) { pos[p * 3] = rand(-30, 30); pos[p * 3 + 1] = rand(0, 22); pos[p * 3 + 2] = rand(-30, 30); }
     var geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
     var col = kind === 'snow' ? 0xffffff : (kind === 'ember' ? 0xff7a2a : 0xd8ffa0);

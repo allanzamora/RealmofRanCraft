@@ -14,7 +14,7 @@ function aiStats(a) {
   a.T = { name: a.name, lvl: l, scale: 1, boss: false, def: a.def * 0.6, atk: a.atk, xp: 0, gold: [0, 0] };
 }
 function aiKit(a) {      // 8 slots: the 6 strongest attack skills for its level + 2 buffs (falls back to heal/shield/regen)
-  var el = SKILL_ORDER.filter(function (id) { return SKILLS[id].lvl <= a.lvl; }), byLvl = function (x, y) { return SKILLS[y].lvl - SKILLS[x].lvl; };
+  var el = SKILL_ORDER.filter(function (id) { return SKILLS[id].lvl <= a.lvl && !SKILLS[id].noAI; }), byLvl = function (x, y) { return SKILLS[y].lvl - SKILLS[x].lvl; };
   var atk = el.filter(function (id) { return AI_DMG_KINDS[SKILLS[id].kind]; }).sort(byLvl).slice(0, 6);
   var bf = el.filter(function (id) { return SKILLS[id].kind === 'buff'; }).sort(byLvl).slice(0, 2);
   if (bf.length < 2) el.filter(function (id) { var k = SKILLS[id].kind; return k === 'heal' || k === 'shield' || k === 'hot'; }).sort(byLvl).forEach(function (id) { if (bf.length < 2) bf.push(id); });
@@ -52,6 +52,7 @@ function aiRareGear(a, role) {
   while (got.length < n) { var k = pool[randInt(0, pool.length - 1)]; if (got.indexOf(k) < 0) got.push(k); }
   got.forEach(function (id) {
     if (id === 'godzilla_sword') setWeapon(c, 'godsword', 0x939a3b, true);
+    else if (id === 'godzilla_bow') setWeapon(c, 'godbow', 0x4d9fd8, true);
     else if (id === 'god_helmet') { r.helmMeshes.forEach(function (x) { x.visible = false; }); r.hairMeshes.forEach(function (x) { x.visible = false; }); if (r.godG) r.godG.visible = true; }
     else if (id === 'godset_armor') { r.armor.visible = true; r.armorMat.color.setHex(bl); r.padMeshes.forEach(function (x) { x.visible = true; }); r.padMat.color.setHex(bl); r.gzArmorMeshes.forEach(function (x) { x.visible = true; }); }
     else if (id === 'godset_gloves') { r.gloveMeshes.forEach(function (x) { x.visible = true; }); r.glovesMat.color.setHex(bl); r.gzGloveMeshes.forEach(function (x) { x.visible = true; }); }

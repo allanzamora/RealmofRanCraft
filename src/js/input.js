@@ -102,6 +102,7 @@ tapBtn('nav-x', function () { closeNav(); });
 $('nav-back').addEventListener('pointerdown', function () { closeNav(); });
 tapBtn('m-redeem', function () { openRedeem(); });
 tapBtn('m-support', function () { openSupport(); });
+tapBtn('dia-plus', function () { openSupport(); });
 tapBtn('m-bag', function () { openBag(); });
 tapBtn('m-skill', function () { openSkills(); });
 tapBtn('m-quest', function () { openQuestLog(); });
@@ -174,7 +175,7 @@ function layoutActions() {
   var y1 = cy - sa / 2 - 4 - sk / 2;                      // second row: 4 skills (+ WALK/RUN above ATTACK)
   for (var j = 0; j < 4; j++) put('b-k' + (1 + j), sk, x1 - j * g, y1);
   put('b-walk', sk, cx, y1);
-  var y2 = y1 - g;                                        // top row: 4 skills
+  var y2 = y1 - g; put('b-auto', sk, cx, y2);                                        // top row: 4 skills
   for (var q = 0; q < 4; q++) put('b-k' + (5 + q), sk, x1 - q * g, y2);
   joyBase.style.width = joyBase.style.height = Math.round(104 * s) + 'px';
   joyStick.style.width = joyStick.style.height = Math.round(42 * s) + 'px';

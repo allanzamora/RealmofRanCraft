@@ -338,3 +338,21 @@ input[type=range]{width:100%}
 #ac-banner{position:fixed;z-index:400;left:50%;top:14%;transform:translateX(-50%);max-width:88%;padding:10px 16px;border-radius:10px;background:rgba(120,10,10,.92);border:2px solid #ff5a5a;color:#fff;font-weight:700;font-size:14px;text-align:center;opacity:0;transition:opacity .4s;pointer-events:none}
 #b-walk{background:#1f8a8a;border-color:#0b3d3d}
 #b-attack .ic{font-size:28px}#b-attack .lb{font-size:9px}
+
+#diamond{display:flex;align-items:center;gap:6px}
+#dia-plus{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#3fcf5a;color:#fff;font-size:15px;line-height:1;pointer-events:auto;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.6)}
+.supul{margin:4px 0 6px;padding-left:18px;font-size:12px;line-height:1.45}
+.cryrow{display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:center;background:rgba(255,255,255,.06);border-radius:8px;padding:6px 8px;margin:5px 0}
+.cryname{font-weight:700;font-size:12px;color:#ffe066}.cryaddr{grid-column:1;font-size:10.5px;word-break:break-all;opacity:.9;user-select:all}
+.crybtn{grid-row:1/3;grid-column:2;padding:6px 10px;border:0;border-radius:6px;background:#2f6fd6;color:#fff;font-weight:700;font-size:11px}
+.ratetbl{width:100%;border-collapse:collapse;font-size:12px;margin:6px 0 10px}.ratetbl th,.ratetbl td{border:1px solid rgba(255,255,255,.2);padding:5px 6px;text-align:center}.ratetbl th{background:rgba(255,255,255,.12)}
+
+/* map popup: no scrolling, floating Mobs / NPC dropdowns under the close button */
+#panel.mapmode #panel-body{overflow:hidden;position:relative;touch-action:none}
+.mapdd{position:absolute;right:8px;top:6px;z-index:6;display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.mapdd select{max-width:150px;padding:5px 6px;border-radius:8px;background:#18213f;color:#ffe9a8;border:1px solid rgba(255,255,255,.4);font:700 12px inherit}
+#tracker{pointer-events:auto;cursor:pointer}
+.gfxsel{padding:5px 8px;border-radius:8px;background:#18213f;color:#ffe9a8;border:1px solid rgba(255,255,255,.4);font:700 12px inherit}
+#b-auto{background:#2a7a3a;border-color:#0b3d1a}#b-auto .lb{font-size:7px}#b-auto.autoon{background:#2fd45a;border-color:#fff;box-shadow:0 0 10px #7dff9a}
+/* welcome screen: show only the map backdrop - no HUD, controls or skills */
+body.wm #vignette,body.wm #boss-alert,body.wm #floaters,body.wm #zone-banner,body.wm #levelup,body.wm #player-frame,body.wm #target-frame,body.wm #pet-btn,body.wm #tracker,body.wm #log,body.wm #topright,body.wm #nav-back,body.wm #sidenav,body.wm #zoomcol,body.wm #joy-base,body.wm #actions,body.wm #btn-pk,body.wm #btn-talk,body.wm #death{display:none!important}

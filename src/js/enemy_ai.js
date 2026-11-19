@@ -1,6 +1,17 @@
 /* enemy_ai.js - per-map enemy spawning (radial level bands), enemy AI, bots + chat */
 function spawnEnemies(m) {
   if (m.arena) return;
+  if (m.prison) {               // Prison: 4 cell rooms (one per quadrant), 7-8 mobs each, none near the central yard
+    var quads = [[1, 1], [-1, 1], [-1, -1], [1, -1]];
+    m.perRoom.forEach(function (n, qi) {
+      for (var k = 0; k < n; k++) {
+        var pe = makeEnemy(m.enemies[0], 5, 5), x, z, t = 0;
+        do { x = quads[qi][0] * rand(5, 26); z = quads[qi][1] * rand(5, 26); } while (Math.hypot(x, z) < 14 && ++t < 30);
+        pe.pos.set(x, 0, z); pe.spawn.set(x, 0, z); pe.wx = x; pe.wz = z; pe.c.g.rotation.y = rand(0, TAU);
+      }
+    });
+    return;
+  }
   if (m.bossRoom) {              // Boss Room: every boss spread on rings around the centre
     var list = []; m.bossList.forEach(function (b) { for (var n0 = 0; n0 < b[1]; n0++) list.push(b[0]); });
     list.forEach(function (key, i) {
@@ -24,20 +35,20 @@ function spawnEnemies(m) {
   var regular = m.enemies.slice(0, m.enemies.length - 1), bossKey = m.enemies[m.enemies.length - 1];
   var r0 = m.safeR + 2, r1 = m.R - 3, n = regular.length, step = (r1 - r0) / n;
   regular.forEach(function (key, i) {           // main bands (area-weighted so big outer bands do not look empty)
-    var lo = r0 + i * step, hi = lo + step, cnt = Math.round(ENEMIES_PER_TYPE * (0.7 + 0.6 * (i + 0.5) / n));
+    var lo = r0 + i * step, hi = lo + step, cnt = Math.round(ENEMIES_PER_TYPE * GQ().mob * (0.7 + 0.6 * (i + 0.5) / n));
     for (var k = 0; k < cnt; k++) makeEnemy(key, lo, hi);
   });
   for (var q = 0; q < 2; q++) {                 // extra mobs: centre (weakest types) and edge (strongest types)
-    for (var k2 = 0; k2 < 9; k2++) makeEnemy(regular[q], m.safeR + 2, m.safeR + 16);
-    for (var k3 = 0; k3 < 9; k3++) makeEnemy(regular[n - 1 - q], m.R - 14, m.R - 3);
+    for (var k2 = 0, c9 = Math.max(2, Math.round(9 * GQ().mob)); k2 < c9; k2++) makeEnemy(regular[q], m.safeR + 2, m.safeR + 16);
+    for (var k3 = 0, c9b = Math.max(2, Math.round(9 * GQ().mob)); k3 < c9b; k3++) makeEnemy(regular[n - 1 - q], m.R - 14, m.R - 3);
   }
   makeEnemy(bossKey, r1 - 4, r1 - 4, true);
   var mid0 = Math.max(r0, m.R * 0.35), mid1 = m.R * 0.65;      // extra mobs in the middle of the map (all types mixed)
-  regular.forEach(function (key) { for (var q = 0; q < 6; q++) makeEnemy(key, mid0, mid1); });
+  regular.forEach(function (key) { for (var q = 0, c6 = Math.max(2, Math.round(6 * GQ().mob)); q < c6; q++) makeEnemy(key, mid0, mid1); });
   var top = mapTopLvl(m);
   EDGE_TYPES.forEach(function (k, i) {          // edge elites: levels capped to this map's top level; dormant until the player reaches the edge
     var ek = edgeType(k, Math.max(1, top - (2 - i) * 2));
-    for (var q2 = 0; q2 < EDGE_PER_TYPE; q2++) { var ee = makeEnemy(ek, m.R - 20, m.R - 3); ee.edge = true; edgeSleep(ee, rand(1, 4)); }
+    for (var q2 = 0, ce = Math.max(3, Math.round(EDGE_PER_TYPE * GQ().mob)); q2 < ce; q2++) { var ee = makeEnemy(ek, m.R - 20, m.R - 3); ee.edge = true; edgeSleep(ee, rand(1, 4)); }
   });
 }
 function edgeSleep(e, delay) { e.state = 'dead'; e.deadT = 3; e.c.g.visible = false; e.c.tag.spr.visible = false; e.respawnT = delay; e.target = null; }
@@ -56,7 +67,7 @@ function makeEnemy(key, rLo, rHi, boss) {
 
 function updateEnemies(dt) {
   var inSafe = inSafeZone();
-  var edgeOn = !!(curMap && !curMap.arena && !curMap.bossR && Math.hypot(P.pos.x, P.pos.z) > curMap.R - EDGE_ACTIVE);
+  var edgeOn = !!(curMap && !curMap.arena && !curMap.bossR && !curMap.prison && Math.hypot(P.pos.x, P.pos.z) > curMap.R - EDGE_ACTIVE);
   if (edgeOn !== edgeWas) { edgeWas = edgeOn; if (edgeOn) { var tl = mapTopLvl(curMap); log('You reached the edge of the world... Edge Elites (Lv ' + Math.max(1, tl - 4) + '-' + tl + ') awaken!', '#d08aff'); sfx('level'); } }
   for (var i = 0; i < enemies.length; i++) {
     var e = enemies[i], T = e.T, c = e.c, pos = e.pos;
@@ -78,7 +89,7 @@ function updateEnemies(dt) {
     }
     if (e.edge && !edgeOn && (e.state === 'idle' || e.state === 'return')) { edgeSleep(e, rand(1, 3)); continue; }   // player left the edge: elites vanish
 
-    var vis = d < 60;
+    var vis = d < GQ().vis;
     c.g.visible = vis;
     c.tag.spr.visible = d < 26 || P.target === e;
     if (!vis && e.state === 'idle') continue;      // far-away idle enemies sleep (saves CPU)
@@ -203,7 +214,7 @@ function bossAlert(sub) {
   var el = $('boss-alert'); if (!el) return; $('ba-sub').textContent = sub; el.className = 'show'; clearTimeout(wbAlertT);
   wbAlertT = setTimeout(function () { el.className = ''; }, 7000);
 }
-function wbMaps() { return MAPS.filter(function (m) { return !m.arena && !m.boss && !m.bossR; }); }
+function wbMaps() { return MAPS.filter(function (m) { return !m.arena && !m.boss && !m.bossR && !m.prison; }); }
 function wbSpawn(m) {
   var e = makeEnemy('darksword', m.safeR + 30, m.R - 30); e.world = true; WB.e = e;
   log('Dark Swordman lurks somewhere in ' + m.name + '! (HP 15,000,000 - Loot: 10-15 Godzilla Fragments)', '#ff5a5a');

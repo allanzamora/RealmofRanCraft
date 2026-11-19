@@ -147,7 +147,7 @@ ENEMY_TYPES.socmiya.range = 14; ENEMY_TYPES.socmiya.aggro = 22; ENEMY_TYPES.socm
 ENEMY_TYPES.fakeold.range = 15; ENEMY_TYPES.fakeold.aggro = 22; ENEMY_TYPES.fakeold.throwKind = 'camera';
 ENEMY_TYPES.kierupt.range = 2.6;
 ENEMY_TYPES.thesilent.range = 2.0; ENEMY_TYPES.thesilent.onHit = { poison: { dps: 100, t: 5 } };
-['socmiya', 'kierupt', 'fakeold', 'thesilent'].forEach(function (k) { ENEMY_TYPES[k].matOnly = true; });
+['socmiya', 'kierupt', 'fakeold', 'thesilent'].forEach(function (k) { ENEMY_TYPES[k].matOnly = true; ENEMY_TYPES[k].xp -= 1000; });   // Promise Wonderland mobs: -1000 EXP each
 
 E('croczilla', 'Croczilla', 100, 'b', 5.4, W('fist', 0xffd54f), { skin: 0x2a6a30, shirt: 0x2a6a30, pants: 0x2a6a30, hair: null, bald: true }, { boss: true, hpMul: 2.4 });
 ENEMY_TYPES.croczilla.hp = 700000;   // Croczilla: 700,000 HP

@@ -43,6 +43,8 @@ function eachEnemy(fn) {
 
 /* XP rule: a hero more than XP_CUTOFF levels above the mob gets no EXP (loot only) */
 function xpFor(T) {
+  if (P.lvl - T.lvl > XP_CUTOFF) return 0;       // no EXP once you are 10+ levels above the mob (Prison B1: Lv 131+, B2: Lv 151+)
+  if (T.fixedXp) return T.xp;                     // Prison mobs: fixed EXP per kill
   if (P.lvl - T.lvl > XP_CUTOFF) return 0;
   return Math.max(1, Math.round(T.xp * clamp(1 + (T.lvl - P.lvl) * 0.12, 0.15, 1.8)));
 }
@@ -131,8 +133,8 @@ function killEnemy(e, by) {
   if (by) { aiGainXp(by, e.T); return; }       // an AI player got the kill: no loot/XP/quest for you
   achCount(e);
   var xp = xpFor(e.T); if (xp > 0) xp = Math.round(xp * (1 + costumeSum('exp') / 100));   // costume EXP boost
-  if (xp > 0) { spawnText('+' + xp + ' XP', P.pos, 'xp', 2.4); log('Defeated ' + e.T.name + '. +' + xp + ' XP', '#9fe3ff'); gainXp(xp); }
-  else { spawnText('No EXP', P.pos, 'info', 2.4); log('Defeated ' + e.T.name + ' (level too low for EXP - loot only).', '#b8b8b8'); }
+  if (xp > 0) { spawnText('+' + xp + ' XP', P.pos, 'xp', 2.4);  gainXp(xp); }
+  else { spawnText('No EXP', P.pos, 'info', 2.4);  }
   dropGold(e.pos, randInt(e.T.gold[0], e.T.gold[1]));
   rollDrops(e).forEach(function (id) { dropItem(e.pos, id); });
   var q = currentQuest();
@@ -147,10 +149,37 @@ function killEnemy(e, by) {
 }
 
 /* ---------- basic attack ---------- */
+/* ranged basic attack (Hunter Bow): an arrow flies to the target and hits on arrival */
+function arrowFx(x0, z0, x1, z1, dur) {
+  var g = new THREE.Group(), sh = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.06, 1.3), new THREE.MeshBasicMaterial({ color: 0xf4e2b0 }));    // arrow is as long as a sword
+  var hd = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.16, 0.24), new THREE.MeshBasicMaterial({ color: 0xdfe6f0 })); hd.position.z = 0.7;
+  var fl = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.2), new THREE.MeshBasicMaterial({ color: 0xff5a4a })); fl.position.z = -0.6;
+  g.add(sh); g.add(hd); g.add(fl);
+  g.rotation.y = Math.atan2(x1 - x0, z1 - z0); g.position.set(x0, 1.3, z0); scene.add(g);
+  fxList.push({ t: 0, dur: dur, obj: g, update: function (k) { g.position.x = lerp(x0, x1, k); g.position.z = lerp(z0, z1, k); g.position.y = 1.3 + Math.sin(k * Math.PI) * 0.25; } });
+}
+function tryBasicRanged() {
+  dismount('You dismount to fight.');
+  P.cd.atk = 0.75 / (1 + Math.max(0, buffSum('spd')) + gearAspd());
+  var t = (P.target && P.target.state !== 'dead' && distTo(P.target) <= 14) ? P.target : autoTarget(14);
+  if (t) { snapFaceTo(t); if (!P.target) P.target = t; }
+  var aim = P.c.g.rotation.y; P.c.g.rotation.y = aim + BOWTW;            // body turns side-on, the twisted torso keeps the arms aimed at the target
+  startAnim(P.c, 'shoot', 0.65); sfx('swing');
+  schedule(0.33, function () {
+    if (P.dead) return;
+    var f = { x: Math.sin(aim), z: Math.cos(aim) }, x0 = P.pos.x + f.x * 0.7, z0 = P.pos.z + f.z * 0.7, x1, z1, hit = t && t.state !== 'dead' ? t : null;
+    if (hit) { x1 = hit.pos.x; z1 = hit.pos.z; } else { x1 = P.pos.x + f.x * 14; z1 = P.pos.z + f.z * 14; }
+    var fl = Math.max(0.12, Math.hypot(x1 - x0, z1 - z0) / 36);
+    arrowFx(x0, z0, x1, z1, fl);
+    if (hit) schedule(fl, function () { if (!P.dead && hit.state !== 'dead') hurtEnemy(hit, atkVal()); });
+  });
+  schedule(0.7, function () { if (!P.dead && Math.abs(P.c.g.rotation.y - (aim + BOWTW)) < 1e-6) P.c.g.rotation.y = aim; });   // turn back to the front unless the player moved
+}
 function tryBasic() {
   if (!canAct() || P.cd.atk > 0) return;
+  if (isRangedWeapon()) { tryBasicRanged(); return; }
   dismount('You dismount to fight.');
-  P.cd.atk = 0.6 / (1 + Math.max(0, buffSum('spd')));
+  P.cd.atk = 0.6 / (1 + Math.max(0, buffSum('spd')) + gearAspd());
   var t = autoTarget(7);
   if (t) { snapFaceTo(t); startDashTo(t, 2.0); }
   startAnim(P.c, 'attack', 0.55); sfx('swing');
@@ -288,15 +317,15 @@ var SKILL_EXEC = {
     schedule(0.22, function () { if (!P.dead && t.state !== 'dead') { slashFx(P.pos.x, P.pos.z, P.c.g.rotation.y, 0xaa77ff, 3, 2); hurtEnemy(t, atkVal() * sk.mult, { color: 0xaa77ff }); } });
   },
   storm: function (sk) {
-    startAnim(P.c, 'cast', 0.9); ringFx(P.pos.x, P.pos.z, sk.radius, 0xdff3ff, 0.8);
+    startAnim(P.c, 'cast', 0.9); ringFx(P.pos.x, P.pos.z, sk.radius, sk.color || 0xdff3ff, 0.8);
     for (var i = 0; i < sk.strikes; i++) (function (i) {
       schedule(0.3 + i * (sk.dur / sk.strikes), function () {
         if (P.dead) return;
         var tg = nearestEnemy(sk.radius + 2), x, z;
         if (tg && Math.random() < 0.8) { x = tg.pos.x + rand(-0.8, 0.8); z = tg.pos.z + rand(-0.8, 0.8); }
         else { var a = rand(0, TAU), r = rand(2, sk.radius); x = P.pos.x + Math.cos(a) * r; z = P.pos.z + Math.sin(a) * r; }
-        lightningFx(x, z); sfx('zap');
-        eachEnemy(function (e) { if (Math.hypot(e.pos.x - x, e.pos.z - z) <= 2.4 + 0.5 * e.T.scale) hurtEnemy(e, atkVal() * sk.mult, { color: 0xdff3ff, stun: 0.5 }); });
+        lightningFx(x, z, sk.color); sfx('zap');
+        eachEnemy(function (e) { if (Math.hypot(e.pos.x - x, e.pos.z - z) <= 2.4 + 0.5 * e.T.scale) hurtEnemy(e, atkVal() * sk.mult, { color: sk.color || 0xdff3ff, stun: 0.5 }); });
       });
     })(i);
   }
@@ -561,7 +590,7 @@ function playerDie(who) {
   dismount(); P.hp = 0; P.dead = true; P.target = null; P.attackHeld = false; P.buffs.length = 0; P.shield = 0; P.hot = null; P.slowT = 0; P.poisonT = 0;
   startDeath(P.c, P.pos);
   log('You were slain by ' + who + '.', '#ff6a6a');
-  $('death-msg').textContent = (curMap && curMap.arena) ? 'Defeated in the arena. No penalty - jump back in!' : 'The wilds are not forgiving. You lose 5% of your gold.';
+  $('death-msg').textContent = (curMap && curMap.arena) ? 'Defeated in the arena. No penalty - jump back in!' : 'The wilds are not forgiving. You lose 2% EXP.';
   setTimeout(function () { $('death').style.display = 'flex'; }, 900);
 }
 

@@ -134,6 +134,13 @@ function makeHumanoid(o) {
       hs([add(box(0.355, 0.05, 0.355), hm, head, 0, 0.345, 0)]);
       hs([add(box(0.08, 0.16, 0.38), hm, head, 0, 0.45, 0), add(box(0.08, 0.1, 0.1), hm, head, 0, 0.3, -0.19)]);
       hs([add(box(0.37, 0.11, 0.37), hm, head, 0, 0.365, 0), add(box(0.37, 0.15, 0.09), hm, head, 0, 0.27, -0.165), add(box(0.15, 0.15, 0.15), hm, head, 0, 0.5, -0.05)]);
+      // exclusive styles (Change Hairstyle Card): 7 Emo, 8 Afro, 9 Pompadour, 10 Twin Tails, 11 Topknot
+      var emoF = add(box(0.26, 0.36, 0.05), hm, head, 0.07, 0.15, 0.19); emoF.rotation.z = 0.28;
+      hs([add(box(0.38, 0.12, 0.38), hm, head, 0, 0.365, 0), emoF, add(box(0.1, 0.34, 0.05), hm, head, -0.14, 0.17, 0.19), add(box(0.07, 0.46, 0.32), hm, head, -0.205, 0.04, -0.02), add(box(0.07, 0.4, 0.32), hm, head, 0.205, 0.07, -0.02), add(box(0.38, 0.42, 0.09), hm, head, 0, 0.1, -0.17)]);
+      hs([add(box(0.62, 0.42, 0.62), hm, head, 0, 0.42, -0.02), add(box(0.7, 0.18, 0.7), hm, head, 0, 0.54, -0.02), add(box(0.4, 0.1, 0.1), hm, head, 0, 0.3, 0.2)]);
+      hs([add(box(0.37, 0.11, 0.37), hm, head, 0, 0.365, 0), add(box(0.3, 0.2, 0.46), hm, head, 0, 0.5, 0.06), add(box(0.4, 0.1, 0.1), hm, head, 0, 0.62, 0.12), add(box(0.37, 0.15, 0.09), hm, head, 0, 0.27, -0.165)]);
+      hs([add(box(0.37, 0.11, 0.37), hm, head, 0, 0.365, 0), add(box(0.1, 0.5, 0.1), hm, head, -0.27, 0.02, -0.06), add(box(0.1, 0.5, 0.1), hm, head, 0.27, 0.02, -0.06), add(box(0.14, 0.07, 0.14), hm, head, -0.27, 0.3, -0.06), add(box(0.14, 0.07, 0.14), hm, head, 0.27, 0.3, -0.06), add(box(0.37, 0.05, 0.05), hm, head, 0, 0.32, 0.17)]);
+      hs([add(box(0.37, 0.11, 0.37), hm, head, 0, 0.365, 0), add(box(0.13, 0.22, 0.13), hm, head, 0, 0.53, 0), add(box(0.37, 0.14, 0.09), hm, head, 0, 0.27, -0.165), add(box(0.2, 0.05, 0.2), hm, head, 0, 0.44, 0)]);
     }
   }
   var eyeMat = M(o.eye, o.eyeGlow ? { emissive: o.eye, emissiveIntensity: 1 } : null);
@@ -314,7 +321,7 @@ function makeHumanoid(o) {
 
 
 function setWeapon(c, kind, color, glow) {
-  var holder = c.rig.wpn; c.wMat = null; c.wSpikes = null;
+  var holder = c.rig.wpn; c.wMat = null; c.wSpikes = null; c.nock = null; c.wKind = kind; c.sheathed = null;
   while (holder.children.length) {
     var o = holder.children[0]; holder.remove(o);
     if (o.geometry) o.geometry.dispose();
@@ -377,6 +384,27 @@ function setWeapon(c, kind, color, glow) {
     });
     add(new THREE.BoxGeometry(0.15, 1.7, 0.05), metal, 0, 0.3 + 0.85, 0); add(new THREE.BoxGeometry(0.58, 0.13, 0.055), metal, 0, 0.3 + 1.55, 0);
     add(new THREE.BoxGeometry(0.5, 1.5, 0.02), panel, 0, 0.3 + 0.8, -0.04); add(new THREE.BoxGeometry(0.36, 1.85, 0.1), aura2, 0, 0.3 + 0.95, 0);
+  } else if (kind === 'bow' || kind === 'godbow') {                // Hunter Bow: limbs run along local z (vertical when held), curve bulges forward, string at the back
+    var bm = new THREE.MeshStandardMaterial({ color: 0x9be8c8, emissive: 0x2aa88a, emissiveIntensity: 0.6, roughness: 0.4 }), tipM = new THREE.MeshStandardMaterial({ color: 0xe0d8ff, emissive: 0x8a7ad8, emissiveIntensity: 0.6 }), strg = new THREE.MeshBasicMaterial({ color: 0xf2f2e8 });
+    var gb = kind === 'godbow';
+    if (gb) { bm = new THREE.MeshStandardMaterial({ color: 0x14181f, emissive: 0x0a2a44, emissiveIntensity: 0.5, roughness: 0.35 }); tipM = new THREE.MeshStandardMaterial({ color: 0x2f8fe0, emissive: 0x1a7ad8, emissiveIntensity: 1.1 }); strg = new THREE.MeshBasicMaterial({ color: 0x8fd8ff, transparent: true, opacity: 0.7 }); }
+    for (var bk = -3; bk <= 3; bk++) { var bz = bk * 0.2, by = 0.3 * (1 - (bz / 0.7) * (bz / 0.7)) - 0.05; var seg = add(new THREE.BoxGeometry(0.05, 0.06, 0.24), Math.abs(bk) === 3 ? tipM : bm, 0, by, bz); seg.rotation.x = -bk * 0.12; }
+    [-1, 1].forEach(function (sg) {            // recurved tips that flare away from the archer, like the reference bow
+      var t1 = add(new THREE.BoxGeometry(0.045, 0.05, 0.26), tipM, 0, 0.0, sg * 0.88); t1.rotation.x = -sg * 0.55;
+      var t2 = add(new THREE.BoxGeometry(0.035, 0.04, 0.2), tipM, 0, 0.12, sg * 1.04); t2.rotation.x = -sg * 1.0;
+    });
+    add(new THREE.BoxGeometry(0.07, 0.1, 0.12), metal, 0, 0.25, 0);
+    add(new THREE.BoxGeometry(0.012, 0.012, 1.42), strg, 0, -0.05, 0);
+    var nk = new THREE.Group(); nk.position.set(0, -0.05, 0);                                  // nocked arrow (only visible while drawing): shaft along local +y = forward
+    var ash = new THREE.Mesh(new THREE.BoxGeometry(0.05, 1.3, 0.05), new THREE.MeshStandardMaterial({ color: 0xd9b77a, roughness: 0.6 })); ash.position.y = 0.55; nk.add(ash);
+    var ahd = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.22, 0.05), metal); ahd.position.y = 1.28; nk.add(ahd);
+    var afl = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.2, 0.16), new THREE.MeshStandardMaterial({ color: 0xcc3333 })); afl.position.y = -0.05; nk.add(afl);
+    if (gb) {                                  // blue plates mid-limb + glowing translucent orb at the grip (reference art)
+      [-1, 1].forEach(function (sg) { add(new THREE.BoxGeometry(0.08, 0.1, 0.18), tipM, 0, 0.2, sg * 0.42); });
+      var orb = add(new THREE.SphereGeometry(0.34, 14, 10), new THREE.MeshBasicMaterial({ color: 0x9fe4ff, transparent: true, opacity: 0.28, depthWrite: false }), 0, -0.02, 0);
+      ash.material = new THREE.MeshStandardMaterial({ color: 0x1a1f28, emissive: 0x2f8fe0, emissiveIntensity: 0.6 });
+    }
+    holder.add(nk); nk.visible = false; c.nock = nk;
   } else if (kind === 'staff') {
     add(new THREE.BoxGeometry(0.06, 1.1, 0.06), wood, 0, 0.35, 0);
     add(new THREE.BoxGeometry(0.18, 0.18, 0.18), metal, 0, 0.98, 0);
@@ -462,16 +490,19 @@ function startDeath(c, pos) {
 function setSheath(c, mode) {            // mode: 'hand' | 'back' | 'shoulder' (walk carry)
   if (c.sheathed === mode) return; c.sheathed = mode;
   var w = c.rig.wpn; if (w.parent) w.parent.remove(w);
-  if (mode === 'back') { c.rig.torso.add(w); w.position.set(0.28, 0.72, -0.3); w.rotation.set(0.05, 0, Math.PI - 0.55); w.scale.setScalar(0.72); }   // handle level with the helmet, blade points down across the back
+  if (mode === 'back' && (c.wKind === 'bow' || c.wKind === 'godbow')) { c.rig.torso.add(w); w.position.set(0.05, 0.5, -0.3); w.rotation.set(Math.PI / 2, -0.6, -Math.PI / 2); w.scale.setScalar(1.0); }   // bow slung diagonally across the back like the sword, curve facing outward
+  else if (mode === 'back') { c.rig.torso.add(w); w.position.set(0.28, 0.72, -0.3); w.rotation.set(0.05, 0, Math.PI - 0.55); w.scale.setScalar(0.72); }   // handle level with the helmet, blade points down across the back
   else if (mode === 'carry') { c.rig.armR.el.add(w); w.position.set(0, -0.26, 0); w.rotation.set(4.0, 0, 0.1); w.scale.setScalar(1); }   // walk: relaxed grip, blade trails pointing down/back (Ran Online style)
+  else if ((c.wKind === 'bow' || c.wKind === 'godbow')) { c.rig.armL.el.add(w); w.position.set(0, -0.26, 0); w.scale.setScalar(1.3); }       // bow is held in the left hand
   else { c.rig.armR.el.add(w); w.position.set(0, -0.26, 0); w.rotation.set(1.9, 0, 0); w.scale.setScalar(1); }
 }
 function updateSheath(c, a, dt) {
   if (!c.sheath) return;
-  if (a && (a.type === 'attack' || a.type === 'spin' || a.type === 'cast')) c.drawT = 1.0; else c.drawT = Math.max(0, (c.drawT || 0) - dt);
-  var busy = a && (a.type === 'attack' || a.type === 'spin' || a.type === 'cast');
+  if (a && (a.type === 'attack' || a.type === 'spin' || a.type === 'cast' || a.type === 'shoot')) c.drawT = 1.0; else c.drawT = Math.max(0, (c.drawT || 0) - dt);
+  var busy = a && (a.type === 'attack' || a.type === 'spin' || a.type === 'cast' || a.type === 'shoot');
   setSheath(c, busy ? 'hand' : (c.carry || c.forceSheath || c.drawT <= 0) ? 'back' : 'hand');
 }
+var BOWTW = 0.8;      // torso twist (and body turn) of the archer stance
 function animateChar(c, dt, spd) {
   if (c.croc) animCroc(c, dt, spd);
   var r = c.rig, t = performance.now() / 1000;
@@ -481,12 +512,15 @@ function animateChar(c, dt, spd) {
   var aR = -0.2 + sw * 0.25 * mv, eR = -0.9 - 0.15 * mv;
   var aL = -sw * 0.55 * mv, eL = -0.25 - 0.25 * mv * (sw > 0 ? 1 : 0.3);
   var tw = sw * 0.1 * mv, lean = 0.26 * mv, lunge = 0, bodyYaw = 0, bodyRX = 0, bodyY = 0, armLZ = 0, armRZ = 0, headX = 0;
-  var a = c.anim;
+  var a = c.anim, shoot = false;
   if (a) {
     a.t += dt;
     var k = Math.min(1, a.t / a.dur);
     if (a.type === 'attack') {
       var p = slashPose(k); aR = p[0]; eR = p[1]; tw = p[2]; lean = p[3]; lunge = p[4]; aL = lerp(aL, -0.5, 0.7);
+    } else if (a.type === 'shoot') {            // archer pose: wide bent-knee stance, left arm straight at the target holding the bow, right hand draws the string to the cheek
+      var dr = k < 0.5 ? ease(k / 0.5) : 1 - ((k - 0.5) / 0.5) * 0.4;
+      aL = -1.45; eL = -0.05; armLZ = -0.05; aR = -1.4; eR = lerp(-0.25, -2.55, dr); armRZ = 0.5 * dr; tw = -BOWTW; lean = 0.02; headX = 0; shoot = true;
     } else if (a.type === 'spin') {
       bodyYaw = k * TAU; aR = -1.4; eR = -0.2; aL = -1.4; eL = -0.2; armRZ = 0.6; armLZ = -0.6; lean = 0.15;
     } else if (a.type === 'cast') {
@@ -511,8 +545,12 @@ function animateChar(c, dt, spd) {
   r.armR.sh.rotation.x = aR; r.armR.el.rotation.x = eR; r.armR.sh.rotation.z = 0.08 + armRZ;
   r.armL.sh.rotation.x = aL; r.armL.el.rotation.x = eL; r.armL.sh.rotation.z = -0.08 + armLZ;
   r.torso.rotation.y = tw; r.torso.rotation.x = lean;
-  r.head.rotation.y = -tw * 0.5; r.head.rotation.x = headX - lean * 0.5;
+  r.head.rotation.y = shoot ? 0 : -tw * 0.5; r.head.rotation.x = headX - lean * 0.5;
   r.torso.scale.y = 1 + Math.sin(t * 2 + c.phase * 0.0) * 0.012;
+  if (shoot) { r.legR.hp.rotation.x = r.legL.hp.rotation.x = 0; r.legR.kn.rotation.x = r.legL.kn.rotation.x = 0; kneeB = 0; co = 0; }   // legs and feet stay planted while shooting
+  r.legR.hp.rotation.z = 0; r.legL.hp.rotation.z = 0;
+  if ((c.wKind === 'bow' || c.wKind === 'godbow') && c.rig.wpn.parent === r.armL.el) c.rig.wpn.rotation.set(Math.PI / 2 - (aL + eL), 0, 0);   // keep the bow upright whatever the arm does
+  if (c.nock) c.nock.visible = !!(a && a.type === 'shoot' && a.t / a.dur < 0.5);
   r.hips.position.y = 0.97 - kneeB * 0.12 + Math.abs(co) * 0.035 * mv;
   if (a && a.type === 'death') { var dk = c.deathKnee || 0; r.legR.hp.rotation.x = r.legL.hp.rotation.x = -1.0 * dk; r.legR.kn.rotation.x = r.legL.kn.rotation.x = 1.7 * dk; r.hips.position.y = 0.97 - 0.4 * dk; }
   r.body.rotation.y = bodyYaw; r.body.rotation.x = bodyRX; r.body.position.y = bodyY; r.body.position.z = lunge * 0.3;

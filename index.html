@@ -27,14 +27,12 @@
 <link rel="stylesheet" href="src/css/ui.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
-<body>
+<body class="wm">
 <div id="welcome"><div id="welcome-card">
 <img id="w-logo" src="rancraft.png" alt="Realm of RanCraft logo" onerror="this.style.display='none'">
 <h1>Realm of RanCraft - 3D MMORPG</h1>
 <p>Step into a free 3D fantasy world made for your phone. Fight monsters, defeat giant bosses, tame loyal pets and become a legend of the Realm - right in your browser, no download needed.</p>
 <button id="w-play">Play Now &raquo;</button>
-<br>
-<p>Follow us on <a href="https://www.facebook.com/realmofrancraft" target="_blank">Facebook</a> & <a href="https://youtube.com/realmofrancraft" target="_blank">Youtube</a>.</p>
 <div id="w-scroll">
 <h2>Game Features</h2>
 <ul>
@@ -81,7 +79,7 @@
 
 <!-- Top right -->
 <div id="topright" class="ui">
-  <div id="gold-row"><div id="gold" class="box">0 G</div><div id="diamond" class="box">0 &#128142;</div><div class="sbtn" id="m-nav">&#9776;</div></div>
+  <div id="gold-row"><div id="gold" class="box">0 G</div><div id="diamond" class="box"><span id="dia-n">0 &#128142;</span><b id="dia-plus">+</b></div><div class="sbtn" id="m-nav">&#9776;</div></div>
   <div id="mapname"></div>
   <canvas id="minimap" width="192" height="192"></canvas>
   <div id="fps"></div>
@@ -111,6 +109,7 @@
 <!-- Actions -->
 <div id="actions">
   <div class="abtn" id="b-attack"><span class="ic">&#9876;</span><span class="lb">ATTACK</span></div>
+  <div class="abtn" id="b-auto"><span class="ic">&#129302;</span><span class="lb">AUTO</span></div>
   <div class="abtn" id="b-walk"><span class="ic">&#127939;</span><span class="lb">RUN</span></div>
   <div class="abtn" id="b-k1"></div>
   <div class="abtn" id="b-k2"></div>
@@ -169,6 +168,7 @@
 <script src="src/js/map_11.js"></script>
 <script src="src/js/map_12.js"></script>
 <script src="src/js/map_13.js"></script>
+<script src="src/js/map_14.js"></script>
 <script src="src/js/combat.js"></script>
 <script src="src/js/enemy_ai.js"></script>
 <script src="src/js/ai_players.js"></script>
@@ -176,6 +176,7 @@
 <script src="src/js/input.js"></script>
 <script src="src/js/achievements.js"></script>
 <script src="src/js/ui.js"></script>
+<script src="src/js/auto.js"></script>
 <script src="src/js/main.js"></script>
 </body>
 </html>
