@@ -356,3 +356,18 @@ input[type=range]{width:100%}
 #b-auto{background:#2a7a3a;border-color:#0b3d1a}#b-auto .lb{font-size:7px}#b-auto.autoon{background:#2fd45a;border-color:#fff;box-shadow:0 0 10px #7dff9a}
 /* welcome screen: show only the map backdrop - no HUD, controls or skills */
 body.wm #vignette,body.wm #boss-alert,body.wm #floaters,body.wm #zone-banner,body.wm #levelup,body.wm #player-frame,body.wm #target-frame,body.wm #pet-btn,body.wm #tracker,body.wm #log,body.wm #topright,body.wm #nav-back,body.wm #sidenav,body.wm #zoomcol,body.wm #joy-base,body.wm #actions,body.wm #btn-pk,body.wm #btn-talk,body.wm #death{display:none!important}
+#pvp-hud{position:fixed;left:50%;top:6px;transform:translateX(-50%);z-index:30;background:rgba(10,20,40,.72);border:1px solid rgba(127,208,255,.6);color:#dff3ff;font:700 11px/1.35 sans-serif;padding:4px 10px;border-radius:10px;pointer-events:none;text-align:center;max-width:46vw}#pvp-hud .pvp-top{font-weight:600;color:#ffe9a8}body.wm #pvp-hud{display:none!important}
+
+/* ---------- login / sign-up ---------- */
+#auth-screen{position:fixed;z-index:170;left:0;top:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;padding:10px;box-sizing:border-box;background:rgba(6,9,22,.9)}
+#auth-screen .abox{width:min(94vw,360px);max-height:96vh;overflow-y:auto;-webkit-overflow-scrolling:touch;box-sizing:border-box;padding:14px;border-radius:16px;background:rgba(10,14,32,.94);border:2px solid #6b7fd6;box-shadow:0 8px 30px rgba(0,0,0,.8);text-align:center;color:#fff}
+#auth-screen h2{margin:0 0 2px;color:#ffe9a8;font-size:20px}#auth-screen .asub{margin:0 0 10px;font-size:12px;opacity:.8}
+#auth-screen input,#auth-screen textarea{display:block;width:100%;box-sizing:border-box;margin:6px 0;padding:10px;border-radius:8px;border:1px solid #6b7fd6;background:#111a33;color:#fff;font-size:15px}
+#auth-screen textarea{height:90px;font-size:12px;font-family:monospace}
+#auth-screen .atabs{display:flex;gap:6px;margin-bottom:6px}#auth-screen .atabs button{flex:1;padding:8px;border-radius:8px;border:1px solid #4a5ca8;background:#16204a;color:#cfd8ff;font-size:14px;font-weight:bold}
+#auth-screen .atabs button.on{background:#3a56c8;color:#fff;border-color:#9fb4ff}
+#auth-screen .ago{display:block;width:100%;margin:8px 0 4px;padding:11px;border-radius:10px;border:0;background:linear-gradient(#3fbf5a,#238a3a);color:#fff;font-size:15px;font-weight:bold}
+#auth-screen .ago.alt{background:linear-gradient(#4a6fd8,#2a45a0)}
+#auth-screen .amsg{min-height:16px;margin:6px 0;font-size:12px;color:#9fe8ff}#auth-screen .amsg.bad{color:#ff8a8a}
+#auth-screen .alinks{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:6px;font-size:12px}#auth-screen .alinks a{color:#9fb4ff;text-decoration:underline;cursor:pointer}
+#auth-screen .asetup{margin-top:8px;text-align:left}#auth-screen .achoose{margin-top:10px}#auth-screen .ds{font-size:12px;opacity:.85;margin:4px 0}

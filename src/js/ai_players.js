@@ -269,7 +269,8 @@ function aiMountAnim(a, dt) {
 function updateAIs(dt) {
   var inCampOf = function (a) { return Math.hypot(a.pos.x, a.pos.z) < SAFE_R; };
   for (var i = 0; i < ais.length; i++) {
-    var a = ais[i], c = a.c, pos = a.pos, spd = 0, dP = distP(pos), vis = dP < 70;
+    var a = ais[i]; if (a.remote) continue;                       // online players are driven by pvp.js
+    var c = a.c, pos = a.pos, spd = 0, dP = distP(pos), vis = dP < 70;
     c.g.visible = vis && a.state !== 'dead' || (a.state === 'dead' && c.g.visible);
     if (a.state === 'dead') {
       a.deadT += dt; if (vis) { c.mv = 0; animateChar(c, dt, 0); }

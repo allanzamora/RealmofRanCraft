@@ -462,7 +462,7 @@ function slashPose(k) { // [armX, elbowX, torsoYaw, lean, lunge]
   var s3 = ease((k - 0.55) / 0.45); return [lerp(-0.35, -0.2, s3), lerp(-0.2, -0.9, s3), lerp(-0.6, 0, s3), lerp(0.3, 0, s3), 1 - s3];
 }
 
-function startAnim(c, type, dur) { c.anim = { type: type, t: 0, dur: dur }; }
+function startAnim(c, type, dur) { c.anim = { type: type, t: 0, dur: dur }; if (c === P.c && typeof PVP !== 'undefined' && PVP.on) pvpAnim(type, dur); }
 /* death: drop (caller) -> kneel -> topple forward -> 1 s later a translucent ghost rises out of the body to heaven */
 function startDeath(c, pos) {
   startAnim(c, 'death', 1.3); c.deathKnee = 0;

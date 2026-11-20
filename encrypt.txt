@@ -1,0 +1,43 @@
+
+https://obfuscator.io/
+
+
+ui.js
+skill.js
+quests.js
+player.js
+pets.js
+items.js
+core.js
+combat.js
+cloud.js
+anticheat.js
+achievement.js
+
+
+
+
+
+(function enforceGameDomain() {
+  const appx00 = "fr";
+  const appx01 = ".app";
+  const appx02 = "realm";
+  const appx03 = "t.v";
+  const appx04 = "cr";
+  const appx05 = "ce";
+  
+  const allowedDomain = appx02 +"o"+ appx00 +"an"+ appx04 +"af"+ appx03 +"er"+ appx05 +"l"+ appx01;
+  const targetUrl = "https://" + allowedDomain;
+  const currentHost = window.location.hostname.toLowerCase();
+
+  const isAllowed =
+    currentHost === allowedDomain ||
+    currentHost.endsWith("." + allowedDomain);
+
+  if (!isAllowed) {
+    window.location.replace(targetUrl);
+  }
+})();
+
+
+

@@ -26,6 +26,10 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Realm of RanCraft - 3D MMORPG","url":"https://realmofrancraft.vercel.app/","image":"https://realmofrancraft.vercel.app/rancraft.png","description":"A free 3D mobile MMORPG played in the browser with 12 maps, bosses, pets, costumes and crafting.","genre":["MMORPG","Action RPG"],"gamePlatform":["Web browser","Android"],"applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <link rel="stylesheet" href="src/css/ui.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 </head>
 <body class="wm">
 <div id="welcome"><div id="welcome-card">
@@ -43,7 +47,7 @@
 <li><b>Costumes &amp; Diamonds</b> - wings, crowns, masks, swords and armor with special bonuses.</li>
 <li><b>Gear &amp; Crafting</b> - random stats, upgrades, rebirth and mounts.</li>
 <li><b>AI Players</b> - a lively world with bots, quests and NPC shops.</li>
-<li><b>Mobile First</b> - touch joystick, pinch zoom, auto-save in your browser.</li>
+<li><b>Mobile First</b> - touch joystick, pinch zoom, online account with cloud save (login on any phone).</li>
 </ul>
 <p class="w-small">This a work of fiction, any name, items, maps etc. are fictional.</p>
 </div></div></div>
@@ -74,6 +78,7 @@
 </div>
 
 <div id="pet-btn" class="ui box"><span id="pet-ico">&#128062;</span></div>
+<div id="pvp-hud" style="display:none"></div>
 <div id="tracker" class="ui box"></div>
 <div id="log" class="ui"></div>
 
@@ -142,7 +147,7 @@
   <div class="crow"><span>Dress color</span><div class="sw" id="sw-shirt"></div></div>
   <div class="crow"><span>Pants color</span><div class="sw" id="sw-pants"></div></div>
   <button id="name-go">START ADVENTURE</button><div id="name-err"></div>
-  <div id="cr-save"><b>How your progress is saved</b><br>Your hero and all progress are saved automatically on <b>this device</b>, inside this browser / app (local storage). There is no account or password. To continue later, just open the game again in the <b>same browser or app, from the same file or link</b>. Do not clear the browser data / cache, do not use a private tab, and do not switch to another browser or device, or you will start a new hero.</div></div></div>
+  <div id="cr-save"><b>How your progress is saved</b><br>Your hero is saved automatically to your <b>online account</b> (Firebase) every 30 seconds and when you close the game, and also on this device. Log in with the same email on any phone to continue. You can log out from the Menu.</div></div></div>
 <div id="death"><h1>YOU DIED</h1><p id="death-msg">The wilds are not forgiving. You lose 5% of your gold.</p><button id="btn-respawn">RESPAWN AT CAMP</button></div>
 
 <script src="src/js/core.js"></script>
@@ -153,6 +158,7 @@
 <script src="src/js/quests.js"></script>
 <script src="src/js/player.js"></script>
 <script src="src/js/anticheat.js"></script>
+<script src="src/js/cloud.js"></script>
 <script src="src/js/fx.js"></script>
 <script src="src/js/characters.js"></script>
 <script src="src/js/map_01.js"></script>
@@ -169,6 +175,7 @@
 <script src="src/js/map_12.js"></script>
 <script src="src/js/map_13.js"></script>
 <script src="src/js/map_14.js"></script>
+<script src="src/js/map_15.js"></script>
 <script src="src/js/combat.js"></script>
 <script src="src/js/enemy_ai.js"></script>
 <script src="src/js/ai_players.js"></script>
@@ -177,6 +184,7 @@
 <script src="src/js/achievements.js"></script>
 <script src="src/js/ui.js"></script>
 <script src="src/js/auto.js"></script>
+<script src="src/js/pvp.js"></script>
 <script src="src/js/main.js"></script>
 </body>
 </html>
