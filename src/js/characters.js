@@ -203,10 +203,34 @@ function makeHumanoid(o) {
       var gc = add(box(0.23, 0.09, 0.23), glovesMat, el, 0, -0.17, 0);
       gh.visible = gc.visible = false; gloveMeshes.push(gh, gc);
     }
-    return { sh: sh, el: el };
+    var ring = null;
+    if (o.gear) {   // Godzilla ring: glowing semi-black circle with dark lightning, worn on this hand
+      var rg = new THREE.Group(); rg.position.set(0, -0.2, 0); rg.visible = false; el.add(rg);
+      var ringM = M(0x08080f, { emissive: 0x3a1a88, emissiveIntensity: 1.3, metalness: 0.7, roughness: 0.3 });
+      var rt = new THREE.Mesh(new THREE.TorusGeometry(0.155, 0.032, 6, 18), ringM); rt.rotation.x = Math.PI / 2; rg.add(rt);
+      var glowM = new THREE.MeshBasicMaterial({ color: 0x6a3cff, transparent: true, opacity: 0.35, blending: THREE.AdditiveBlending, depthWrite: false });
+      var gl = new THREE.Mesh(new THREE.TorusGeometry(0.155, 0.075, 6, 18), glowM); gl.rotation.x = Math.PI / 2; rg.add(gl);
+      var boltM = new THREE.MeshBasicMaterial({ color: 0x8a52ff, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false }), bolts = [];
+      for (var bi = 0; bi < 5; bi++) { var bm = new THREE.Mesh(new THREE.BoxGeometry(0.014, 0.17, 0.014), boltM); rg.add(bm); bolts.push(bm); }
+      ring = { g: rg, bolts: bolts, glow: glowM, ringM: ringM, boltM: boltM, style: '' };
+    }
+    return { sh: sh, el: el, ring: ring };
   }
   var armL = mkArm(-1), armR = mkArm(1);
 
+  var necklaceG = null;
+  if (o.gear) {   // necklaces: 'god' = dark chain + cyan pendant, 'dark' = black chain + cross, 'gm' = neon chain + glowing circle
+    necklaceG = new THREE.Group(); necklaceG.visible = false; torso.add(necklaceG);
+    var chM = M(0x15151a, { metalness: 0.8, roughness: 0.3 }), pdM = M(0x1adcff, { emissive: 0x1adcff, emissiveIntensity: 1.2, metalness: 0.3, roughness: 0.3 });
+    var nGod = new THREE.Group(), nDark = new THREE.Group(), nGM = new THREE.Group(); necklaceG.add(nGod); necklaceG.add(nDark); necklaceG.add(nGM);
+    function chain(par, mat) { add(box(0.26, 0.022, 0.022), mat, par, 0, 0.62, 0.16); [-1, 1].forEach(function (sx) { var c = add(box(0.19, 0.022, 0.022), mat, par, sx * 0.075, 0.545, 0.19); c.rotation.z = -sx * 0.7; }); }
+    chain(nGod, chM); var pd2 = add(box(0.075, 0.075, 0.03), pdM, nGod, 0, 0.465, 0.205); pd2.rotation.z = Math.PI / 4;
+    var dkM = M(0x0c0c10, { metalness: 0.85, roughness: 0.25 }), crM = M(0x1a1016, { emissive: 0x7a0a28, emissiveIntensity: 1.1, metalness: 0.8, roughness: 0.3 });
+    chain(nDark, dkM); add(box(0.03, 0.15, 0.028), crM, nDark, 0, 0.455, 0.205); add(box(0.1, 0.03, 0.028), crM, nDark, 0, 0.49, 0.205);
+    var gmC = M(0x0a2a2a, { emissive: 0x00ffd5, emissiveIntensity: 1.6, metalness: 0.3, roughness: 0.3 }), gmP = M(0x180a2a, { emissive: 0xff2ad4, emissiveIntensity: 1.8, metalness: 0.3, roughness: 0.3 });
+    chain(nGM, gmC); var gmT = new THREE.Mesh(new THREE.TorusGeometry(0.058, 0.016, 6, 18), gmP); gmT.position.set(0, 0.46, 0.2); nGM.add(gmT);
+    necklaceG.userData = { god: nGod, dark: nDark, gm: nGM, gmC: gmC, gmP: gmP };
+  }
   // legs (blocky)
   function mkLeg(sx) {
     var hp = new THREE.Group(); hp.position.set(sx * 0.125 * bk, 0, 0); hips.add(hp);
@@ -316,7 +340,7 @@ function makeHumanoid(o) {
   root.scale.setScalar(o.scale);
   return { root: root, mats: mats, rig: { body: body, hips: hips, torso: torso, head: head, armL: armL, armR: armR, legL: legL, legR: legR, cape: cape, wpn: wpn, armor: armor, armorMat: armorMat,
     pantsMat: pantsMat, padMat: padMat, padMeshes: padMeshes, glovesMat: glovesMat, gloveMeshes: gloveMeshes, helmMat: helmMat, helmMeshes: helmMeshes,
-    hairMeshes: hairMeshes, hairStyles: hairStyles, crownG: crownG, maskG: maskG, ssjWings: ssjWings, ssjG: ssjG, aura: aura, skirt: skirt, hairMat: hm, shirtMats: shirtMats, wingMat: wingMat, wingsG: wingsG, wingsG2: wingsG2, wingsG3: wingsG3, wingMat2: wingMat2, gzTrim: gzTrim, radArmorMeshes: radArmorMeshes, radGloveMeshes: radGloveMeshes, radPantsMeshes: radPantsMeshes, gzArmorMeshes: gzArmorMeshes, gzGloveMeshes: gzGloveMeshes, gzPantsMeshes: gzPantsMeshes, wings: wings, godG: godG, godMat: godMat, flameMat: flameMat } };
+    hairMeshes: hairMeshes, hairStyles: hairStyles, necklaceG: necklaceG, ringL: armL.ring, ringR: armR.ring, crownG: crownG, maskG: maskG, ssjWings: ssjWings, ssjG: ssjG, aura: aura, skirt: skirt, hairMat: hm, shirtMats: shirtMats, wingMat: wingMat, wingsG: wingsG, wingsG2: wingsG2, wingsG3: wingsG3, wingMat2: wingMat2, gzTrim: gzTrim, radArmorMeshes: radArmorMeshes, radGloveMeshes: radGloveMeshes, radPantsMeshes: radPantsMeshes, gzArmorMeshes: gzArmorMeshes, gzGloveMeshes: gzGloveMeshes, gzPantsMeshes: gzPantsMeshes, wings: wings, godG: godG, godMat: godMat, flameMat: flameMat } };
 }
 
 
@@ -434,7 +458,7 @@ function makeTag(c, color, showBar) {
     ctx.clearRect(0, 0, 256, 64);
     ctx.font = 'bold 22px sans-serif'; ctx.textAlign = 'center';
     ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(0,0,0,.85)';
-    var txt = (c.lvl ? 'Lv' + c.lvl + ' ' : '') + c.name;
+    var txt = (c.lvl && color !== '#ffffff' ? 'Lv' + c.lvl + ' ' : '') + c.name;   // heroes/bots: name only, white
     ctx.strokeText(txt, 128, 24); ctx.fillStyle = color; ctx.fillText(txt, 128, 24);
     if (frac !== null && frac !== undefined) {
       ctx.fillStyle = 'rgba(0,0,0,.75)'; ctx.fillRect(38, 34, 180, 14);
@@ -503,9 +527,32 @@ function updateSheath(c, a, dt) {
   setSheath(c, busy ? 'hand' : (c.carry || c.forceSheath || c.drawT <= 0) ? 'back' : 'hand');
 }
 var BOWTW = 0.8;      // torso twist (and body turn) of the archer stance
+var RING_STYLE = { god: { em: 0x3a1a88, glow: 0x6a3cff, bolt: 0x8a52ff, ring: 0x08080f }, dark: { em: 0x5a0620, glow: 0xb0103a, bolt: 0xff2a55, ring: 0x050507 } };
+function ringFxUpdate(r, t) {      // dark-lightning rings (god / dark) and neon rings + neon necklace (gm)
+  [r.ringL, r.ringR].forEach(function (R, k) {
+    if (!R || !R.g.visible) return;
+    if (R.style === 'gm') {        // neon ring: bright colour-cycling circle, no lightning
+      var hue = (t * 0.35 + k * 0.5) % 1; R.ringM.color.setHex(0x050510); R.ringM.emissive.setHSL(hue, 1, 0.55); R.ringM.emissiveIntensity = 1.8;
+      R.glow.color.setHSL(hue, 1, 0.55); R.glow.opacity = 0.5 + 0.2 * Math.sin(t * 5 + k); R.bolts.forEach(function (b) { b.visible = false; });
+      return;
+    }
+    var S = RING_STYLE[R.style] || RING_STYLE.god;
+    R.ringM.color.setHex(S.ring); R.ringM.emissive.setHex(S.em); R.ringM.emissiveIntensity = 1.3; R.glow.color.setHex(S.glow); R.boltM.color.setHex(S.bolt);
+    R.glow.opacity = 0.28 + 0.14 * Math.sin(t * 6 + k * 2);
+    R.bolts.forEach(function (b, i) {
+      var st = Math.floor(t * 14 + i * 3 + k * 7), q = function (n) { var x = Math.sin(st * 12.9898 + i * 78.233 + n * 37.7 + k * 5.1) * 43758.5453; return x - Math.floor(x); };
+      var a = q(1) * 6.2832, rad = 0.16 + q(2) * 0.07;
+      b.visible = q(3) > 0.22; b.position.set(Math.cos(a) * rad, (q(4) - 0.5) * 0.2, Math.sin(a) * rad); b.rotation.set((q(5) - 0.5) * 1.4, -a, (q(6) - 0.5) * 1.6); b.scale.y = 0.5 + q(7) * 1.4;
+    });
+  });
+  var nu = r.necklaceG && r.necklaceG.userData;
+  if (nu && nu.gm.visible) { var h2 = (t * 0.35) % 1; nu.gmC.emissive.setHSL(h2, 1, 0.5); nu.gmP.emissive.setHSL((h2 + 0.5) % 1, 1, 0.55); }
+}
 function animateChar(c, dt, spd) {
   if (c.croc) animCroc(c, dt, spd);
+  if (c.box) animBox(c, dt, spd);
   var r = c.rig, t = performance.now() / 1000;
+  if (r.ringL) ringFxUpdate(r, t);
   c.mv = lerp(c.mv, clamp(spd / 4.2, 0, 1.3), Math.min(1, dt * 12));
   c.phase += dt * spd * (c.carry ? 3.0 : 1.9) / Math.sqrt(c.scale);
   var mv = c.mv, sw = Math.sin(c.phase), co = Math.cos(c.phase);
@@ -590,7 +637,7 @@ function disposeChar(c) {
 
 /* ---------- player / NPC / bots / enemies ---------- */
 function wItem() { return ITEMS[P.equip.weapon] || ITEMS.weapon0; }
-var playerChar = newChar({ hairStyles: true, scale: 1, skin: 0xf0c8a0, shirt: 0x2f6fd0, pants: 0x353a48, hair: 0x2a1a10, pads: true, padColor: 0x8a97a6, boots: 0x3a2a1a, gear: true }, P.name, 1, '#7fd1ff', false, { kind: 'sword', color: 0x9b7653 });
+var playerChar = newChar({ hairStyles: true, scale: 1, skin: 0xf0c8a0, shirt: 0x2f6fd0, pants: 0x353a48, hair: 0x2a1a10, pads: true, padColor: 0x8a97a6, boots: 0x3a2a1a, gear: true }, P.name, 1, '#ffffff', false, { kind: 'sword', color: 0x9b7653 });
 playerChar.sheath = true; playerChar.tag.spr.visible = true;
 P.c = playerChar; P.pos = playerChar.g.position;
 
@@ -621,6 +668,11 @@ function applyEquipVisuals(tc, ov) {   // tc: optional preview character; ov: co
   if (r.maskG) { r.maskG.visible = mask; r.ssjWings.visible = sw; }
   if (r.crownG) r.crownG.visible = crown;
   if (r.ssjG) { r.ssjG.visible = ssj; r.aura.visible = ssj; }
+  if (r.necklaceG) {   // jewelry visuals (items without a jw style, e.g. Starter jewelry, show nothing)
+    var jn = ITEMS[P.equip.necklace], jl = ITEMS[P.equip.ringL], jr = ITEMS[P.equip.ringR], nu = r.necklaceG.userData, jwN = jn && jn.jw || '';
+    r.necklaceG.visible = !!jwN; nu.god.visible = jwN === 'god'; nu.dark.visible = jwN === 'dark'; nu.gm.visible = jwN === 'gm';
+    r.ringL.style = jl && jl.jw || ''; r.ringR.style = jr && jr.jw || ''; r.ringL.g.visible = !!r.ringL.style; r.ringR.g.visible = !!r.ringR.style;
+  }
   var gzA = !!(a && a.model === 'godzilla'), gzP = !!(p && p.model === 'godzilla'), gzG = !!(g && g.model === 'godzilla'), gzW = !!(wg && wg.model === 'godzilla');
   r.armor.visible = !!a; if (a) r.armorMat.color.setHex(gzA ? 0x141414 : a.color);
   r.gzArmorMeshes.forEach(function (m) { m.visible = gzA; }); r.gzGloveMeshes.forEach(function (m) { m.visible = gzG; }); r.gzPantsMeshes.forEach(function (m) { m.visible = gzP; });
@@ -657,10 +709,10 @@ function applyEquipVisuals(tc, ov) {   // tc: optional preview character; ov: co
   ug(gm(r.glovesMat, g), eqU('gloves')); ug(godH ? r.flameMat : r.helmMat, eqU('helmet')); ug(gzW ? r.gzTrim : (wg && wg.model === 'gear' ? r.wingMat2 : r.wingMat), eqU('wings'));
   pc.upg = up;
 }
-var UPG_COL = [0x9bd0ff, 0x6dff9a, 0xffd54f, 0xff7a2a, 0xff4fd8];
-function upgColor(l, t) { return l >= MAX_UPG ? new THREE.Color().setHSL((t * 0.6) % 1, 1, 0.6).getHex() : UPG_COL[Math.min(4, Math.floor(l / 10))]; }
+var UPG_COL = [0x9bd0ff, 0x6dff9a, 0xffd54f, 0xff7a2a, 0xff4fd8, 0xff3a3a, 0xffffff, 0x3affef];
+function upgColor(l, t) { return l >= MAX_UPG ? new THREE.Color().setHSL((t * 0.6) % 1, 1, 0.6).getHex() : UPG_COL[Math.min(7, Math.floor(l / 10))]; }
 function updateWeaponSpikes(c, t) {      // +50 weapon: rotating rainbow spiky light rays around the blade
-  var w50 = c.upg && c.upg.some(function (u) { return u.lvl >= MAX_UPG && u.m === c.wMat; });
+  var w50 = c.upg && c.upg.some(function (u) { return u.lvl >= 50 && u.m === c.wMat; });
   if (!w50) { if (c.wSpikes) { c.wSpikes.visible = false; } return; }
   if (!c.wSpikes || !c.wSpikes.parent) {
     var g = new THREE.Group(), ms = [];
@@ -681,7 +733,7 @@ function updateUpg(c, dt, t) {
   for (var i = 0; i < c.upg.length; i++) {
     var u = c.upg[i], pulse = 0.85 + 0.15 * Math.sin(t * 3 + i); if (u.lvl > maxL) maxL = u.lvl;
     if (u.rare) { u.m.emissiveIntensity += 0.02 * u.lvl; continue; }
-    u.m.emissive.setHex(upgColor(u.lvl, t)); u.m.emissiveIntensity = (0.1 + 0.03 * u.lvl) * pulse;
+    u.m.emissive.setHex(upgColor(u.lvl, t)); u.m.emissiveIntensity = (0.1 + 0.03 * Math.min(u.lvl, 55)) * pulse;
   }
   c.upT = (c.upT || 0) - dt;
   if (maxL >= 3 && c.upT <= 0) {

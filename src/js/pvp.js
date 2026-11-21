@@ -1,6 +1,7 @@
-
-var PVP_SERVER_URL = 'wss://testgg-jh7k.onrender.com';          
-var PVP_DMG_MUL = 0.5;      
+/* pvp.js - ONLINE PvP ARENA client. Talks to server/pvp_server.js over a WebSocket.
+   Other real players appear as remote fighters (entries in `ais` flagged remote:true). Damage is computed by the attacker and applied by the victim. */
+var PVP_SERVER_URL = 'wss://testgg-jh7k.onrender.com';          // <-- put your deployed server here, e.g. 'wss://my-pvp.onrender.com'  (players can also type it in Settings)
+var PVP_DMG_MUL = 0.5;            // PvP damage scale (tune: lower = longer fights)
 var PVP = { ws: null, on: false, id: 0, status: 'off', ping: 0, n: 0, top: [], tries: 0, sendT: 0, eqKey: '', pingT: 0, eqT: 0, hudT: 0, lastX: 0, lastZ: 0, spd: 0, retry: null };
 function pvpUrl() { return String((S.pvpUrl || PVP_SERVER_URL || '')).trim(); }
 function pvpPeers() { return ais.filter(function (a) { return a.remote; }); }
@@ -118,8 +119,8 @@ function pvpOnMsg(m) {
     if (a.state !== 'dead') a.c.tag.draw(Math.max(0, a.hp / a.maxHp));
   } else if (m.t === 'a') {
     var b = pvpPeer(m.id); if (!b || b.state === 'dead') return;
+    if (m.sk) { pvpSkillFx(b, m.sk, m.x, m.z); return; }       // a skill cast: its own animation + effects
     if (m.k && m.k !== 'death') startAnim(b.c, m.k, m.d || 0.5);
-    if (m.k === 'cast') ringFx(b.pos.x, b.pos.z, 3.2, 0xff8a4a, 0.5);
   } else if (m.t === 'e') { var q = pvpPeer(m.id); if (q) pvpReskin(q, m); }
   else if (m.t === 'h') pvpTakeHit(m);
   else if (m.t === 'k') {
@@ -153,7 +154,37 @@ function pvpTakeHit(m) {
   var vg = $('vignette'); vg.style.opacity = '1'; setTimeout(function () { vg.style.opacity = '0'; }, 160);
   if (P.hp <= 0) { P.hp = 0; pvpSend({ t: 'k', by: m.from }); playerDie(m.n || 'a player'); }
 }
-function pvpAnim(type, dur) { if (!PVP.on || type === 'death') return; pvpSend({ t: 'a', k: type, d: dur }); }
+/* ----- other players' skills: visual-only copy of the AI skill effects (no damage; damage is sent as 'h' hits) ----- */
+function pvpSkill(id, x, z) { if (PVP.on) PVP.skT = performance.now(); if (PVP.on) pvpSend({ t: 'a', k: 'cast', d: 0.6, sk: id, x: +x.toFixed(1), z: +z.toFixed(1) }); }
+function pvpSkillFx(b, id, tx, tz) {
+  var sk = SKILLS[id]; if (!sk || b.state === 'dead') return;
+  var near = distP(b.pos) < 70, px = b.pos.x, pz = b.pos.z;
+  if (!isFinite(tx) || !isFinite(tz) || (!tx && !tz)) { var f = b.c.g.rotation.y; tx = px + Math.sin(f) * 6; tz = pz + Math.cos(f) * 6; }
+  var col = sk.color || 0xff9a3a;
+  if (near) sfx(sk.kind === 'heal' || sk.kind === 'hot' ? 'heal' : 'skill');
+  switch (sk.kind) {
+    case 'cone': startAnim(b.c, 'attack', 0.55); if (near) slashFx(px, pz, b.c.g.rotation.y, col, sk.range || 3, sk.cone || 1.6); break;
+    case 'aoe': startAnim(b.c, 'spin', 0.7); if (near) { ringFx(px, pz, sk.radius, col, 0.5); schedule(0.3, function () { ringFx(px, pz, sk.radius, col, 0.35); }); if (sk.radius > 8) pillarFx(px, pz, col); } break;
+    case 'bolt': startAnim(b.c, 'cast', 0.6); if (near) { orbFx(px, pz, tx, tz, col, 0.22); schedule(0.22, function () { ringFx(tx, tz, 2, col, 0.3); }); } break;
+    case 'chain': startAnim(b.c, 'cast', 0.6); if (near) orbFx(px, pz, tx, tz, 0xdff3ff, 0.12); break;
+    case 'meteor':
+      startAnim(b.c, 'cast', 0.8);
+      if (near) { ringFx(tx, tz, sk.radius, 0xff5a1a, sk.delay); schedule(sk.delay, function () { ringFx(tx, tz, sk.radius, 0xffa040, 0.5); pillarFx(tx, tz, 0xff6a1a); burst({ x: tx, y: 1, z: tz }, 0xff8a2a, 22, 6, 7); }); } break;
+    case 'step': startAnim(b.c, 'attack', 0.5); if (near) { burst({ x: px, y: 1, z: pz }, 0x6a3aff, 12, 3, 4); slashFx(px, pz, b.c.g.rotation.y, 0xaa77ff, 3, 2); } break;
+    case 'storm': startAnim(b.c, 'cast', 0.9); if (near) { ringFx(px, pz, sk.radius, col, 0.8); for (var i = 0; i < 5; i++) (function (i) { schedule(0.3 + i * 0.25, function () { var a2 = rand(0, TAU), r = rand(1, sk.radius); lightningFx(px + Math.cos(a2) * r, pz + Math.sin(a2) * r, col); }); })(i); } break;
+    case 'anvil': startAnim(b.c, 'cast', 0.9); if (near) { ringFx(tx, tz, sk.radius, 0x9aa3ad, 0.9); for (var q = 0; q < 4; q++) (function (q) { schedule(0.3 + q * 0.2, function () { var x = tx + rand(-3, 3), z = tz + rand(-3, 3); ringFx(x, z, 2.5, 0xcfd5dc, 0.35); burst({ x: x, y: 0.5, z: z }, 0xb0b6bf, 8, 4, 3); }); })(q); } break;
+    case 'starfall': startAnim(b.c, 'cast', 0.9); if (near) { ringFx(tx, tz, sk.radius, 0xffe066, 1.2); for (var j = 0; j < 6; j++) (function (j) { schedule(0.2 + j * 0.15, function () { lightningFx(tx + rand(-4, 4), tz + rand(-4, 4), 0xffe066); }); })(j); } break;
+    case 'hsword': startAnim(b.c, 'cast', 0.9); if (near) { ringFx(tx, tz, sk.radius, 0xfff2a0, 0.9); schedule(0.9, function () { ringFx(tx, tz, sk.radius, 0xffffff, 0.5); pillarFx(tx, tz, 0xfff2a0); burst({ x: tx, y: 1, z: tz }, 0xfff2a0, 22, 7, 7); }); } break;
+    case 'angel': startAnim(b.c, 'cast', 0.9); if (near) { ringFx(tx, tz, 3, 0xffffff, 0.8); ringFx(tx, tz, 6, 0xfff2a0, 1.0); schedule(1.0, function () { pillarFx(tx, tz, 0xffffff); ringFx(tx, tz, sk.radius, 0xfff2a0, 0.6); burst({ x: tx, y: 2, z: tz }, 0xfff2a0, 24, 7, 8); }); } break;
+    case 'icecrack': startAnim(b.c, 'cast', 0.9); if (near) for (var w = 1; w <= 5; w++) (function (w) { schedule(0.1 + w * 0.07, function () { var x = px + (tx - px) * w / 5, z = pz + (tz - pz) * w / 5; ringFx(x, z, 1.4, 0x9fe8ff, 0.3); burst({ x: x, y: 0.4, z: z }, 0xcff4ff, 8, 2, 4); }); })(w); break;
+    case 'laser': startAnim(b.c, 'cast', 0.9); if (near) { var dx = tx - px, dz = tz - pz, dl = Math.max(0.5, Math.hypot(dx, dz)); orbFx(px, pz, px + dx / dl * (sk.range || 14), pz + dz / dl * (sk.range || 14), 0xff2a2a, 0.5, true); } break;
+    case 'skelly': case 'ewave': startAnim(b.c, 'cast', 1.0); if (near) { ringFx(tx, tz, sk.radius, sk.kind === 'ewave' ? 0x6ab7ff : 0xe8e4d4, 0.9); schedule(0.9, function () { pillarFx(tx, tz, sk.kind === 'ewave' ? 0x6ab7ff : 0xe8e4d4); burst({ x: tx, y: 1.5, z: tz }, sk.kind === 'ewave' ? 0x8fd0ff : 0xe8e4d4, 24, 7, 8); }); } break;
+    case 'heal': case 'hot': startAnim(b.c, 'cast', 0.8); if (near) { ringFx(px, pz, 3, 0x6dff8f, 0.7); pillarFx(px, pz, 0x6dff8f); } break;
+    case 'shield': startAnim(b.c, 'cast', 0.7); if (near) { ringFx(px, pz, 2.6, 0x9bd0ff, 0.6); pillarFx(px, pz, 0x9bd0ff); } break;
+    default: startAnim(b.c, 'cast', 0.7); if (near) { ringFx(px, pz, 2.6, 0xffb04a, 0.6); pillarFx(px, pz, 0xffb04a); }   // buffs
+  }
+}
+function pvpAnim(type, dur) { if (!PVP.on || type === 'death' || performance.now() - (PVP.skT || 0) < 200) return; pvpSend({ t: 'a', k: type, d: dur }); }
 function pvpRespawn() {
   var a = rand(0, TAU), r = rand(14, 48); P.pos.set(Math.cos(a) * r, 0, Math.sin(a) * r); P.invuln = 3; P.dest = null;
   pvpSend({ t: 's', x: P.pos.x, z: P.pos.z, r: P.c.g.rotation.y, hp: P.hp, mh: maxHp(), m: 0 });
@@ -185,8 +216,7 @@ function updatePvp(dt) {
 function pvpHud() {
   var h = $('pvp-hud'); if (!h) return; h.style.display = PVP.on ? 'block' : 'none'; if (!PVP.on) return;
   var st = { online: '🟢 ' + (PVP.n || pvpPeers().length + 1) + ' players · ' + PVP.ping + ' ms', connecting: '🟡 connecting...', nourl: '🔴 no server set (Settings)', error: '🔴 connection error', off: '🟡 reconnecting...', failed: '🔴 server unreachable' }[PVP.status] || PVP.status;
-  var rows = (PVP.top || []).slice(0, 3).map(function (r, i) { return (i + 1) + '. ' + r[0] + '  ' + r[1] + '/' + r[2]; }).join('<br>');
-  h.innerHTML = '<b>ONLINE PvP</b> ' + st + (rows ? '<br><span class="pvp-top">K/D  ' + rows + '</span>' : '');
+  h.innerHTML = '<b>ONLINE PvP</b> ' + st;
 }
 /* ----- server address popup / settings ----- */
 function renderPvpServer(body) {

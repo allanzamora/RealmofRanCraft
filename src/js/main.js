@@ -22,7 +22,12 @@ function loadMap(id, quiet) {
 }
 function travelTo(id) {
   var m = mapById(id);
-  if (!canEnterMap(m)) { log('You need level ' + m.min + ' to enter ' + m.name + '.', '#ff9a9a'); return; }
+  if (!mapLevelOk(m)) { log('You need level ' + m.min + ' to enter ' + m.name + '.', '#ff9a9a'); return; }
+  if (m.key && !hasGoldenPass()) {
+    if ((P.inv.golden_key | 0) <= 0) { log('You need a Golden Key to enter ' + m.name + '. Dark Swordman drops them (10%).', '#ff9a9a'); return; }
+    P.inv.golden_key--; P.inv.golden_pass = nowSec() + GOLD_PASS_MIN * 60; saveGame();
+    log('Used a Golden Key. You may enter ' + m.name + ' freely for ' + GOLD_PASS_MIN + ' minutes.', '#ffd54f');
+  }
   ringFx(P.pos.x, P.pos.z, 4, 0x66ccff, 0.6); pillarFx(P.pos.x, P.pos.z, 0x66ccff); sfx('level');
   loadMap(id);
 }
@@ -72,7 +77,7 @@ P.c.name = P.name;
 applyEquipVisuals(); P.c.lvl = P.lvl; 
 P.hp = maxHp(); P.mp = maxMp(); refreshPlayerTag(true);
 layoutActions(); refreshSkillButtons();
-(function () { var m = mapById(P.map); loadMap(canEnterMap(m) && !m.online ? m.id : 'plains', true); })();
+(function () { var m = mapById(P.map); loadMap(mapLevelOk(m) && (!m.key || hasGoldenPass()) && !m.online ? m.id : 'plains', true); })();
 updateHud();
 log('Welcome to Realm of RanCraft! Talk to Elder Rowan (!) to begin.', '#ffe066');
 log('Joystick: bottom-left. Pinch or +/- to zoom. Portal ring = World Map.', '#cfd8ff');

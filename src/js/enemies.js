@@ -156,8 +156,8 @@ ENEMY_TYPES.croczilla.skills = ['slam', 'gifts', 'nova']; ENEMY_TYPES.croczilla.
 
 /* ---------- World boss: Dark Swordman (appears at random times in a random normal map) ---------- */
 E('darksword', 'Dark Swordman', 100, 'b', 4.4, W('greatsword', 0x1a0a22, true), { skin: 0x2a2030, shirt: 0x0e0a14, pants: 0x0a0810, hair: null, bald: true, helmet: true, eye: 0xff2222, eyeGlow: true, bulk: 1.3, pads: true, padColor: 0x14101c, armor: 0x16101e, cape: 0x3a0a18 }, { boss: true });
-(function (T) { T.hp = 15000000; T.atk = 20000; T.cd = 2.2; T.speed = 3.2; T.aggro = 26; T.world = true; T.skills = ['leap', 'leap', 'slam']; T.skillNames = { leap: 'JUMPING STRIKE!', slam: 'Dark Slam!' }; T.fragDrop = [10, 15]; })(ENEMY_TYPES.darksword);
+(function (T) { T.jewelDrops = [['dark_necklace', 0.08], ['dark_ring_l', 0.08], ['dark_ring_r', 0.08], ['golden_key', 0.10]]; T.hp = 15000000; T.atk = 20000; T.cd = 2.2; T.speed = 3.2; T.aggro = 26; T.world = true; T.skills = ['leap', 'leap', 'slam']; T.skillNames = { leap: 'JUMPING STRIKE!', slam: 'Dark Slam!' }; T.fragDrop = [10, 15]; })(ENEMY_TYPES.darksword);
 
 /* ---------- Boss Room: The Game Master (dev-station boss, looks like the safe-zone NPC) ---------- */
 E('gamemaster', 'The Game Master', 100, 'b', 4.0, W('greatsword', 0x00e5ff, true), { skin: 0xe8c4a0, shirt: 0x1c1c28, pants: 0x14141c, hair: null, bald: true, cape: 0x7a1f1f, armor: 0x2a2a3a, pads: true, padColor: 0xffd54f, boots: 0x101018, eye: 0x33ffcc, eyeGlow: true, bulk: 1.25 }, { boss: true });
-(function (T) { T.hp = 50000000; T.atk = 70000; T.cd = 2.2; T.speed = 3.3; T.aggro = 28; T.skills = ['leap', 'slam', 'nova']; T.skillNames = { leap: 'BAN HAMMER!', slam: 'Server Crash!', nova: 'Lag Spike!' }; })(ENEMY_TYPES.gamemaster);
+(function (T) { T.jewelDrops = [['gm_necklace', 0.01], ['gm_ring_l', 0.01], ['gm_ring_r', 0.01]]; T.hp = 50000000; T.atk = 70000; T.cd = 2.2; T.speed = 3.3; T.aggro = 28; T.skills = ['leap', 'slam', 'nova']; T.skillNames = { leap: 'BAN HAMMER!', slam: 'Server Crash!', nova: 'Lag Spike!' }; })(ENEMY_TYPES.gamemaster);

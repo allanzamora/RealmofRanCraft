@@ -26,7 +26,7 @@ function makeAI(name, lvl, m) {
   var look = { scale: 1, skin: pick([0xf0c8a0, 0xe0b080, 0xc89060, 0xf4d6b8, 0xa87850]), shirt: pick([0x2f6fd0, 0x8a2f2f, 0x2f8a6a, 0x6a3d8a, 0x555566, 0xc0782a, 0x2a2a3a]), pants: pick([0x353a48, 0x3a3a2a, 0x2f2f3a, 0x4a3a2a]),
     hair: pick([0x2a1a10, 0x1a1a1a, 0xd8c040, 0x6a3a1a, 0xaa3a3a, 0x3a5aa0]), boots: 0x3a2a1a, gear: semi };
   if (t >= 2) { look.pads = true; look.padColor = tc; look.armor = tc; }
-  var c = newChar(look, name, lvl, '#9be3ff', true, { kind: t >= 4 ? 'greatsword' : (Math.random() < 0.2 ? 'dagger' : 'sword'), color: tc, glow: t >= 5 });
+  var c = newChar(look, name, lvl, '#ffffff', true, { kind: t >= 4 ? 'greatsword' : (Math.random() < 0.2 ? 'dagger' : 'sword'), color: tc, glow: t >= 5 });
   c.sheath = true;
   if (semi) {
     var r = c.rig;

@@ -57,6 +57,7 @@ function makeEnemy(key, rLo, rHi, boss) {
   var T = ENEMY_TYPES[key];
   var c = newChar(Object.assign({ scale: T.scale }, T.look), T.name, T.lvl, T.boss ? '#ff8a3a' : '#ff9a9a', true, T.weapon);
   if (T.croc) attachCroc(c);
+  if (T.box) attachBox(c);
   var a = boss ? Math.PI * 1.5 : Math.random() * TAU, r = rLo + Math.random() * (rHi - rLo);
   var x = Math.cos(a) * r, z = Math.sin(a) * r;
   c.g.position.set(x, 0, z); c.g.rotation.y = rand(0, TAU);
