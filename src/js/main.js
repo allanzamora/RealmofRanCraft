@@ -46,14 +46,15 @@ function frame(now) {
   updateZoomHold(dt); updateAntiCheat(dt);
   if (welcomeOn) cam.yaw += dt * 0.05;
   if (ui.open !== 'name' && !welcomeOn) {      // popups no longer pause the game (only the first-launch name screen does)
-    gameTime += dt; updateTimers(dt); updateAuto(dt); updatePlayer(dt); updatePets(dt); updatePvp(dt); updateCostumeFx(dt); updateEnemies(dt); updateWorldBoss(dt); updateAIs(dt); updateBots(dt); updatePickups(dt);
+    gameTime += dt; updateTimers(dt); updateAuto(dt); updatePlayer(dt); updatePets(dt); updatePvp(dt); emoUpdate(dt); updateCostumeFx(dt); updateEnemies(dt); updateWorldBoss(dt); updateAIs(dt); updateBots(dt); updatePickups(dt);
     saveT += dt; if (saveT > 15) { saveT = 0; saveGame(); }
   }
   npcs.forEach(function (n) {
     var d = Math.hypot(n.pos.x - P.pos.x, n.pos.z - P.pos.z);
     if (d < 6 && !n.sit) faceTo(n.c, P.pos.x, P.pos.z, dt, 5);
     n.marker.spr.position.y = (n.my || 2.75) + Math.sin(now / 300) * 0.08; animateChar(n.c, dt, 0);
-    if (n.sit) { var rg = n.c.rig; rg.legL.hp.rotation.x = rg.legR.hp.rotation.x = -1.5; rg.legL.kn.rotation.x = rg.legR.kn.rotation.x = 1.5; rg.body.position.y = -0.47; }
+    if (n.tree) { var tr = n.tree, tt = now / 1000; tr.star.rotation.y = tt * 1.5; tr.glow.material.opacity = 0.18 + 0.08 * Math.sin(tt * 3); tr.lights.forEach(function (l) { var on = Math.sin(tt * 3 + l.ph) > -0.2; l.m.color.setHex(on ? l.c : 0x303030); }); }
+    if (n.sit && !n.tree) { var rg = n.c.rig; rg.legL.hp.rotation.x = rg.legR.hp.rotation.x = -1.5; rg.legL.kn.rotation.x = rg.legR.kn.rotation.x = 1.5; rg.body.position.y = -0.47; }
   });
   portals.forEach(function (pt) { pt.ring.rotation.z += dt * 0.8; pt.disc.material.opacity = 0.35 + Math.sin(now / 300) * 0.1; });
   clouds.forEach(function (cl) { cl.position.x += dt * 1.2; if (cl.position.x > WORLD_R + 120) cl.position.x = -WORLD_R - 120; });

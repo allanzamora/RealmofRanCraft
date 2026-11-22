@@ -1,15 +1,24 @@
-/* pvp.js - ONLINE PvP ARENA client. Talks to server/pvp_server.js over a WebSocket.
-   Other real players appear as remote fighters (entries in `ais` flagged remote:true). Damage is computed by the attacker and applied by the victim. */
-var PVP_SERVER_URL = 'wss://testgg-jh7k.onrender.com';          // <-- put your deployed server here, e.g. 'wss://my-pvp.onrender.com'  (players can also type it in Settings)
-var PVP_DMG_MUL = 0.5;            // PvP damage scale (tune: lower = longer fights)
+
+var PVP_SERVER_URL = 'wss://testgg-jh7k.onrender.com';        
+var PVP_DMG_MUL = 0.5; 
 var PVP = { ws: null, on: false, id: 0, status: 'off', ping: 0, n: 0, top: [], tries: 0, sendT: 0, eqKey: '', pingT: 0, eqT: 0, hudT: 0, lastX: 0, lastZ: 0, spd: 0, retry: null };
 function pvpUrl() { return String((S.pvpUrl || PVP_SERVER_URL || '')).trim(); }
 function pvpPeers() { return ais.filter(function (a) { return a.remote; }); }
 function pvpPeer(id) { for (var i = 0; i < ais.length; i++) if (ais[i].remote && ais[i].pid === id) return ais[i]; return null; }
 function pvpSend(o) { if (PVP.ws && PVP.ws.readyState === 1) { try { PVP.ws.send(JSON.stringify(o)); } catch (e) {} } }
-function pvpCw() { return Object.assign({}, P.costumeWorn || {}, { _mt: (P.mounted && P.mountSel) ? P.mountSel : '', _pt: P.pet || '' }); }   // mount + pet ride inside cw (no server change needed)
-function pvpMe() { return { name: P.name, lvl: P.lvl, look: P.look, eq: P.equip, cw: pvpCw(), mh: maxHp() }; }
-function pvpEqKey() { try { return JSON.stringify([P.equip, pvpCw(), P.look, P.lvl]); } catch (e) { return ''; } }
+function pvpEq() {                                    
+  var o = {}; EQ_SLOTS.forEach(function (sl) { var id = P.equip[sl], it = id && ITEMS[id]; if (it) o[sl] = it.base || id; }); return o;
+}
+function pvpUp() { var o = {}; EQ_SLOTS.forEach(function (sl) { var id = P.equip[sl]; if (id && upgLvl(id) > 0) o[sl] = upgLvl(id); }); return o; }
+function pvpCw() { return Object.assign({}, P.costumeWorn || {}, { _mt: (P.mounted && P.mountSel) ? P.mountSel : '', _pt: P.pet || '', _up: pvpUp(), _em: P.emoNow || '' }); } 
+function pvpDress(L, eq, cw, fn) {
+  var sv = [P.look, P.equip, P.costumeWorn, P.upg], up = {}, e2 = eq || {}, w2 = Object.assign({}, cw || {}); delete w2._up; delete w2._em;
+  for (var sl in e2) if (cw && cw._up && cw._up[sl]) up[e2[sl]] = cw._up[sl] | 0;
+  P.look = L; P.equip = e2; P.costumeWorn = w2; P.upg = up;
+  try { fn(); } catch (e) {} finally { P.look = sv[0]; P.equip = sv[1]; P.costumeWorn = sv[2]; P.upg = sv[3]; }
+}   // mount + pet ride inside cw (no server change needed)
+function pvpMe() { return { name: P.name, lvl: P.lvl, look: P.look, eq: pvpEq(), cw: pvpCw(), mh: maxHp() }; }
+function pvpEqKey() { try { return JSON.stringify([pvpEq(), pvpCw(), P.look, P.lvl]); } catch (e) { return ''; } }
 
 function pvpEnter() {
   PVP.on = true; PVP.tries = 0; PVP.top = []; PVP.n = 0;
@@ -43,25 +52,23 @@ function pvpAddPeer(p) {
   if (!p || pvpPeer(p.id)) return;
   var L = Object.assign({ scale: 1, hairStyles: true, gear: true, pads: true, padColor: 0x8a97a6, skin: 0xf0c8a0, boots: 0x3a2a1a }, P.look, p.look || {});   // full player rig so costumes / wings / helmets / hair styles can be shown
   var c = newChar(L, p.name, p.lvl, '#ff9a7a', true, { kind: 'sword', color: 0x9b7653 });
-  var sv = [P.look, P.equip, P.costumeWorn];                    // dress the model with the other player's look / gear
-  P.look = L; P.equip = p.eq || {}; P.costumeWorn = p.cw || {};
-  try { applyEquipVisuals(c); } catch (e) {} finally { P.look = sv[0]; P.equip = sv[1]; P.costumeWorn = sv[2]; }
+  pvpDress(L, p.eq, p.cw, function () { applyEquipVisuals(c); });   // dress the model with the other player's look / gear
   c.sheath = true; c.pvpLook = L;
   c.g.position.set(p.x || 0, 0, p.z || 0); c.g.rotation.y = p.ry || 0;
   var a = { isAI: true, remote: true, pid: p.id, name: p.name, lvl: p.lvl, c: c, pos: c.g.position, state: 'alive', hostile: 1e9, hp: p.hp || 1, maxHp: p.mh || 1, mp: 0, maxMp: 0, atk: 0, def: 0, shield: 0, cd: {}, deadT: 0, tx: p.x || 0, tz: p.z || 0, tr: p.ry || 0, spd: 0,
     T: { name: p.name, lvl: p.lvl, scale: 1, boss: false, def: 0, atk: 0, xp: 0, gold: [0, 0] } };
   c.tag.draw(Math.max(0, a.hp / a.maxHp)); ais.push(a); pvpExtras(a, p.cw || {});
 }
-function pvpRemovePeer(id) { var a = pvpPeer(id); if (!a) return; pvpDropPet(a); scene.remove(a.c.g); if (a.c.tag && a.c.tag.spr) scene.remove(a.c.tag.spr); ais.splice(ais.indexOf(a), 1); if (P.target === a) P.target = null; }
+function pvpRemovePeer(id) { var a = pvpPeer(id); if (!a) return; emoClear(a); pvpDropPet(a); scene.remove(a.c.g); if (a.c.tag && a.c.tag.spr) scene.remove(a.c.tag.spr); ais.splice(ais.indexOf(a), 1); if (P.target === a) P.target = null; }
 function pvpReskin(a, m) {
-  var L = Object.assign({ scale: 1, hairStyles: true, gear: true, pads: true }, P.look, m.look || {}), sv = [P.look, P.equip, P.costumeWorn];
-  P.look = L; P.equip = m.eq || {}; P.costumeWorn = m.cw || {};
-  try { applyEquipVisuals(a.c); } catch (e) {} finally { P.look = sv[0]; P.equip = sv[1]; P.costumeWorn = sv[2]; }
+  var L = Object.assign({ scale: 1, hairStyles: true, gear: true, pads: true }, P.look, m.look || {});
+  pvpDress(L, m.eq, m.cw, function () { applyEquipVisuals(a.c); });
   a.lvl = m.lvl || a.lvl; a.c.lvl = a.lvl; a.T.lvl = a.lvl; a.c.tag.draw(Math.max(0, a.hp / a.maxHp)); pvpExtras(a, m.cw || {});
 }
 
 /* ----- other players' mount + pet ----- */
 function pvpExtras(a, cw) {
+  emoPeer(a, cw);
   var mt = (cw._mt && MOUNTS[cw._mt]) ? cw._mt : '', pt = (cw._pt && PETS[cw._pt]) ? cw._pt : '', c = a.c;
   if (mt !== (a.mt || '')) {
     if (a.mount && (!mt || a.mt !== mt)) { c.g.remove(a.mount.g); a.mount = null; }
@@ -156,8 +163,30 @@ function pvpTakeHit(m) {
 }
 /* ----- other players' skills: visual-only copy of the AI skill effects (no damage; damage is sent as 'h' hits) ----- */
 function pvpSkill(id, x, z) { if (PVP.on) PVP.skT = performance.now(); if (PVP.on) pvpSend({ t: 'a', k: 'cast', d: 0.6, sk: id, x: +x.toFixed(1), z: +z.toFixed(1) }); }
+/* Full-effect replay: run the REAL skill code with the global P swapped for a ghost of the caster. Damage / logs / network are stubbed, and delayed effects keep the ghost. */
+var PVP_GH = { on: false };
+function pvpGhEnter(b, tx, tz) {
+  var s = { P: P, hurtEnemy: hurtEnemy, eachEnemy: eachEnemy, autoTarget: autoTarget, skillTarget: skillTarget, snapFaceTo: snapFaceTo, log: log, schedule: schedule, pvpAnim: pvpAnim, fl: fxList, nest: PVP_GH.on };
+  var G = b.ghost; if (!G) { G = b.ghost = Object.create(s.P); }
+  G.pos = b.pos; G.c = b.c; G.dead = false; G.buffs = []; G.shield = 0; G.hot = null; G.target = null; G.hp = Math.max(1, b.hp || 1); G.mp = 9999; G.skcd = {}; G.cd = { skillRefund: false }; G.equip = b.eq || s.P.equip;
+  var fake = { pos: { x: tx, z: tz }, state: 'alive', hp: 1, maxHp: 1, c: { g: { rotation: { y: 0 } }, rig: {} }, T: { scale: 1, lvl: 1, name: '' }, remote: true };
+  P = G; PVP_GH.on = true;
+  hurtEnemy = function () { return 0; }; eachEnemy = function () {}; autoTarget = function () { return fake; }; skillTarget = function () { return fake; }; snapFaceTo = function () {}; log = function () {}; pvpAnim = function () {};
+  schedule = function (d, fn) { s.schedule(d, function () { var s2 = pvpGhEnter(b, tx, tz); try { fn(); } finally { pvpGhLeave(s2); } }); };
+  s.fl.push = function (o) { if (o && o.update) { var u = o.update; o.update = function () { var s3 = pvpGhEnter(b, tx, tz); try { return u.apply(this, arguments); } finally { pvpGhLeave(s3); } }; } return Array.prototype.push.call(s.fl, o); };
+  return s;
+}
+function pvpGhLeave(s) {
+  delete s.fl.push; P = s.P; hurtEnemy = s.hurtEnemy; eachEnemy = s.eachEnemy; autoTarget = s.autoTarget; skillTarget = s.skillTarget; snapFaceTo = s.snapFaceTo; log = s.log; schedule = s.schedule; pvpAnim = s.pvpAnim; PVP_GH.on = s.nest;
+}
 function pvpSkillFx(b, id, tx, tz) {
   var sk = SKILLS[id]; if (!sk || b.state === 'dead') return;
+  if (!isFinite(tx) || !isFinite(tz) || (!tx && !tz)) { var f0 = b.c.g.rotation.y; tx = b.pos.x + Math.sin(f0) * 6; tz = b.pos.z + Math.cos(f0) * 6; }
+  if (SKILL_EXEC[sk.kind] && !PVP_GH.on) {
+    if (distP(b.pos) > 90) return;
+    var gs = pvpGhEnter(b, tx, tz);
+    try { b.c.g.rotation.y = Math.atan2(tx - b.pos.x, tz - b.pos.z); SKILL_EXEC[sk.kind](sk); return; } catch (e) { /* fall back to the simple effects below */ } finally { pvpGhLeave(gs); }
+  }
   var near = distP(b.pos) < 70, px = b.pos.x, pz = b.pos.z;
   if (!isFinite(tx) || !isFinite(tz) || (!tx && !tz)) { var f = b.c.g.rotation.y; tx = px + Math.sin(f) * 6; tz = pz + Math.cos(f) * 6; }
   var col = sk.color || 0xff9a3a;
@@ -209,7 +238,7 @@ function updatePvp(dt) {
   if (PVP.ws && PVP.ws.readyState === 1) {
     if (PVP.sendT <= 0) { PVP.sendT = 0.1; pvpSend({ t: 's', x: +P.pos.x.toFixed(2), z: +P.pos.z.toFixed(2), r: +P.c.g.rotation.y.toFixed(2), hp: Math.max(0, Math.round(P.hp)), mh: maxHp(), m: +Math.min(30, PVP.spd).toFixed(1) }); }
     if (PVP.pingT <= 0) { PVP.pingT = 5; pvpSend({ t: 'p', ts: performance.now() }); }
-    PVP.eqT -= dt; if (PVP.eqT <= 0) { PVP.eqT = 0.5; var k2 = pvpEqKey(); if (k2 !== PVP.eqKey) { PVP.eqKey = k2; pvpSend({ t: 'e', lvl: P.lvl, look: P.look, eq: P.equip, cw: pvpCw() }); } }
+    PVP.eqT -= dt; if (PVP.eqT <= 0) { PVP.eqT = 0.5; var k2 = pvpEqKey(); if (k2 !== PVP.eqKey) { PVP.eqKey = k2; pvpSend({ t: 'e', lvl: P.lvl, look: P.look, eq: pvpEq(), cw: pvpCw() }); } }
   }
   PVP.hudT -= dt; if (PVP.hudT <= 0) { PVP.hudT = 0.5; pvpHud(); }
 }

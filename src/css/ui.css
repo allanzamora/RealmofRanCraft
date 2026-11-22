@@ -371,3 +371,41 @@ body.wm #vignette,body.wm #boss-alert,body.wm #floaters,body.wm #zone-banner,bod
 #auth-screen .amsg{min-height:16px;margin:6px 0;font-size:12px;color:#9fe8ff}#auth-screen .amsg.bad{color:#ff8a8a}
 #auth-screen .alinks{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:6px;font-size:12px}#auth-screen .alinks a{color:#9fb4ff;text-decoration:underline;cursor:pointer}
 #auth-screen .asetup{margin-top:8px;text-align:left}#auth-screen .achoose{margin-top:10px}#auth-screen .ds{font-size:12px;opacity:.85;margin:4px 0}
+
+/* ---- popup buttons (everything except the red close X) ---- */
+#panel button:not(#panel-close){min-height:30px;padding:6px 13px;border-radius:10px;border:1px solid rgba(255,255,255,.35);border-bottom-width:3px;border-bottom-color:rgba(0,0,0,.45);
+  background:linear-gradient(#4a82f0,#2a54c0);color:#fff;font-weight:800;font-size:12px;letter-spacing:.2px;text-shadow:0 1px 2px rgba(0,0,0,.55);
+  box-shadow:0 2px 6px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.35);transition:transform .08s,filter .12s;cursor:pointer}
+#panel button:not(#panel-close):active{transform:translateY(2px) scale(.97);border-bottom-width:1px;filter:brightness(1.15)}
+#panel button.good:not(#panel-close),#panel .item button.good{background:linear-gradient(#46c45a,#237a33)}
+#panel button.danger:not(#panel-close),#panel .item button.danger{background:linear-gradient(#e24a4a,#a01e1e)}
+#panel button:disabled:not(#panel-close){background:linear-gradient(#59606f,#3a404d);color:#b8bdc9;opacity:.65;box-shadow:none;text-shadow:none;border-bottom-width:1px}
+#panel .tabs button:not(#panel-close){background:linear-gradient(#34407e,#222a58);color:#cfd8ff;border-radius:10px 10px 6px 6px;font-weight:700}
+#panel .tabs button.act:not(#panel-close){background:linear-gradient(#f2b43a,#c47c10);color:#2a1a00;text-shadow:none;border-color:#ffe6a8}
+#panel .slotbtns button:not(#panel-close){min-height:26px;padding:4px 9px}
+#panel .slotbtns button.act:not(#panel-close){background:linear-gradient(#46c45a,#237a33)}
+#panel .tabs button.act:not(#panel-close):active{filter:none}
+
+#dun-timer{position:fixed;display:none;top:calc(6px + env(safe-area-inset-top));left:calc(286px + env(safe-area-inset-left));height:34px;padding:0 10px;align-items:center;gap:5px;font-weight:800;font-size:13px;color:#ffe08a;white-space:nowrap;pointer-events:none;border:1px solid rgba(255,210,90,.7)}
+#dun-timer.low{color:#ff8a8a;border-color:#ff6a6a;animation:dunblink 1s infinite}
+@keyframes dunblink{50%{opacity:.55}}
+body.wm #dun-timer{display:none!important}
+
+@keyframes giftbob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-10px) rotate(4deg)}}
+
+/* emoji */
+#emo-btn{top:calc(6px + env(safe-area-inset-top));left:calc(246px + env(safe-area-inset-left));width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:19px;pointer-events:auto;cursor:pointer;padding:0;z-index:11}
+#emo-btn:active{background:rgba(70,90,160,.85)}
+#emo-menu{display:none;grid-template-columns:repeat(4,46px);gap:6px;padding:8px;top:calc(46px + env(safe-area-inset-top));left:calc(206px + env(safe-area-inset-left));max-height:60vh;overflow-y:auto;pointer-events:auto;z-index:20;border:1px solid rgba(255,255,255,.35)}
+.emo-cell{width:46px;height:46px;display:flex;align-items:center;justify-content:center;font-size:28px;border-radius:10px;background:rgba(255,255,255,.08);cursor:pointer;user-select:none}
+.emo-cell:active{background:rgba(255,255,255,.28)}
+.emo-cell img{max-width:38px;max-height:38px;object-fit:contain;pointer-events:none}
+#emoji-layer{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:8;overflow:hidden}
+.emo-b{position:absolute;display:none;font-size:40px;line-height:48px;width:48px;height:48px;text-align:center;filter:drop-shadow(0 1px 2px rgba(0,0,0,.45));will-change:transform,top,opacity}
+.emo-b img{width:48px;height:48px;object-fit:contain;display:block}
+body.wm #emo-btn,body.wm #emo-menu,body.wm #emoji-layer{display:none!important}
+/* christmas popup: reward text floats left of the video in landscape so the video is full size */
+.xm-wrap{display:flex;flex-direction:column;gap:6px;position:relative}
+.xm-rw{text-align:left;font-size:12px;font-weight:700;color:#ffe08a;margin:0 0 2px 2px}
+.xm-wrap video{width:100%;max-height:58vh;object-fit:contain;border-radius:12px;background:#000;pointer-events:none;display:block}
+@media (orientation:landscape){.xm-wrap{flex-direction:row;align-items:flex-start;gap:12px}.xm-rw{flex:0 0 30%;font-size:14px;line-height:1.5;margin:4px 0 0 0}.xm-wrap video{flex:1 1 auto;min-width:0;width:auto;height:calc(100vh - 150px);max-height:none}.xm-msg{position:absolute}}

@@ -36,9 +36,29 @@
 <img id="w-logo" src="rancraft.png" alt="Realm of RanCraft logo" onerror="this.style.display='none'">
 <h1>Realm of RanCraft - 3D MMORPG</h1>
 <p>Step into a free 3D fantasy world made for your phone. Fight monsters, defeat giant bosses, tame loyal pets and become a legend of the Realm - right in your browser, no download needed.</p>
+
 <button id="w-play">Play Now &raquo;</button>
 <div id="w-scroll">
-<h2>Game Features</h2>
+<h2>What's New! (Nov 23, 2026) Update</h2>
+<ul>
+    <li>Added 20 new emojis.</li>
+    <li>Christmas Tree event: Claim daily Gold and Diamond rewards.</li>
+    <li>Item upgrade cap increased from +50 to +80.</li>
+    <li>PVP Arena: Fixed visual effects, skills, emojis, costumes, and more.</li>
+    <li>Max rebirth cap raised to 50.</li>
+    <li>GM Necklace and GM Rings (Left &amp; Right) can now drop in the Boss Room.</li>
+</ul>
+<br>
+<h3>Links</h3>
+<ul>
+    <li><a href="https://www.youtube.com/@realmofrancraft" target="_blank">Official YouTube channel</a></li>
+    <li><a href="https://youtube.com/shorts/gGQzEzqTKUg?si=L5J5gF8LnuS6MucV" target="_blank">Test Online PvP Arena - (Realm of RanCraft) Comming soon</a></li>
+    <li><a href="https://youtu.be/1ofoYBkNTDI?si=c-8rOERqm17knp5N" target="_blank">Auto Attack & AFK Farming Gameplay! | Realm of RanCraft (3D Browser MMORPG - the Full Showcase) </a></li>
+    <li><a href="https://youtu.be/1M_LIfQL2zs?si=6-65AAaKaUaB79z8" target="_blank">I Hunted the GODZILLA Boss for Rare Wings & Weapons! | Realm of RanCraft (3D Browser MMORPG)</a></li>
+    <li><a href="https://youtu.be/-kc1iv5fJEA?si=D2_veb9R1Qc7HdG4" target="_blank">Battle Arena - Realm of RanCraft</a></li>
+</ul>
+<br>
+<h3>Game Features</h3>
 <ul>
 <li><b>12 Maps</b> - from peaceful Moviex Plains to dangerous boss lands and the Blood Arena.</li>
 <li><b>30+ Skills</b> - summon a giant skeleton, call down anvils and unleash energy waves.</li>
@@ -78,6 +98,10 @@
 </div>
 
 <div id="pet-btn" class="ui box"><span id="pet-ico">&#128062;</span></div>
+<div id="emo-btn" class="ui box"><span>&#128578;</span></div>
+<div id="emo-menu" class="ui box"></div>
+<div id="emoji-layer"></div>
+<div id="dun-timer" class="ui box"></div>
 <div id="pvp-hud" style="display:none"></div>
 <div id="tracker" class="ui box"></div>
 <div id="log" class="ui"></div>
@@ -183,6 +207,7 @@
 <script src="src/js/pets.js"></script>
 <script src="src/js/input.js"></script>
 <script src="src/js/achievements.js"></script>
+<script src="src/js/emoji.js"></script>
 <script src="src/js/ui.js"></script>
 <script src="src/js/auto.js"></script>
 <script src="src/js/pvp.js"></script>
