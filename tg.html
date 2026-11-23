@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#000000">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Realm of RanCraft - 3D MMORPG | Free Mobile Browser RPG</title>
+<meta name="description" content="Realm of RanCraft is a free 3D mobile MMORPG you play in your browser. Explore 12 maps, fight bosses, tame pets, collect costumes, craft gear and rebirth your hero. Tap Play Now!">
+<meta name="keywords" content="Realm of RanCraft, RanCraft, 3D MMORPG, mobile MMORPG, browser RPG, free online RPG, three.js game, boss fights, pets, costumes, Moviex Plains">
+<meta name="author" content="RanCraft">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#0b1020">
+<link rel="canonical" href="https://realmofrancraft.vercel.app/">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Realm of RanCraft">
+<meta property="og:title" content="Realm of RanCraft - 3D MMORPG">
+<meta property="og:description" content="Free 3D mobile MMORPG in your browser: 12 maps, world bosses, pets, costumes, crafting and rebirth.">
+<meta property="og:url" content="https://realmofrancraft.vercel.app/">
+<meta property="og:image" content="https://realmofrancraft.vercel.app/rancraft.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Realm of RanCraft - 3D MMORPG">
+<meta name="twitter:description" content="Free 3D mobile MMORPG in your browser. Fight bosses, tame pets, collect costumes.">
+<meta name="twitter:image" content="https://realmofrancraft.vercel.app/rancraft.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Realm of RanCraft - 3D MMORPG","url":"https://realmofrancraft.vercel.app/","image":"https://realmofrancraft.vercel.app/rancraft.png","description":"A free 3D mobile MMORPG played in the browser with 12 maps, bosses, pets, costumes and crafting.","genre":["MMORPG","Action RPG"],"gamePlatform":["Web browser","Android"],"applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<link rel="stylesheet" href="src/css/ui.css">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 100dvh;
+    overflow: hidden;
+    background: #000000;
+  }
+  #tg-rotate-tip {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100000;
+    background: rgba(11, 16, 32, 0.94);
+    color: #ffffff;
+    font-family: system-ui, -apple-system, sans-serif;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px;
+  }
+  #tg-rotate-tip .tg-box {
+    max-width: 340px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  #tg-rotate-tip h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+  }
+  #tg-rotate-tip p {
+    margin: 0 0 14px;
+    font-size: 14px;
+    opacity: 0.85;
+  }
+  #tg-rotate-dismiss {
+    background: #2aabee;
+    color: #ffffff;
+    border: 0;
+    border-radius: 8px;
+    padding: 9px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body class="wm">
+<div id="tg-rotate-tip">
+  <div class="tg-box">
+    <h3>Landscape Recommended</h3>
+    <p>Rotate your device sideways for a wider view and better controls in Realm of RanCraft.</p>
+    <button id="tg-rotate-dismiss" type="button">Play Anyway</button>
+  </div>
+</div>
+<div id="welcome"><div id="welcome-card">
+<img id="w-logo" src="rancraft.png" alt="Realm of RanCraft logo" onerror="this.style.display='none'">
+<h1>Realm of RanCraft - 3D MMORPG</h1>
+<p>Step into a free 3D fantasy world made for your phone. Fight monsters, defeat giant bosses, tame loyal pets and become a legend of the Realm - right in your browser, no download needed.</p>
+
+<button id="w-play">Play Now &raquo;</button>
+<div id="w-scroll">
+<h2>What's New! (Nov 23, 2026) Update</h2>
+<ul>
+    <li>Added 20 new emojis.</li>
+    <li>Christmas Tree event: Claim daily Gold and Diamond rewards.</li>
+    <li>Item upgrade cap increased from +50 to +80.</li>
+    <li>PVP Arena: Fixed visual effects, skills, emojis, costumes, and more.</li>
+    <li>Max rebirth cap raised to 50.</li>
+    <li>GM Necklace and GM Rings (Left &amp; Right) can now drop in the Boss Room.</li>
+</ul>
+<br>
+<h3>Links</h3>
+<ul>
+    <li><a href="https://www.youtube.com/@realmofrancraft" target="_blank">Official YouTube channel</a></li>
+    <li><a href="https://youtube.com/shorts/gGQzEzqTKUg?si=L5J5gF8LnuS6MucV" target="_blank">Test Online PvP Arena - (Realm of RanCraft) Comming soon</a></li>
+    <li><a href="https://youtu.be/1ofoYBkNTDI?si=c-8rOERqm17knp5N" target="_blank">Auto Attack & AFK Farming Gameplay! | Realm of RanCraft (3D Browser MMORPG - the Full Showcase) </a></li>
+    <li><a href="https://youtu.be/1M_LIfQL2zs?si=6-65AAaKaUaB79z8" target="_blank">I Hunted the GODZILLA Boss for Rare Wings & Weapons! | Realm of RanCraft (3D Browser MMORPG)</a></li>
+    <li><a href="https://youtu.be/-kc1iv5fJEA?si=D2_veb9R1Qc7HdG4" target="_blank">Battle Arena - Realm of RanCraft</a></li>
+</ul>
+<br>
+<h3>Game Features</h3>
+<ul>
+<li><b>12 Maps</b> - from peaceful Moviex Plains to dangerous boss lands and the Blood Arena.</li>
+<li><b>30+ Skills</b> - summon a giant skeleton, call down anvils and unleash energy waves.</li>
+<li><b>World Bosses</b> - Big Boss alerts appear at random, with big Godzilla Fragment loot.</li>
+<li><b>Pets</b> - healers, robots, dogs, fairies and birds that follow and help you.</li>
+<li><b>Costumes &amp; Diamonds</b> - wings, crowns, masks, swords and armor with special bonuses.</li>
+<li><b>Gear &amp; Crafting</b> - random stats, upgrades, rebirth and mounts.</li>
+<li><b>AI Players</b> - a lively world with bots, quests and NPC shops.</li>
+<li><b>Mobile First</b> - touch joystick, pinch zoom, online account with cloud save (login on any phone).</li>
+</ul>
+<!-- BEGIN AADS AD UNIT 2462668 -->
+
+<div id="frame" style="width: 100%;margin: auto;position: relative; z-index: 99998;">
+          <iframe data-aa='2462668' src='//acceptable.a-ads.com/2462668/?size=Adaptive'
+                            style='border:0; padding:0; width:70%; height:auto; overflow:hidden;display: block;margin: auto'></iframe>
+        </div>
+
+<!-- END AADS AD UNIT 2462668 -->
+<br>
+<p class="w-small">This a work of fiction, any name, items, maps etc. are fictional.</p>
+</div></div></div>
+<div id="boot" style="display:none;opacity:0"><div id="boot-bg"></div><div id="boot-bottom"><div id="boot-title">Realm of RanCraft - 3D MMORPG</div><div id="boot-note">This a work of fiction, Any name, items, maps etc. are fictional</div><div id="boot-bar"><div id="boot-fill"></div></div><div id="boot-pct">Loading... 0%</div></div></div>
+<canvas id="game"></canvas>
+<div id="vignette"></div>
+<div id="boss-alert"><div class="ba1">&#9888; BIG BOSS IS COMING &#9888;</div><div class="ba2" id="ba-sub"></div></div>
+<div id="floaters"></div>
+<div id="zone-banner"><div class="zt" id="zone-t"></div><div class="zs" id="zone-s"></div></div>
+<div id="levelup">LEVEL UP!</div>
+
+<!-- Player frame -->
+<div id="player-frame" class="ui box">
+  <div class="row">
+    <div class="lvlbadge" id="p-lvl">1</div>
+    <div class="col">
+      <div class="pname" id="p-name">Hero</div>
+      <div class="bar hp"><div class="fill" id="p-hp"></div><span id="p-hp-t"></span></div>
+      <div class="bar mp"><div class="fill" id="p-mp"></div><span id="p-mp-t"></span></div>
+      <div class="bar xp"><div class="fill" id="p-xp"></div></div>
+    </div>
+  </div>
+</div>
+
+<div id="target-frame" class="ui box">
+  <div class="tname" id="t-name">Enemy</div>
+  <div class="bar hp"><div class="fill" id="t-hp"></div><span id="t-hp-t"></span></div>
+</div>
+
+<div id="pet-btn" class="ui box"><span id="pet-ico">&#128062;</span></div>
+<div id="emo-btn" class="ui box"><span>&#128578;</span></div>
+<div id="emo-menu" class="ui box"></div>
+<div id="emoji-layer"></div>
+<div id="dun-timer" class="ui box"></div>
+<div id="pvp-hud" style="display:none"></div>
+<div id="tracker" class="ui box"></div>
+<div id="log" class="ui"></div>
+
+<!-- Top right -->
+<div id="topright" class="ui">
+  <div id="gold-row"><div id="gold" class="box">0 G</div><div id="diamond" class="box"><span id="dia-n">0 &#128142;</span><b id="dia-plus">+</b></div><div class="sbtn" id="m-nav">&#9776;</div></div>
+  <div id="mapname"></div>
+  <canvas id="minimap" width="192" height="192"></canvas>
+  <div id="fps"></div>
+  <div id="buffs"></div>
+</div>
+
+<!-- Side navigation -->
+<div id="nav-back"></div>
+<div id="sidenav">
+  <div id="nav-head">MENU<span id="nav-x">X</span></div>
+  <div class="navbtn" id="m-bag"><b>&#127890;</b>Bag</div>
+  <div class="navbtn" id="m-skill"><b>&#9876;</b>Skills</div>
+  <div class="navbtn" id="m-quest"><b>&#128220;</b>Quest</div>
+  <div class="navbtn" id="m-ach"><b>&#127942;</b>Achievements</div>
+  <div class="navbtn" id="m-map"><b>&#128506;</b>Map</div>
+  <div class="navbtn" id="m-redeem"><b>&#127873;</b>Redeem Code</div>
+  <div class="navbtn" id="m-support"><b>&#128153;</b>Support</div>
+  <div class="navbtn" id="m-menu"><b>&#9881;</b>Settings</div>
+</div>
+
+<!-- Zoom -->
+<div id="zoomcol"><div class="zbtn" id="z-in">+</div><div class="zbtn" id="z-out">&minus;</div></div>
+
+<!-- Joystick (fixed) -->
+<div id="joy-base"><div id="joy-stick"></div></div>
+
+<!-- Actions -->
+<div id="actions">
+  <div class="abtn" id="b-attack"><span class="ic">&#9876;</span><span class="lb">ATTACK</span></div>
+  <div class="abtn" id="b-auto"><span class="ic">&#129302;</span><span class="lb">AUTO</span></div>
+  <div class="abtn" id="b-walk"><span class="ic">&#127939;</span><span class="lb">RUN</span></div>
+  <div class="abtn" id="b-k1"></div>
+  <div class="abtn" id="b-k2"></div>
+  <div class="abtn" id="b-k3"></div>
+  <div class="abtn" id="b-k4"></div>
+  <div class="abtn" id="b-k5"></div>
+  <div class="abtn" id="b-k6"></div>
+  <div class="abtn" id="b-k7"></div>
+  <div class="abtn" id="b-k8"></div>
+  <div class="abtn" id="b-mount"><span class="ic">&#128010;</span><span class="lb">RIDE</span></div>
+  <div class="abtn" id="b-dash"><span class="ic">&#187;</span><span class="lb">DASH</span><div class="cd"></div></div>
+  <div class="abtn" id="b-hp"><img src="src/item1.png" alt=""><span class="cnt" id="c-hp">0</span><div class="cd"></div></div>
+  <div class="abtn" id="b-mp"><img src="src/item2.png" alt=""><span class="cnt" id="c-mp">0</span><div class="cd"></div></div>
+</div>
+
+<div id="btn-pk">PK</div>
+<div id="btn-talk">TALK</div>
+
+<div id="panel"><div id="panel-box">
+  <div id="panel-head"><div id="panel-title"></div><button id="panel-close">X</button></div>
+  <div id="panel-tabs"></div>
+  <div id="panel-main"><div id="panel-prev"><canvas id="pv-canvas"></canvas><div id="pv-hint">Preview</div></div><div id="panel-body"></div></div>
+</div></div>
+
+<div id="name-screen"><div id="cr-prev"><canvas id="cr-canvas"></canvas><div id="cr-hint">Your hero</div></div><div class="nbox"><h2>Realm of RanCraft - 3D MMORPG</h2><p>Create your hero</p>
+  <input id="name-input" type="text" maxlength="14" placeholder="Enter character name" autocomplete="off" autocapitalize="words" spellcheck="false">
+  <div class="crow" id="cr-sex"><span>Gender</span><button data-sex="m" class="on">Male</button><button data-sex="f">Female</button></div>
+  <div class="crow"><span>Hair style</span><div id="cr-style"></div></div>
+  <div class="crow"><span>Hair color</span><div class="sw" id="sw-hair"></div></div>
+  <div class="crow"><span>Dress color</span><div class="sw" id="sw-shirt"></div></div>
+  <div class="crow"><span>Pants color</span><div class="sw" id="sw-pants"></div></div>
+  <button id="name-go">START ADVENTURE</button><div id="name-err"></div>
+  <div id="cr-save"><b>How your progress is saved</b><br>Your hero is saved automatically to your <b>online account</b> (Firebase) every 30 seconds and when you close the game, and also on this device. Log in with the same email on any phone to continue. You can log out from the Menu.</div></div></div>
+<div id="death"><h1>YOU DIED</h1><p id="death-msg">The wilds are not forgiving. You lose 5% of your gold.</p><button id="btn-respawn">RESPAWN AT CAMP</button></div>
+
+<script>
+(function setupTelegramWebApp() {
+  const tg = window.Telegram && window.Telegram.WebApp;
+  const tipEl = document.getElementById("tg-rotate-tip");
+  const dismissBtn = document.getElementById("tg-rotate-dismiss");
+  let dismissedByUser = false;
+
+  function updateOrientationTip() {
+    if (!tg || !tipEl || dismissedByUser) return;
+    const isPortrait = window.innerHeight > window.innerWidth;
+    tipEl.style.display = isPortrait ? "flex" : "none";
+  }
+
+  if (dismissBtn) {
+    dismissBtn.addEventListener("click", function () {
+      dismissedByUser = true;
+      if (tipEl) tipEl.style.display = "none";
+    });
+  }
+
+  if (tg) {
+    tg.ready();
+    tg.expand();
+    if (typeof tg.requestFullscreen === "function") {
+      try {
+        tg.requestFullscreen();
+      } catch (e) {}
+    }
+    if (typeof tg.disableVerticalSwipes === "function") {
+      try {
+        tg.disableVerticalSwipes();
+      } catch (e) {}
+    }
+
+    // Attempt screen orientation lock when supported
+    if (screen.orientation && typeof screen.orientation.lock === "function") {
+      screen.orientation.lock("landscape").catch(function () {});
+    }
+
+    updateOrientationTip();
+    window.addEventListener("resize", updateOrientationTip);
+    window.addEventListener("orientationchange", updateOrientationTip);
+  }
+})();
+</script>
+
+<script src="src/js/core.js"></script>
+<script src="src/js/world.js"></script>
+<script src="src/js/items.js"></script>
+<script src="src/js/skills.js"></script>
+<script src="src/js/enemies.js"></script>
+<script src="src/js/quests.js"></script>
+<script src="src/js/player.js"></script>
+<script src="src/js/anticheat.js"></script>
+<script src="src/js/cloud.js"></script>
+<script src="src/js/fx.js"></script>
+<script src="src/js/characters.js"></script>
+<script src="src/js/map_01.js"></script>
+<script src="src/js/map_02.js"></script>
+<script src="src/js/map_03.js"></script>
+<script src="src/js/map_04.js"></script>
+<script src="src/js/map_05.js"></script>
+<script src="src/js/map_06.js"></script>
+<script src="src/js/map_07.js"></script>
+<script src="src/js/map_08.js"></script>
+<script src="src/js/map_09.js"></script>
+<script src="src/js/map_10.js"></script>
+<script src="src/js/map_11.js"></script>
+<script src="src/js/map_12.js"></script>
+<script src="src/js/map_13.js"></script>
+<script src="src/js/map_14.js"></script>
+<script src="src/js/map_15.js"></script>
+<script src="src/js/map_16.js"></script>
+<script src="src/js/combat.js"></script>
+<script src="src/js/enemy_ai.js"></script>
+<script src="src/js/ai_players.js"></script>
+<script src="src/js/pets.js"></script>
+<script src="src/js/input.js"></script>
+<script src="src/js/achievements.js"></script>
+<script src="src/js/emoji.js"></script>
+<script src="src/js/ui.js"></script>
+<script src="src/js/auto.js"></script>
+<script src="src/js/pvp.js"></script>
+<script src="src/js/main.js"></script>
+</body>
+</html>
