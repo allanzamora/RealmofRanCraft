@@ -32,6 +32,13 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <style>
+  :root {
+    --safe-top: max(env(safe-area-inset-top, 0px), var(--tg-safe-area-inset-top, 0px), var(--tg-content-safe-area-inset-top, 0px));
+    --safe-bottom: max(env(safe-area-inset-bottom, 0px), var(--tg-safe-area-inset-bottom, 0px), var(--tg-content-safe-area-inset-bottom, 0px));
+    --safe-left: max(env(safe-area-inset-left, 0px), var(--tg-safe-area-inset-left, 0px), var(--tg-content-safe-area-inset-left, 0px));
+    --safe-right: max(env(safe-area-inset-right, 0px), var(--tg-safe-area-inset-right, 0px), var(--tg-content-safe-area-inset-right, 0px));
+  }
+
   html, body {
     margin: 0;
     padding: 0;
@@ -40,7 +47,48 @@
     min-height: 100dvh;
     overflow: hidden;
     background: #000000;
+    touch-action: none;
+    overscroll-behavior: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
   }
+
+  #game, #joy-base, #joy-stick, #actions, .abtn, .navbtn, .zbtn, .sbtn {
+    touch-action: none;
+  }
+
+  /* Push top HUD & menu below status bar / camera notch / Telegram top bar */
+  #topright {
+    top: calc(var(--safe-top) + 8px) !important;
+    right: calc(var(--safe-right) + 10px) !important;
+    z-index: 50;
+  }
+
+  #player-frame {
+    top: calc(var(--safe-top) + 8px) !important;
+    left: calc(var(--safe-left) + 18px) !important;
+    z-index: 50;
+  }
+
+  #sidenav {
+    padding-top: calc(var(--safe-top) + 12px) !important;
+    padding-bottom: calc(var(--safe-bottom) + 12px) !important;
+  }
+
+  /* Keep joystick away from extreme left/bottom edge so Android back gesture isn't triggered */
+  #joy-base {
+    left: calc(var(--safe-left) + 28px) !important;
+    bottom: calc(var(--safe-bottom) + 24px) !important;
+    z-index: 50;
+  }
+
+  #actions {
+    right: calc(var(--safe-right) + 18px) !important;
+    bottom: calc(var(--safe-bottom) + 18px) !important;
+    z-index: 50;
+  }
+
   #tg-rotate-tip {
     display: none;
     position: fixed;
@@ -105,6 +153,27 @@
     <li>PVP Arena: Fixed visual effects, skills, emojis, costumes, and more.</li>
     <li>Max rebirth cap raised to 50.</li>
     <li>GM Necklace and GM Rings (Left &amp; Right) can now drop in the Boss Room.</li>
+</ul>
+<br>
+<h3>Links</h3>
+<ul>
+    <li><a href="https://www.youtube.com/@realmofrancraft" target="_blank">Official YouTube channel</a></li>
+    <li><a href="https://youtube.com/shorts/gGQzEzqTKUg?si=L5J5gF8LnuS6MucV" target="_blank">Test Online PvP Arena - (Realm of RanCraft) Comming soon</a></li>
+    <li><a href="https://youtu.be/1ofoYBkNTDI?si=c-8rOERqm17knp5N" target="_blank">Auto Attack & AFK Farming Gameplay! | Realm of RanCraft (3D Browser MMORPG - the Full Showcase) </a></li>
+    <li><a href="https://youtu.be/1M_LIfQL2zs?si=6-65AAaKaUaB79z8" target="_blank">I Hunted the GODZILLA Boss for Rare Wings & Weapons! | Realm of RanCraft (3D Browser MMORPG)</a></li>
+    <li><a href="https://youtu.be/-kc1iv5fJEA?si=D2_veb9R1Qc7HdG4" target="_blank">Battle Arena - Realm of RanCraft</a></li>
+</ul>
+<br>
+<h3>Game Features</h3>
+<ul>
+<li><b>12 Maps</b> - from peaceful Moviex Plains to dangerous boss lands and the Blood Arena.</li>
+<li><b>30+ Skills</b> - summon a giant skeleton, call down anvils and unleash energy waves.</li>
+<li><b>World Bosses</b> - Big Boss alerts appear at random, with big Godzilla Fragment loot.</li>
+<li><b>Pets</b> - healers, robots, dogs, fairies and birds that follow and help you.</li>
+<li><b>Costumes &amp; Diamonds</b> - wings, crowns, masks, swords and armor with special bonuses.</li>
+<li><b>Gear &amp; Crafting</b> - random stats, upgrades, rebirth and mounts.</li>
+<li><b>AI Players</b> - a lively world with bots, quests and NPC shops.</li>
+<li><b>Mobile First</b> - touch joystick, pinch zoom, online account with cloud save (login on any phone).</li>
 </ul>
 <!-- BEGIN AADS AD UNIT 2462668 -->
 
@@ -240,6 +309,16 @@
     });
   }
 
+  // Prevent touches near screen edges from accidentally triggering Android edge-back gesture
+  document.addEventListener("touchstart", function (e) {
+    if (!e.touches || e.touches.length === 0) return;
+    const x = e.touches[0].clientX;
+    const edgeGuardPx = 22;
+    if (x < edgeGuardPx || x > window.innerWidth - edgeGuardPx) {
+      e.preventDefault();
+    }
+  }, { passive: false });
+
   if (tg) {
     tg.ready();
     tg.expand();
@@ -254,7 +333,6 @@
       } catch (e) {}
     }
 
-    // Attempt screen orientation lock when supported
     if (screen.orientation && typeof screen.orientation.lock === "function") {
       screen.orientation.lock("landscape").catch(function () {});
     }
