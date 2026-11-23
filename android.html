@@ -5,17 +5,70 @@
 <meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#000000">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Realm of RanCraft - 3D MMORPG | Free Mobile Browser RPG</title>
+<meta name="description" content="Realm of RanCraft is a free 3D mobile MMORPG you play in your browser. Explore 12 maps, fight bosses, tame pets, collect costumes, craft gear and rebirth your hero. Tap Play Now!">
+<meta name="keywords" content="Realm of RanCraft, RanCraft, 3D MMORPG, mobile MMORPG, browser RPG, free online RPG, three.js game, boss fights, pets, costumes, Moviex Plains">
+<meta name="author" content="RanCraft">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#0b1020">
+<link rel="canonical" href="https://realmofrancraft.vercel.app/">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Realm of RanCraft">
+<meta property="og:title" content="Realm of RanCraft - 3D MMORPG">
+<meta property="og:description" content="Free 3D mobile MMORPG in your browser: 12 maps, world bosses, pets, costumes, crafting and rebirth.">
+<meta property="og:url" content="https://realmofrancraft.vercel.app/">
+<meta property="og:image" content="https://realmofrancraft.vercel.app/rancraft.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Realm of RanCraft - 3D MMORPG">
+<meta name="twitter:description" content="Free 3D mobile MMORPG in your browser. Fight bosses, tame pets, collect costumes.">
+<meta name="twitter:image" content="https://realmofrancraft.vercel.app/rancraft.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Realm of RanCraft - 3D MMORPG","url":"https://realmofrancraft.vercel.app/","image":"https://realmofrancraft.vercel.app/rancraft.png","description":"A free 3D mobile MMORPG played in the browser with 12 maps, bosses, pets, costumes and crafting.","genre":["MMORPG","Action RPG"],"gamePlatform":["Web browser","Android"],"applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <link rel="stylesheet" href="src/css/ui.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 </head>
 <body class="wm">
 <div id="welcome"><div id="welcome-card">
 <img id="w-logo" src="rancraft.png" alt="Realm of RanCraft logo" onerror="this.style.display='none'">
 <h1>Realm of RanCraft - 3D MMORPG</h1>
 <p>Step into a free 3D fantasy world made for your phone. Fight monsters, defeat giant bosses, tame loyal pets and become a legend of the Realm - right in your browser, no download needed.</p>
+
 <button id="w-play">Play Now &raquo;</button>
 <div id="w-scroll">
-<br /><br />
+<h2>What's New! (Nov 23, 2026) Update</h2>
+<ul>
+    <li>Added 20 new emojis.</li>
+    <li>Christmas Tree event: Claim daily Gold and Diamond rewards.</li>
+    <li>Item upgrade cap increased from +50 to +80.</li>
+    <li>PVP Arena: Fixed visual effects, skills, emojis, costumes, and more.</li>
+    <li>Max rebirth cap raised to 50.</li>
+    <li>GM Necklace and GM Rings (Left &amp; Right) can now drop in the Boss Room.</li>
+</ul>
+<br>
+<h3>Links</h3>
+<ul>
+    <li><a href="https://www.youtube.com/@realmofrancraft" target="_blank">Official YouTube channel</a></li>
+    <li><a href="https://youtube.com/shorts/gGQzEzqTKUg?si=L5J5gF8LnuS6MucV" target="_blank">Test Online PvP Arena - (Realm of RanCraft) Comming soon</a></li>
+    <li><a href="https://youtu.be/1ofoYBkNTDI?si=c-8rOERqm17knp5N" target="_blank">Auto Attack & AFK Farming Gameplay! | Realm of RanCraft (3D Browser MMORPG - the Full Showcase) </a></li>
+    <li><a href="https://youtu.be/1M_LIfQL2zs?si=6-65AAaKaUaB79z8" target="_blank">I Hunted the GODZILLA Boss for Rare Wings & Weapons! | Realm of RanCraft (3D Browser MMORPG)</a></li>
+    <li><a href="https://youtu.be/-kc1iv5fJEA?si=D2_veb9R1Qc7HdG4" target="_blank">Battle Arena - Realm of RanCraft</a></li>
+</ul>
+<br>
+<h3>Game Features</h3>
+<ul>
+<li><b>12 Maps</b> - from peaceful Moviex Plains to dangerous boss lands and the Blood Arena.</li>
+<li><b>30+ Skills</b> - summon a giant skeleton, call down anvils and unleash energy waves.</li>
+<li><b>World Bosses</b> - Big Boss alerts appear at random, with big Godzilla Fragment loot.</li>
+<li><b>Pets</b> - healers, robots, dogs, fairies and birds that follow and help you.</li>
+<li><b>Costumes &amp; Diamonds</b> - wings, crowns, masks, swords and armor with special bonuses.</li>
+<li><b>Gear &amp; Crafting</b> - random stats, upgrades, rebirth and mounts.</li>
+<li><b>AI Players</b> - a lively world with bots, quests and NPC shops.</li>
+<li><b>Mobile First</b> - touch joystick, pinch zoom, online account with cloud save (login on any phone).</li>
+</ul>
 <!-- BEGIN AADS AD UNIT 2462668 -->
 
 <div id="frame" style="width: 100%;margin: auto;position: relative; z-index: 99998;">
@@ -24,6 +77,7 @@
         </div>
 
 <!-- END AADS AD UNIT 2462668 -->
+<br>
 <p class="w-small">This a work of fiction, any name, items, maps etc. are fictional.</p>
 </div></div></div>
 <div id="boot" style="display:none;opacity:0"><div id="boot-bg"></div><div id="boot-bottom"><div id="boot-title">Realm of RanCraft - 3D MMORPG</div><div id="boot-note">This a work of fiction, Any name, items, maps etc. are fictional</div><div id="boot-bar"><div id="boot-fill"></div></div><div id="boot-pct">Loading... 0%</div></div></div>
@@ -53,6 +107,11 @@
 </div>
 
 <div id="pet-btn" class="ui box"><span id="pet-ico">&#128062;</span></div>
+<div id="emo-btn" class="ui box"><span>&#128578;</span></div>
+<div id="emo-menu" class="ui box"></div>
+<div id="emoji-layer"></div>
+<div id="dun-timer" class="ui box"></div>
+<div id="pvp-hud" style="display:none"></div>
 <div id="tracker" class="ui box"></div>
 <div id="log" class="ui"></div>
 
@@ -121,7 +180,7 @@
   <div class="crow"><span>Dress color</span><div class="sw" id="sw-shirt"></div></div>
   <div class="crow"><span>Pants color</span><div class="sw" id="sw-pants"></div></div>
   <button id="name-go">START ADVENTURE</button><div id="name-err"></div>
-  <div id="cr-save"><b>How your progress is saved</b><br>Your hero and all progress are saved automatically on <b>this device</b>, inside this browser / app (local storage). There is no account or password. To continue later, just open the game again in the <b>same browser or app, from the same file or link</b>. Do not clear the browser data / cache, do not use a private tab, and do not switch to another browser or device, or you will start a new hero.</div></div></div>
+  <div id="cr-save"><b>How your progress is saved</b><br>Your hero is saved automatically to your <b>online account</b> (Firebase) every 30 seconds and when you close the game, and also on this device. Log in with the same email on any phone to continue. You can log out from the Menu.</div></div></div>
 <div id="death"><h1>YOU DIED</h1><p id="death-msg">The wilds are not forgiving. You lose 5% of your gold.</p><button id="btn-respawn">RESPAWN AT CAMP</button></div>
 
 <script src="src/js/core.js"></script>
@@ -132,6 +191,7 @@
 <script src="src/js/quests.js"></script>
 <script src="src/js/player.js"></script>
 <script src="src/js/anticheat.js"></script>
+<script src="src/js/cloud.js"></script>
 <script src="src/js/fx.js"></script>
 <script src="src/js/characters.js"></script>
 <script src="src/js/map_01.js"></script>
@@ -148,14 +208,18 @@
 <script src="src/js/map_12.js"></script>
 <script src="src/js/map_13.js"></script>
 <script src="src/js/map_14.js"></script>
+<script src="src/js/map_15.js"></script>
+<script src="src/js/map_16.js"></script>
 <script src="src/js/combat.js"></script>
 <script src="src/js/enemy_ai.js"></script>
 <script src="src/js/ai_players.js"></script>
 <script src="src/js/pets.js"></script>
 <script src="src/js/input.js"></script>
 <script src="src/js/achievements.js"></script>
+<script src="src/js/emoji.js"></script>
 <script src="src/js/ui.js"></script>
 <script src="src/js/auto.js"></script>
+<script src="src/js/pvp.js"></script>
 <script src="src/js/main.js"></script>
 </body>
 </html>
