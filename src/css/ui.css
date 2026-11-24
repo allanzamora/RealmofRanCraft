@@ -386,7 +386,7 @@ body.wm #vignette,body.wm #boss-alert,body.wm #floaters,body.wm #zone-banner,bod
 #panel .slotbtns button.act:not(#panel-close){background:linear-gradient(#46c45a,#237a33)}
 #panel .tabs button.act:not(#panel-close):active{filter:none}
 
-#dun-timer{position:fixed;display:none;top:calc(6px + env(safe-area-inset-top));left:calc(286px + env(safe-area-inset-left));height:34px;padding:0 10px;align-items:center;gap:5px;font-weight:800;font-size:13px;color:#ffe08a;white-space:nowrap;pointer-events:none;border:1px solid rgba(255,210,90,.7)}
+#dun-timer{position:fixed;display:none;top:calc(6px + env(safe-area-inset-top));left:calc(326px + env(safe-area-inset-left));height:34px;padding:0 10px;align-items:center;gap:5px;font-weight:800;font-size:13px;color:#ffe08a;white-space:nowrap;pointer-events:none;border:1px solid rgba(255,210,90,.7)}
 #dun-timer.low{color:#ff8a8a;border-color:#ff6a6a;animation:dunblink 1s infinite}
 @keyframes dunblink{50%{opacity:.55}}
 body.wm #dun-timer{display:none!important}
@@ -409,3 +409,32 @@ body.wm #emo-btn,body.wm #emo-menu,body.wm #emoji-layer{display:none!important}
 .xm-rw{text-align:left;font-size:12px;font-weight:700;color:#ffe08a;margin:0 0 2px 2px}
 .xm-wrap video{width:100%;max-height:58vh;object-fit:contain;border-radius:12px;background:#000;pointer-events:none;display:block}
 @media (orientation:landscape){.xm-wrap{flex-direction:row;align-items:flex-start;gap:12px}.xm-rw{flex:0 0 30%;font-size:14px;line-height:1.5;margin:4px 0 0 0}.xm-wrap video{flex:1 1 auto;min-width:0;width:auto;height:calc(100vh - 150px);max-height:none}.xm-msg{position:absolute}}
+
+#dance-btn{top:calc(6px + env(safe-area-inset-top));left:calc(286px + env(safe-area-inset-left));width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:19px;pointer-events:auto;cursor:pointer;padding:0;z-index:11}
+#dance-btn:active{background:rgba(70,90,160,.85)}
+#dance-menu{display:none;grid-template-columns:repeat(2,96px);gap:6px;padding:8px;top:calc(46px + env(safe-area-inset-top));left:calc(206px + env(safe-area-inset-left));max-height:60vh;overflow-y:auto;pointer-events:auto;z-index:20;border:1px solid rgba(255,255,255,.35)}
+.dn-cell{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:8px;background:rgba(255,255,255,.08);cursor:pointer;color:#fff;font-size:11px}
+.dn-cell span{font-size:24px}.dn-cell:active{background:rgba(120,150,255,.4)}
+body.wm #dance-btn,body.wm #dance-menu{display:none!important}
+
+#arena-board{position:fixed;z-index:9;left:calc(8px + env(safe-area-inset-left));top:calc(50% - 70px);width:128px;padding:5px 7px;border-radius:8px;background:rgba(10,14,30,.62);border:1px solid rgba(255,200,90,.55);color:#fff;font:700 10px/1.5 sans-serif;pointer-events:none;text-shadow:1px 1px 2px #000}
+#arena-board b{display:block;color:#ffd54f;font-size:10px;margin-bottom:2px;text-align:center}
+#arena-board .ab-row{display:flex;gap:4px;align-items:center}
+#arena-board .ab-n{width:14px;text-align:center;flex:none}
+#arena-board .ab-nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#arena-board .ab-k{color:#ff9a7a;flex:none}
+#arena-board .ab-row.me{color:#7fe8ff}
+#arena-board .ab-empty{text-align:center;color:#aab;font-weight:600}
+body.wm #arena-board{display:none!important}
+
+/* 5v5 Battle Arena */
+#moba-hud{position:fixed;z-index:9;left:50%;top:calc(6px + env(safe-area-inset-top));transform:translateX(-50%);display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;min-width:150px;padding:3px 12px;border-radius:10px;background:rgba(10,14,30,.7);border:1px solid rgba(255,255,255,.35);color:#fff;font:800 13px/1.3 sans-serif;pointer-events:none;text-shadow:1px 1px 2px #000}
+#moba-hud .mb-b{color:#7fc4ff}#moba-hud .mb-r{color:#ff8a8a}#moba-hud .mb-t{font-size:11px;color:#ffe066}
+#moba-hud .mb-s{flex-basis:100%;text-align:center;font-size:9px;font-weight:700;color:#cfd8ff}
+body.wm #moba-hud{display:none!important}
+#moba-banner{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.55);flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#fff;text-align:center}
+#moba-banner h1{font-size:44px;margin:0;letter-spacing:3px;text-shadow:0 0 18px currentColor}
+#moba-banner.win h1{color:#ffe066}#moba-banner.lose h1{color:#ff6a6a}
+#moba-banner p{margin:0 0 10px;font-weight:700}
+#moba-banner button{margin:0 6px;padding:10px 22px;border-radius:10px;border:0;background:#2f6fd0;color:#fff;font-weight:800;font-size:14px}
+#moba-banner button#moba-leave{background:#555a66}

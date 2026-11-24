@@ -107,6 +107,7 @@ tapBtn('m-bag', function () { openBag(); });
 tapBtn('m-skill', function () { openSkills(); });
 tapBtn('m-quest', function () { openQuestLog(); });
 tapBtn('m-ach', function () { openAchievements(); });
+tapBtn('m-rank', function () { openRank(); });
 tapBtn('m-map', function () { openWorldMap(); });
 tapBtn('m-menu', function () { openSettings(); });
 tapBtn('btn-pk', function () { if (P.target && P.target.isAI) startPK(P.target); });

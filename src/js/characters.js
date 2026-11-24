@@ -29,13 +29,24 @@ function makeHumanoid(o) {
   var glovesMat = M(0xaaaaaa, { metalness: 0.4, roughness: 0.5 });
   var helmMat = M(0x8a97a6, { metalness: 0.55, roughness: 0.4 });
   var wingMat = M(0xffffff, { roughness: 0.6, side: THREE.DoubleSide });
-  var hairStyles = null, crownG = null, maskG = null, ssjWings = null, ssjG = null, aura = null, hm = null, padMeshes = [], gloveMeshes = [], helmMeshes = [], hairMeshes = [], wings = [];
+  var hairStyles = null, crownG = null, maskG = null, ssjWings = null, cwings = null, hmodels = null, ssjG = null, aura = null, hm = null, padMeshes = [], gloveMeshes = [], helmMeshes = [], hairMeshes = [], wings = [];
   var gzTrim = o.gear ? M(0x1adcff, { emissive: 0x0a8cb0, emissiveIntensity: 0.7, roughness: 0.4 }) : null;
   var gzPanel = o.gear ? M(0x174650, { roughness: 0.6 }) : null;
   var gzArmorMeshes = [], gzGloveMeshes = [], gzPantsMeshes = [], radArmorMeshes = [], radGloveMeshes = [], radPantsMeshes = [], snArmorMeshes = [], snGloveMeshes = [], snPantsMeshes = [], santaG = null;
   var snWhite = o.gear ? M(0xf6f6f6, { roughness: 0.95 }) : null, snBlack = o.gear ? M(0x16161a, { roughness: 0.5 }) : null, snGold = o.gear ? M(0xffd54f, { emissive: 0x6a4a00, emissiveIntensity: 0.6, metalness: 0.7, roughness: 0.3 }) : null, snRed = o.gear ? M(0xd01c1c, { roughness: 0.8 }) : null;
   var radGold = o.gear ? M(0xffd54f, { emissive: 0x8a6a00, emissiveIntensity: 0.8, metalness: 0.6, roughness: 0.3 }) : null;
   var radTeal = o.gear ? M(0x3ff0e0, { emissive: 0x10a090, emissiveIntensity: 1.1, roughness: 0.3 }) : null;
+  // 5 more costume sets (armor / pants / gloves): ct1 Frost, ct2 Inferno, ct3 Neon Cyber, ct4 Void Demon, ct5 Sakura
+  var CT = null, ctArmor = [[], [], [], [], []], ctGlove = [[], [], [], [], []], ctPants = [[], [], [], [], []];
+  if (o.gear) CT = [
+    { a: M(0x9fe0ff, { emissive: 0x2a9cff, emissiveIntensity: 0.7, metalness: 0.5, roughness: 0.2 }), b: M(0xffffff, { emissive: 0xbfeaff, emissiveIntensity: 0.9 }) },
+    { a: M(0xff7a1a, { emissive: 0xc02800, emissiveIntensity: 0.8, roughness: 0.4 }), b: M(0xffd23a, { emissive: 0xff9a00, emissiveIntensity: 1.0 }) },
+    { a: M(0x2affea, { emissive: 0x00c8b4, emissiveIntensity: 1.0 }), b: M(0xff2ad0, { emissive: 0xff2ad0, emissiveIntensity: 1.0 }) },
+    { a: M(0xd8d0e8, { emissive: 0x3a2060, emissiveIntensity: 0.5, roughness: 0.5 }), b: M(0xff2a3a, { emissive: 0xff0020, emissiveIntensity: 1.1 }) },
+    { a: M(0xe0b040, { emissive: 0x805800, emissiveIntensity: 0.5, metalness: 0.6, roughness: 0.3 }), b: M(0xff9ac8, { emissive: 0xc04a88, emissiveIntensity: 0.6 }) }
+  ];
+  function ctz(arr, ti, which, geo, parent, x, y, z, rx, rz) { var m = add(geo, CT[ti][which], parent, x, y, z, true); m.visible = false; m.rotation.x = rx || 0; m.rotation.z = rz || 0; arr[ti].push(m); return m; }
+  function cone(r, h) { return new THREE.ConeGeometry(r, h, 4); }
   function gz(arr, geo, mat, parent, x, y, z, rz) { var m = add(geo, mat, parent, x, y, z, true); m.visible = false; if (rz) m.rotation.z = rz; arr.push(m); return m; }
 
   // hips: a belt block
@@ -66,6 +77,12 @@ function makeHumanoid(o) {
     // Radiant armor costume trim: gold collar + belt + stripes, teal chest gem
     gz(radArmorMeshes, box(0.14, 0.16, 0.03), radTeal, torso, 0, 0.45, 0.17); gz(radArmorMeshes, box(0.32, 0.05, 0.22), radGold, torso, 0, 0.63, 0); gz(radArmorMeshes, box(0.57 * bk, 0.06, 0.33), radGold, torso, 0, 0.08, 0);
     [-1, 1].forEach(function (sx) { gz(radArmorMeshes, box(0.045, 0.32, 0.03), radGold, torso, sx * 0.16, 0.38, 0.17); gz(radArmorMeshes, box(0.2, 0.04, 0.03), radGold, torso, sx * 0.1, 0.26, 0.17); });
+    var A = ctArmor;   // chest designs
+    ctz(A, 0, 'b', box(0.12, 0.12, 0.03), torso, 0, 0.45, 0.17, 0, Math.PI / 4); [-1, 1].forEach(function (sx) { ctz(A, 0, 'a', cone(0.05, 0.2), torso, sx * 0.17, 0.7, 0.1); ctz(A, 0, 'a', cone(0.04, 0.16), torso, sx * 0.1, 0.12, 0.17, Math.PI, 0); });
+    ctz(A, 1, 'b', box(0.14, 0.18, 0.03), torso, 0, 0.42, 0.17); for (var fi = 0; fi < 5; fi++) ctz(A, 1, 'a', cone(0.05, 0.2), torso, -0.2 + fi * 0.1, 0.02, 0.17, Math.PI, 0); ctz(A, 1, 'a', box(0.57 * bk, 0.05, 0.33), torso, 0, 0.62, 0);
+    [0.56, 0.42, 0.28].forEach(function (yy, i) { ctz(A, 2, i % 2 ? 'a' : 'b', box(0.42, 0.04, 0.03), torso, 0, yy, 0.172); }); ctz(A, 2, 'a', box(0.04, 0.46, 0.03), torso, 0, 0.36, 0.175);
+    [0.58, 0.46, 0.34, 0.22].forEach(function (yy) { ctz(A, 3, 'a', box(0.36, 0.035, 0.03), torso, 0, yy, 0.172); }); ctz(A, 3, 'b', box(0.1, 0.1, 0.03), torso, 0, 0.4, 0.18, 0, Math.PI / 4); [-1, 1].forEach(function (sx) { ctz(A, 3, 'a', cone(0.04, 0.2), torso, sx * 0.16, 0.7, 0); });
+    ctz(A, 4, 'a', box(0.58 * bk, 0.13, 0.34), torso, 0, 0.14, 0); ctz(A, 4, 'b', box(0.14, 0.1, 0.04), torso, -0.07, 0.14, -0.2, 0, 0.5); ctz(A, 4, 'b', box(0.14, 0.1, 0.04), torso, 0.07, 0.14, -0.2, 0, -0.5); [[-0.1, 0.5], [0.08, 0.4], [-0.04, 0.32]].forEach(function (q) { ctz(A, 4, 'b', box(0.08, 0.05, 0.03), torso, q[0], q[1], 0.18, 0, 0.6); });
   }
 
   // head: cube with a block face
@@ -104,6 +121,47 @@ function makeHumanoid(o) {
       [[-0.08, -2.85, 1.5], [0.04, -2.92, 1.75], [0.12, -2.8, 1.3]].forEach(function (q, i) { spike(q[0], 0.3, -0.2, q[2], 0.13, q[1], 0, i === 1 ? pale : gold, true, 2.2); });   // long flat lock
       spike(0, 0.37, 0.17, 0.3, 0.06, 1.1, 0, pale, false);                     // brow tuft pointing forward
       sg.visible = false; head.add(sg); ssjG = sg;
+      // 5 more costume hair/helmets (original): hm1 Ice Crystal Hair, hm2 Blazing Flame Hair, hm3 Neon Mohawk, hm4 Demon Horn Crown, hm5 Sakura Topknot
+      hmodels = [];
+      (function () {
+        function bm(c, op) { var q = { color: c }; if (op) { q.transparent = true; q.opacity = op; q.depthWrite = false; q.side = THREE.DoubleSide; } return new THREE.MeshBasicMaterial(q); }
+        function sm(c, e, ei) { return new THREE.MeshStandardMaterial({ color: c, emissive: e || 0, emissiveIntensity: ei || 0.8, roughness: 0.4, metalness: 0.3 }); }
+        function mk(par, geo, mat, x, y, z, rx, ry, rz) { var m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.rotation.set(rx || 0, ry || 0, rz || 0); par.add(m); return m; }
+        function hg() { var g = new THREE.Group(); g.visible = false; head.add(g); hmodels.push(g); return g; }
+        function cap(g, mat, h) { mk(g, new THREE.BoxGeometry(0.4, h || 0.14, 0.4), mat, 0, 0.35, 0); mk(g, new THREE.BoxGeometry(0.4, 0.3, 0.12), mat, 0, 0.2, -0.17); mk(g, new THREE.BoxGeometry(0.06, 0.22, 0.2), mat, -0.2, 0.22, -0.02); mk(g, new THREE.BoxGeometry(0.06, 0.22, 0.2), mat, 0.2, 0.22, -0.02); }
+        // 1 Ice Crystal Hair
+        var h1 = hg(), ic = sm(0x9fe8ff, 0x2aa8ff, 0.8); ic.transparent = true; ic.opacity = 0.9; cap(h1, sm(0x5ac0e8, 0x1a70b0, 0.4)); var snow = [];
+        [[-0.15, 0.3, 0.5, 0.35], [0, 0.45, 0.8, 0.0], [0.15, 0.3, 0.55, -0.35], [-0.08, -0.1, 0.9, 0.9], [0.08, -0.15, 1.0, 1.0], [0, -0.2, 0.8, 0.7], [-0.2, 0.1, 0.5, 0.7], [0.2, 0.1, 0.5, -0.7]].forEach(function (q) {
+          var pv = new THREE.Group(); pv.position.set(q[0], 0.38, q[1]); pv.rotation.set(q[1] < 0 ? -(1.3 + q[3] * 0.2) : -0.15, 0, q[3] * 0.5); h1.add(pv); mk(pv, new THREE.ConeGeometry(0.09, q[2], 4), ic, 0, q[2] / 2, 0);
+        });
+        for (var i = 0; i < 5; i++) snow.push(mk(h1, new THREE.BoxGeometry(0.04, 0.04, 0.04), bm(0xffffff), 0, 0, 0));
+        h1.userData.anim = function (t) { snow.forEach(function (m, i) { var u = (t * 0.5 + i / 5) % 1; m.position.set(Math.sin(i * 2.9 + t) * 0.4, 0.4 + u * 0.7, Math.cos(i * 2.1 + t) * 0.4); m.scale.setScalar(1 - u); }); ic.emissiveIntensity = 0.7 + Math.sin(t * 3) * 0.25; };
+        // 2 Blazing Flame Hair
+        var h2 = hg(), fm = [bm(0xff3a10, 0.9), bm(0xff8a1a, 0.92), bm(0xffd23a, 0.95)], fl = []; cap(h2, sm(0x5a1408, 0x300800, 0.5));
+        [[-0.14, 0.12, 0.7], [0.0, 0.14, 0.95], [0.14, 0.1, 0.72], [-0.08, -0.08, 0.8], [0.08, -0.1, 0.85], [-0.17, -0.1, 0.55], [0.17, -0.1, 0.55], [0, 0.0, 0.6]].forEach(function (q, i) {
+          var m = mk(h2, new THREE.ConeGeometry(0.12 - (i % 3) * 0.02, q[2], 5), fm[i % 3], q[0], 0.38 + q[2] / 2 - 0.02, q[1], q[1] < 0 ? -0.3 : 0.1, 0, q[0] * 1.2); fl.push({ m: m, i: i, y: m.position.y });
+        });
+        h2.userData.anim = function (t) { fl.forEach(function (o) { o.m.scale.set(1, 0.85 + Math.sin(t * 12 + o.i * 1.9) * 0.22, 1); o.m.rotation.z = Math.sin(t * 5 + o.i) * 0.12; }); };
+        // 3 Neon Mohawk
+        var h3 = hg(), nA = sm(0xff2ad0, 0xff2ad0, 1.0), nB = sm(0x2affea, 0x2affea, 1.0), nm = []; cap(h3, sm(0x1c1c28, 0x000000, 0.2), 0.12);
+        for (var k = 0; k < 8; k++) { var hh = 0.35 + Math.sin(k / 7 * Math.PI) * 0.5; var fin = mk(h3, new THREE.BoxGeometry(0.1, hh, 0.12), k % 2 ? nB : nA, 0, 0.36 + hh / 2, 0.2 - k * 0.075, 0.1 * (k < 4 ? 1 : -1) * 0, 0, 0); fin.rotation.x = -0.15 - k * 0.05; nm.push(fin); }
+        mk(h3, new THREE.BoxGeometry(0.42, 0.05, 0.05), nA, 0, 0.34, 0.2); mk(h3, new THREE.BoxGeometry(0.05, 0.14, 0.03), nB, -0.1, 0.24, 0.205); mk(h3, new THREE.BoxGeometry(0.05, 0.14, 0.03), nB, 0.1, 0.24, 0.205);
+        h3.userData.anim = function (t) { nA.emissiveIntensity = 0.7 + Math.sin(t * 6) * 0.4; nB.emissiveIntensity = 0.7 + Math.cos(t * 6) * 0.4; nm.forEach(function (f, i) { f.scale.y = 1 + Math.sin(t * 4 + i) * 0.06; }); };
+        // 4 Demon Horn Crown
+        var h4 = hg(), dk = sm(0x14121c, 0x000000, 0.2), rd = sm(0xff2a2a, 0xff0000, 1.2), em = []; mk(h4, new THREE.BoxGeometry(0.43, 0.3, 0.43), dk, 0, 0.27, 0); mk(h4, new THREE.BoxGeometry(0.43, 0.14, 0.2), dk, 0, 0.1, -0.12); mk(h4, new THREE.BoxGeometry(0.1, 0.1, 0.03), rd, 0, 0.38, 0.22);
+        [-1, 1].forEach(function (s) {
+          var hp = new THREE.Group(); hp.position.set(s * 0.18, 0.4, 0.02); hp.rotation.z = -s * 0.5; h4.add(hp);
+          [[0.14, 0.34, 0.0], [0.11, 0.3, 0.55], [0.07, 0.26, 1.1]].reduce(function (acc, q, i) { var seg = new THREE.Group(); seg.position.set(acc.x, acc.y, 0); seg.rotation.z = s * q[2] * 0.0; hp.add(seg); var cn = mk(seg, new THREE.ConeGeometry(q[0], q[1] * 1.3, 5), i === 2 ? rd : dk, 0, q[1] * 0.5, 0, 0, 0, -s * q[2] * 0.35); return { x: acc.x + s * Math.sin(q[2] * 0.35) * 0.2, y: acc.y + q[1] * 0.8 }; }, { x: 0, y: 0 });
+        });
+        for (var e = 0; e < 4; e++) em.push(mk(h4, new THREE.BoxGeometry(0.05, 0.05, 0.05), bm(0xff5a1a), 0, 0, 0));
+        h4.userData.anim = function (t) { rd.emissiveIntensity = 0.9 + Math.sin(t * 5) * 0.4; em.forEach(function (m, i) { var u = (t * 0.7 + i / 4) % 1; m.position.set(Math.sin(i * 3 + t) * 0.3, 0.7 + u * 0.6, Math.cos(i * 2) * 0.2); m.scale.setScalar(1 - u); }); };
+        // 5 Sakura Topknot
+        var h5 = hg(), pk = sm(0xff8ab8, 0xb04a78, 0.4), pt = bm(0xffc0dc), gd = sm(0xe0b040, 0x805800, 0.5), pet = []; cap(h5, pk);
+        mk(h5, new THREE.BoxGeometry(0.26, 0.26, 0.26), pk, 0, 0.62, -0.02); mk(h5, new THREE.BoxGeometry(0.1, 0.1, 0.1), pk, 0, 0.5, -0.02); var pin = mk(h5, new THREE.BoxGeometry(0.03, 0.03, 0.55), gd, 0, 0.64, 0, 0, 0, 0); mk(h5, new THREE.BoxGeometry(0.08, 0.08, 0.08), gd, 0, 0.64, 0.28);
+        [-1, 1].forEach(function (s) { mk(h5, new THREE.BoxGeometry(0.07, 0.34, 0.07), pk, s * 0.22, 0.12, 0.12); });
+        for (var q2 = 0; q2 < 7; q2++) pet.push(mk(h5, new THREE.BoxGeometry(0.07, 0.01, 0.07), pt, 0, 0, 0));
+        h5.userData.anim = function (t) { pet.forEach(function (m, i) { var u = (t * 0.35 + i / 7) % 1, a = t * 1.5 + i * 0.9; m.position.set(Math.cos(a) * (0.35 + u * 0.15), 0.9 - u * 1.0, Math.sin(a) * (0.35 + u * 0.15)); m.rotation.set(a * 2, a, a); }); };
+      })();
       // Johny Mask (from the picture): grey mask, blue ear spikes, 4 white dots, white visor strip with a notch, pointed chin plate
       var mg = new THREE.Group(), gry = M(0x737373), blu = M(0x4399d3), wht = M(0xf6f6f6, { emissive: 0x555555, emissiveIntensity: 0.4 });
       var mb = function (w, h2, d, mat, x, y, z) { var m = new THREE.Mesh(new THREE.BoxGeometry(w, h2, d), mat); m.position.set(x, y, z); mg.add(m); return m; };
@@ -128,6 +186,45 @@ function makeHumanoid(o) {
         var gem = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.05), M(0xf6f6f6)); gem.position.set(s2 * 0.05, 0, 0); side.add(gem);
       });
       wgr.position.set(0, 0.42, -0.2); wgr.visible = false; torso.add(wgr); ssjWings = wgr;
+      // 5 more costume wings (original designs): cw1 Halo Rings, cw2 Prism Butterfly, cw3 Crystal Shards, cw4 Ember Plumes, cw5 Jet Thrusters
+      cwings = [];
+      (function () {
+        function bm(c, op) { var q = { color: c }; if (op) { q.transparent = true; q.opacity = op; q.depthWrite = false; q.side = THREE.DoubleSide; } return new THREE.MeshBasicMaterial(q); }
+        function sm(c, e) { return new THREE.MeshStandardMaterial({ color: c, emissive: e, emissiveIntensity: 0.8, roughness: 0.35, metalness: 0.4 }); }
+        function mk(par, geo, mat, x, y, z, rx, ry, rz) { var m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.rotation.set(rx || 0, ry || 0, rz || 0); par.add(m); return m; }
+        function grp() { var g = new THREE.Group(); g.position.set(0, 0.42, -0.2); g.visible = false; torso.add(g); cwings.push(g); return g; }
+        // 1 - Halo Rings: floating glowing rings + orbiting orbs
+        var g1 = grp(), ringM = bm(0x8af4ff, 0.8), ringM2 = bm(0xffffff, 0.9), orbs = [], rings = [];
+        [-1, 1].forEach(function (s) {
+          var a = mk(g1, new THREE.TorusGeometry(0.5, 0.04, 6, 22), ringM, s * 0.55, 0.28, -0.12, 0, s * 1.1, 0), b = mk(g1, new THREE.TorusGeometry(0.34, 0.035, 6, 20), ringM2, s * 0.62, -0.12, -0.14, 0, s * 1.1, 0.4); rings.push(a, b);
+          for (var i = 0; i < 3; i++) orbs.push({ m: mk(g1, new THREE.BoxGeometry(0.07, 0.07, 0.07), ringM2, 0, 0, 0), s: s, i: i });
+        });
+        g1.userData.anim = function (t) { rings.forEach(function (r, i) { r.rotation.z += 0.02 * (i % 2 ? -1 : 1); }); orbs.forEach(function (o) { var a = t * 1.6 + o.i * 2.1; o.m.position.set(o.s * (0.55 + Math.cos(a) * 0.45), 0.1 + Math.sin(a) * 0.45, -0.12 - Math.cos(a) * 0.2); }); g1.position.y = 0.42 + Math.sin(t * 2) * 0.03; };
+        // 2 - Prism Butterfly: big flat wings that flap
+        var g2 = grp(), bw = [], purple = bm(0x9a4ae0, 0.82), pink = bm(0xff7ac8, 0.82), edge = bm(0x2a1450), dot = bm(0xffffff);
+        [-1, 1].forEach(function (s) {
+          var w = new THREE.Group(); g2.add(w); w.position.x = s * 0.08; bw.push({ g: w, s: s });
+          var up = mk(w, new THREE.BoxGeometry(0.95, 0.75, 0.02), purple, s * 0.5, 0.3, 0, 0, 0, s * 0.35), lo = mk(w, new THREE.BoxGeometry(0.62, 0.5, 0.02), pink, s * 0.38, -0.32, 0, 0, 0, -s * 0.3);
+          mk(w, new THREE.BoxGeometry(0.97, 0.04, 0.03), edge, s * 0.5, 0.66, 0, 0, 0, s * 0.35); mk(w, new THREE.BoxGeometry(0.1, 0.1, 0.03), dot, s * 0.62, 0.38, 0.02, 0, 0, 0.78); mk(w, new THREE.BoxGeometry(0.08, 0.08, 0.03), dot, s * 0.4, -0.32, 0.02, 0, 0, 0.78);
+        });
+        g2.userData.anim = function (t) { bw.forEach(function (b) { b.g.rotation.y = b.s * (0.55 + Math.sin(t * 5) * 0.4); }); };
+        // 3 - Crystal Shards: floating crystal blades fanned out
+        var g3 = grp(), sh = [], cA = sm(0x40d8ff, 0x1090d0), cB = sm(0xff5ad0, 0xb01890);
+        [-1, 1].forEach(function (s) { for (var i = 0; i < 5; i++) { var m = mk(g3, new THREE.BoxGeometry(0.13, 0.62 - i * 0.05, 0.13), i % 2 ? cB : cA, s * (0.3 + i * 0.12), 0.12 + (i % 3) * 0.14 - 0.1, -0.1 - i * 0.04, 0.4, 0.78, s * (0.5 + i * 0.28)); sh.push({ m: m, i: i, y: m.position.y }); } });
+        g3.userData.anim = function (t) { sh.forEach(function (o) { o.m.position.y = o.y + Math.sin(t * 2 + o.i * 1.3) * 0.06; o.m.rotation.y += 0.015; }); };
+        // 4 - Ember Plumes: flame feathers streaming up and back + drifting embers
+        var g4 = grp(), fl = [], emb = [], f1 = bm(0xff4a14, 0.85), f2 = bm(0xffa626, 0.9), f3 = bm(0xffe27a, 0.95);
+        [-1, 1].forEach(function (s) { [[0.0, 1.0, f1, 0.35], [0.14, 0.8, f2, 0.6], [0.26, 0.55, f3, 0.85]].forEach(function (q, i) { var m = mk(g4, new THREE.ConeGeometry(0.16 - i * 0.03, 1.1 * q[1], 4), q[2], s * (0.22 + q[0]), 0.35, -0.14, -0.35, 0, -s * q[3]); fl.push({ m: m, i: i }); }); for (var k = 0; k < 4; k++) emb.push({ m: mk(g4, new THREE.BoxGeometry(0.05, 0.05, 0.05), f3, 0, 0, 0), s: s, k: k }); });
+        g4.userData.anim = function (t) { fl.forEach(function (o) { o.m.scale.set(1, 0.85 + Math.sin(t * 11 + o.i * 2) * 0.2, 1); }); emb.forEach(function (o) { var u = (t * 0.7 + o.k * 0.25) % 1; o.m.position.set(o.s * (0.35 + o.k * 0.1 + Math.sin(t * 3 + o.k) * 0.05), 0.4 + u * 1.0, -0.2 - u * 0.2); o.m.scale.setScalar(1 - u); }); };
+        // 5 - Jet Thrusters: mechanical pods with cyan exhaust + small fins
+        var g5 = grp(), jf = [], dark = sm(0x20242c, 0x000000), org = sm(0xff8a1a, 0x803000), jet = bm(0x6af0ff, 0.85);
+        [-1, 1].forEach(function (s) {
+          mk(g5, new THREE.BoxGeometry(0.24, 0.62, 0.3), dark, s * 0.28, 0.2, -0.1); mk(g5, new THREE.BoxGeometry(0.26, 0.08, 0.32), org, s * 0.28, 0.4, -0.1); mk(g5, new THREE.ConeGeometry(0.12, 0.2, 6), org, s * 0.28, -0.2, -0.1, Math.PI);
+          mk(g5, new THREE.BoxGeometry(0.7, 0.06, 0.2), dark, s * 0.62, 0.38, -0.12, 0, 0, s * 0.35); mk(g5, new THREE.BoxGeometry(0.5, 0.05, 0.16), org, s * 0.55, 0.12, -0.12, 0, 0, -s * 0.2);
+          jf.push(mk(g5, new THREE.ConeGeometry(0.1, 0.6, 6), jet, s * 0.28, -0.52, -0.1, Math.PI));
+        });
+        g5.userData.anim = function (t) { jf.forEach(function (f, i) { f.scale.set(1, 0.8 + Math.sin(t * 25 + i) * 0.3, 1); }); };
+      })();
       var auraM = new THREE.MeshBasicMaterial({ color: 0xffd54f, transparent: true, opacity: 0.28, side: THREE.DoubleSide, depthWrite: false });
       var au = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 0.75, 2.6, 18, 1, true), auraM); au.position.y = 1.0; au.visible = false; root.add(au); aura = au;
     }
@@ -151,9 +248,25 @@ function makeHumanoid(o) {
     }
   }
   var eyeMat = M(o.eye, o.eyeGlow ? { emissive: o.eye, emissiveIntensity: 1 } : null);
+  var faceSets = null;
   if (!o.faceless) {
-    [-1, 1].forEach(function (sx) { add(box(o.bone ? 0.07 : 0.05, o.bone ? 0.07 : 0.06, 0.02), eyeMat, head, sx * 0.08, 0.2, 0.172, true); });
-    add(box(0.12, 0.03, 0.02), M(o.tusks ? 0x2a1a1a : 0x5a2a20), head, 0, 0.09, 0.172, true);
+    var fE = [-1, 1].map(function (sx) { return add(box(o.bone ? 0.07 : 0.05, o.bone ? 0.07 : 0.06, 0.02), eyeMat, head, sx * 0.08, 0.2, 0.172, true); });
+    var fM = add(box(0.12, 0.03, 0.02), M(o.tusks ? 0x2a1a1a : 0x5a2a20), head, 0, 0.09, 0.172, true);
+    if (o.hairStyles) {   // player face styles (Change Face Card): 0 default, 1 happy, 2 angry, 3 sleepy, 4 cool, 5 cute, 6 wink, 7 surprised
+      faceSets = [[fE[0], fE[1], fM]];
+      var dk = M(0x1a1a1a), wh = M(0xffffff), pk = M(0xff8aa8), rd = M(0xc03a4a), Z = 0.173;
+      var fb = function (list, w, h, c, x, y, rz) { var m = add(box(w, h, 0.02), c, head, x, y, Z, true); m.visible = false; if (rz) m.rotation.z = rz; list.push(m); return m; };
+      var f1 = []; [-1, 1].forEach(function (sx) { fb(f1, 0.07, 0.02, dk, sx * 0.08, 0.2); fb(f1, 0.07, 0.02, dk, sx * 0.08, 0.225, 0); });
+      fb(f1, 0.1, 0.02, dk, 0, 0.075); fb(f1, 0.03, 0.03, dk, -0.07, 0.095); fb(f1, 0.03, 0.03, dk, 0.07, 0.095);
+      var f2 = []; [-1, 1].forEach(function (sx) { fb(f2, 0.06, 0.05, dk, sx * 0.08, 0.19); fb(f2, 0.11, 0.025, dk, sx * 0.08, 0.25, -sx * 0.45); });
+      fb(f2, 0.1, 0.02, dk, 0, 0.085); fb(f2, 0.03, 0.03, dk, -0.07, 0.065); fb(f2, 0.03, 0.03, dk, 0.07, 0.065);
+      var f3 = []; [-1, 1].forEach(function (sx) { fb(f3, 0.08, 0.015, dk, sx * 0.08, 0.19); }); fb(f3, 0.05, 0.04, dk, 0, 0.08);
+      var f4 = []; fb(f4, 0.3, 0.075, dk, 0, 0.2); fb(f4, 0.05, 0.02, wh, -0.09, 0.215, 0.5); fb(f4, 0.05, 0.02, wh, 0.07, 0.215, 0.5); fb(f4, 0.12, 0.02, dk, 0.03, 0.085, 0.15);
+      var f5 = []; [-1, 1].forEach(function (sx) { fb(f5, 0.08, 0.1, dk, sx * 0.085, 0.2); fb(f5, 0.03, 0.03, wh, sx * 0.095, 0.225); fb(f5, 0.07, 0.04, pk, sx * 0.14, 0.12); }); fb(f5, 0.05, 0.025, dk, 0, 0.09);
+      var f6 = []; fb(f6, 0.05, 0.06, dk, -0.08, 0.2); fb(f6, 0.09, 0.02, dk, 0.08, 0.2); fb(f6, 0.12, 0.025, dk, 0, 0.085); fb(f6, 0.06, 0.05, rd, 0.03, 0.055); fb(f6, 0.05, 0.03, pk, 0.03, 0.05);
+      var f7 = []; [-1, 1].forEach(function (sx) { fb(f7, 0.07, 0.09, wh, sx * 0.08, 0.2); fb(f7, 0.035, 0.05, dk, sx * 0.08, 0.2); }); fb(f7, 0.07, 0.08, dk, 0, 0.075);
+      faceSets.push(f1, f2, f3, f4, f5, f6, f7);
+    }
   }
   if (o.ears) [-1, 1].forEach(function (sx) { add(box(0.14, 0.06, 0.04), skinM, head, sx * 0.24, 0.2, 0, true); });
   if (o.horns) [-1, 1].forEach(function (sx) {
@@ -209,6 +322,13 @@ function makeHumanoid(o) {
       gz(radArmorMeshes, box(0.05, 0.14, 0.3), radGold, sh, sx * 0.14, 0.04, 0); gz(radArmorMeshes, box(0.08, 0.08, 0.08), radTeal, sh, sx * 0.14, 0.12, 0);
       gz(gzArmorMeshes, box(0.04, 0.16, 0.27), gzTrim, sh, sx * 0.12, 0.0, 0);
       gz(gzGloveMeshes, box(0.25, 0.035, 0.25), gzTrim, el, 0, -0.12, 0);
+      ctz(ctArmor, 0, 'a', cone(0.07, 0.32), sh, sx * 0.05, 0.24, 0); ctz(ctArmor, 1, 'b', cone(0.09, 0.42), sh, sx * 0.07, 0.27, 0, 0, -sx * 0.35); ctz(ctArmor, 2, 'a', box(0.3, 0.04, 0.3), sh, 0, 0.08, 0); ctz(ctArmor, 2, 'b', box(0.3, 0.02, 0.02), sh, 0, 0.1, 0.15);
+      ctz(ctArmor, 3, 'a', cone(0.06, 0.36), sh, sx * 0.1, 0.22, 0, 0, -sx * 0.8); [0.07, 0.11, 0.15].forEach(function (yy, i) { ctz(ctArmor, 4, 'b', box(0.3 - i * 0.04, 0.02, 0.22), sh, 0, yy, 0, 0, sx * 0.12 * (i + 1)); });
+      ctz(ctGlove, 0, 'a', box(0.26, 0.05, 0.26), el, 0, -0.1, 0); [-0.07, 0, 0.07].forEach(function (xx) { ctz(ctGlove, 0, 'b', cone(0.04, 0.16), el, xx, -0.34, 0.1, Math.PI, 0); });
+      ctz(ctGlove, 1, 'a', box(0.26, 0.06, 0.26), el, 0, -0.1, 0); [-1, 1].forEach(function (q) { ctz(ctGlove, 1, 'b', cone(0.05, 0.22), el, q * 0.1, -0.02, 0, 0, -q * 0.3); });
+      ctz(ctGlove, 2, 'b', box(0.25, 0.025, 0.25), el, 0, -0.1, 0); ctz(ctGlove, 2, 'a', box(0.25, 0.025, 0.25), el, 0, -0.28, 0); ctz(ctGlove, 2, 'b', box(0.04, 0.12, 0.03), el, 0, -0.2, 0.125);
+      [-0.07, 0, 0.07].forEach(function (xx) { ctz(ctGlove, 3, 'a', cone(0.035, 0.2), el, xx, -0.37, 0.09, Math.PI, 0); }); ctz(ctGlove, 3, 'b', box(0.08, 0.08, 0.03), el, 0, -0.18, 0.125, 0, Math.PI / 4);
+      ctz(ctGlove, 4, 'b', box(0.26, 0.07, 0.26), el, 0, -0.1, 0); ctz(ctGlove, 4, 'a', box(0.1, 0.06, 0.04), el, 0, -0.1, 0.14); ctz(ctGlove, 4, 'b', box(0.09, 0.02, 0.09), el, 0, -0.24, 0.12, 0, 0.6);
       gz(radGloveMeshes, box(0.27, 0.05, 0.27), radGold, el, 0, -0.1, 0); gz(radGloveMeshes, box(0.09, 0.09, 0.03), radTeal, el, 0, -0.21, 0.125); gz(radGloveMeshes, box(0.24, 0.03, 0.24), radTeal, el, 0, -0.29, 0);
       gz(gzGloveMeshes, box(0.25, 0.03, 0.25), gzTrim, el, 0, -0.29, 0);
       gz(gzGloveMeshes, box(0.1, 0.1, 0.02), gzPanel, el, 0, -0.2, 0.125);
@@ -254,6 +374,11 @@ function makeHumanoid(o) {
     if (o.gear) {   // Godzilla pants: cyan knee plate + thigh stripes
       gz(snPantsMeshes, box(0.26, 0.08, 0.27), snWhite, kn, 0, -0.33, 0); gz(snPantsMeshes, box(0.26, 0.06, 0.26), snWhite, hp, 0, -0.01, 0);
       gz(gzPantsMeshes, box(0.27, 0.1, 0.27), gzTrim, kn, 0, 0.02, 0);
+      ctz(ctPants, 0, 'a', cone(0.07, 0.18), kn, 0, 0.02, 0.17, Math.PI / 2, 0); ctz(ctPants, 0, 'b', box(0.04, 0.3, 0.03), hp, 0, -0.22, 0.125);
+      [-0.06, 0.06].forEach(function (xx) { ctz(ctPants, 1, 'b', cone(0.04, 0.2), kn, xx, -0.27, 0.1); }); ctz(ctPants, 1, 'a', box(0.05, 0.3, 0.03), hp, 0, -0.22, 0.125); ctz(ctPants, 1, 'a', box(0.27, 0.05, 0.27), kn, 0, 0.02, 0);
+      ctz(ctPants, 2, 'b', box(0.04, 0.3, 0.03), hp, 0, -0.22, 0.125); ctz(ctPants, 2, 'b', box(0.04, 0.32, 0.03), kn, 0, -0.15, 0.125); ctz(ctPants, 2, 'a', box(0.26, 0.04, 0.26), kn, 0, 0.02, 0);
+      ctz(ctPants, 3, 'a', cone(0.06, 0.2), kn, 0, 0.02, 0.17, Math.PI / 2, 0); ctz(ctPants, 3, 'b', box(0.04, 0.3, 0.03), hp, 0, -0.22, 0.125); ctz(ctPants, 3, 'a', box(0.26, 0.05, 0.26), kn, 0, -0.3, 0);
+      ctz(ctPants, 4, 'a', box(0.27, 0.05, 0.27), kn, 0, 0.02, 0); ctz(ctPants, 4, 'b', box(0.1, 0.08, 0.03), hp, 0, -0.14, 0.125, 0, 0.6); ctz(ctPants, 4, 'b', box(0.08, 0.06, 0.03), hp, 0.03, -0.3, 0.125, 0, -0.5); ctz(ctPants, 4, 'b', box(0.27, 0.05, 0.27), kn, 0, -0.3, 0);
       gz(radPantsMeshes, box(0.27, 0.1, 0.27), radGold, kn, 0, 0.02, 0); gz(radPantsMeshes, box(0.05, 0.3, 0.03), radTeal, hp, 0, -0.22, 0.125); gz(radPantsMeshes, box(0.27, 0.06, 0.26), radGold, kn, 0, -0.3, 0);
       for (var ti = 0; ti < 3; ti++) gz(gzPantsMeshes, box(0.2 - ti * 0.05, 0.03, 0.02), gzTrim, hp, 0, -0.1 - ti * 0.07, 0.125);
       gz(gzPantsMeshes, box(0.2, 0.025, 0.02), gzTrim, kn, 0, -0.2, 0.12);
@@ -354,12 +479,12 @@ function makeHumanoid(o) {
   root.scale.setScalar(o.scale);
   return { root: root, mats: mats, rig: { body: body, hips: hips, torso: torso, head: head, armL: armL, armR: armR, legL: legL, legR: legR, cape: cape, wpn: wpn, armor: armor, armorMat: armorMat,
     pantsMat: pantsMat, padMat: padMat, padMeshes: padMeshes, glovesMat: glovesMat, gloveMeshes: gloveMeshes, helmMat: helmMat, helmMeshes: helmMeshes,
-    hairMeshes: hairMeshes, hairStyles: hairStyles, santaG: santaG, snArmorMeshes: snArmorMeshes, snGloveMeshes: snGloveMeshes, snPantsMeshes: snPantsMeshes, necklaceG: necklaceG, ringL: armL.ring, ringR: armR.ring, crownG: crownG, maskG: maskG, ssjWings: ssjWings, ssjG: ssjG, aura: aura, skirt: skirt, hairMat: hm, shirtMats: shirtMats, wingMat: wingMat, wingsG: wingsG, wingsG2: wingsG2, wingsG3: wingsG3, wingMat2: wingMat2, gzTrim: gzTrim, radArmorMeshes: radArmorMeshes, radGloveMeshes: radGloveMeshes, radPantsMeshes: radPantsMeshes, gzArmorMeshes: gzArmorMeshes, gzGloveMeshes: gzGloveMeshes, gzPantsMeshes: gzPantsMeshes, wings: wings, godG: godG, godMat: godMat, flameMat: flameMat } };
+    hairMeshes: hairMeshes, hairStyles: hairStyles, faceSets: faceSets, cwings: cwings, ctArmor: ctArmor, ctGlove: ctGlove, ctPants: ctPants, ctMats: CT, hmodels: hmodels, santaG: santaG, snArmorMeshes: snArmorMeshes, snGloveMeshes: snGloveMeshes, snPantsMeshes: snPantsMeshes, necklaceG: necklaceG, ringL: armL.ring, ringR: armR.ring, crownG: crownG, maskG: maskG, ssjWings: ssjWings, ssjG: ssjG, aura: aura, skirt: skirt, hairMat: hm, shirtMats: shirtMats, wingMat: wingMat, wingsG: wingsG, wingsG2: wingsG2, wingsG3: wingsG3, wingMat2: wingMat2, gzTrim: gzTrim, radArmorMeshes: radArmorMeshes, radGloveMeshes: radGloveMeshes, radPantsMeshes: radPantsMeshes, gzArmorMeshes: gzArmorMeshes, gzGloveMeshes: gzGloveMeshes, gzPantsMeshes: gzPantsMeshes, wings: wings, godG: godG, godMat: godMat, flameMat: flameMat } };
 }
 
 
 function setWeapon(c, kind, color, glow) {
-  var holder = c.rig.wpn; c.wMat = null; c.wSpikes = null; c.nock = null; c.wKind = kind; c.sheathed = null;
+  var holder = c.rig.wpn; c.wMat = null; c.wAnim = null; c.wSpikes = null; c.nock = null; c.wKind = kind; c.sheathed = null;
   while (holder.children.length) {
     var o = holder.children[0]; holder.remove(o);
     if (o.geometry) o.geometry.dispose();
@@ -399,6 +524,41 @@ function setWeapon(c, kind, color, glow) {
     add(new THREE.BoxGeometry(0.03, 1.5, 0.032), wh, -0.15, 0.18 + 0.75, 0); add(new THREE.BoxGeometry(0.03, 1.5, 0.032), wh, 0.15, 0.18 + 0.75, 0);
     add(new THREE.BoxGeometry(0.16, 0.2, 0.025), metal, 0, 0.18 + 1.6, 0);
     add(new THREE.BoxGeometry(0.5, 1.7, 0.08), gl, 0, 0.18 + 0.85, 0);
+  } else if (kind === 'sw_frost') {            // Frost Fang: jagged ice crystal blade, snowflake guard, drifting frost sparks
+    var ice = new THREE.MeshStandardMaterial({ color: 0xaeeeff, emissive: 0x3ab8ff, emissiveIntensity: 0.9, roughness: 0.1, metalness: 0.2, transparent: true, opacity: 0.88 }), iw = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    add(new THREE.BoxGeometry(0.07, 0.3, 0.07), new THREE.MeshStandardMaterial({ color: 0x244a7a, roughness: 0.5 }), 0, -0.04, 0);
+    [0, Math.PI / 4, Math.PI / 2, -Math.PI / 4].forEach(function (rz) { var g = add(new THREE.BoxGeometry(0.4, 0.05, 0.05), iw, 0, 0.16, 0); g.rotation.z = rz; });                          // snowflake guard
+    var core = add(new THREE.BoxGeometry(0.2, 1.2, 0.04), ice, 0, 0.8, 0); add(new THREE.ConeGeometry(0.12, 0.45, 4), ice, 0, 1.62, 0);
+    [[0.14, 0.55, 0.5], [-0.14, 0.8, -0.5], [0.15, 1.05, 0.55], [-0.13, 1.25, -0.45]].forEach(function (q) { var sp = add(new THREE.ConeGeometry(0.06, 0.3, 4), ice, q[0], q[1] + 0.2, 0); sp.rotation.z = -q[2]; });   // ice spikes on the edges
+    var fx = []; for (var i = 0; i < 6; i++) fx.push(add(new THREE.BoxGeometry(0.05, 0.05, 0.05), iw, 0, 0, 0));
+    c.wAnim = function (t) { fx.forEach(function (m, i) { var u = (t * 0.6 + i / 6) % 1; m.position.set(Math.sin(i * 2.3 + t * 2) * 0.22, 0.4 + u * 1.5, Math.cos(i * 1.7 + t * 2) * 0.12); m.scale.setScalar(1 - u); }); };
+  } else if (kind === 'sw_plasma') {           // Plasma Saber: metal hilt + pulsing magenta energy beam
+    var hilt = new THREE.MeshStandardMaterial({ color: 0x3a3f4a, metalness: 0.8, roughness: 0.3 }), beam = new THREE.MeshBasicMaterial({ color: 0xff3ad8 }), halo = new THREE.MeshBasicMaterial({ color: 0xff7af0, transparent: true, opacity: 0.35, depthWrite: false }), cwh = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    add(new THREE.BoxGeometry(0.09, 0.42, 0.09), hilt, 0, 0.05, 0); add(new THREE.BoxGeometry(0.14, 0.06, 0.14), beam, 0, 0.1, 0); add(new THREE.BoxGeometry(0.2, 0.05, 0.1), hilt, 0, 0.27, 0);
+    var b1 = add(new THREE.BoxGeometry(0.08, 1.45, 0.08), cwh, 0, 1.0, 0), b2 = add(new THREE.BoxGeometry(0.16, 1.5, 0.16), beam, 0, 1.0, 0), b3 = add(new THREE.BoxGeometry(0.34, 1.6, 0.3), halo, 0, 1.0, 0);
+    c.wAnim = function (t) { var k = 1 + Math.sin(t * 24) * 0.08; b2.scale.set(k, 1, k); b3.scale.set(1 + Math.sin(t * 9) * 0.15, 1, 1 + Math.sin(t * 9) * 0.15); beam.color.setHSL(0.86 + Math.sin(t * 2) * 0.04, 1, 0.62); };
+  } else if (kind === 'sw_thorn') {            // Thorn Vine Blade: green serrated blade wrapped in a thorny vine, poison glow
+    var gre = new THREE.MeshStandardMaterial({ color: 0x2f9a3a, emissive: 0x20ff50, emissiveIntensity: 0.55, roughness: 0.5 }), dgr = new THREE.MeshStandardMaterial({ color: 0x174a1c, roughness: 0.8 }), pois = new THREE.MeshBasicMaterial({ color: 0x8aff5a, transparent: true, opacity: 0.35, depthWrite: false });
+    add(new THREE.BoxGeometry(0.08, 0.32, 0.08), dgr, 0, -0.03, 0); add(new THREE.BoxGeometry(0.3, 0.08, 0.1), dgr, 0, 0.16, 0);
+    add(new THREE.BoxGeometry(0.2, 1.5, 0.04), gre, 0, 0.95, 0); add(new THREE.ConeGeometry(0.1, 0.35, 4), gre, 0, 1.87, 0);
+    for (var vI = 0; vI < 7; vI++) { var vn = add(new THREE.BoxGeometry(0.27, 0.05, 0.07), dgr, 0, 0.35 + vI * 0.2, 0); vn.rotation.z = (vI % 2 ? 0.3 : -0.3); }                                   // vine wraps
+    for (var tI = 0; tI < 6; tI++) { var th = add(new THREE.ConeGeometry(0.04, 0.16, 4), dgr, (tI % 2 ? -0.14 : 0.14), 0.45 + tI * 0.22, 0); th.rotation.z = (tI % 2 ? 1 : -1) * Math.PI / 2; }   // thorns
+    var gl2 = add(new THREE.BoxGeometry(0.4, 1.7, 0.1), pois, 0, 1.0, 0);
+    c.wAnim = function (t) { gl2.material.opacity = 0.28 + Math.sin(t * 4) * 0.1; };
+  } else if (kind === 'sw_void') {             // Void Edge: black blade with violet cracks and orbiting dark orbs
+    var blk = new THREE.MeshStandardMaterial({ color: 0x0c0a14, metalness: 0.9, roughness: 0.25 }), vio = new THREE.MeshBasicMaterial({ color: 0xb44aff }), orb = new THREE.MeshBasicMaterial({ color: 0x7a2aff });
+    add(new THREE.BoxGeometry(0.07, 0.32, 0.07), blk, 0, -0.03, 0); add(new THREE.BoxGeometry(0.36, 0.09, 0.1), blk, 0, 0.16, 0); add(new THREE.BoxGeometry(0.08, 0.08, 0.12), vio, 0, 0.16, 0);
+    add(new THREE.BoxGeometry(0.26, 1.45, 0.045), blk, 0, 0.95, 0); add(new THREE.ConeGeometry(0.13, 0.4, 4), blk, 0, 1.88, 0);
+    [[0.0, 0.5, 0.0], [0.04, 0.8, 0.5], [-0.05, 1.1, -0.5], [0.03, 1.4, 0.4]].forEach(function (q) { var ck = add(new THREE.BoxGeometry(0.03, 0.3, 0.05), vio, q[0], q[1], 0); ck.rotation.z = q[2]; });   // glowing cracks
+    var orbs = [0, 1, 2].map(function () { return add(new THREE.BoxGeometry(0.1, 0.1, 0.1), orb, 0, 0, 0); });
+    c.wAnim = function (t) { orbs.forEach(function (o, i) { var a = t * 2.4 + i * 2.1; o.position.set(Math.cos(a) * 0.32, 0.9 + Math.sin(t * 1.5 + i) * 0.5, Math.sin(a) * 0.32); o.rotation.set(a, a, 0); }); };
+  } else if (kind === 'sw_storm') {            // Storm Bolt: zig-zag lightning blade with crackling electric arcs
+    var bl = new THREE.MeshStandardMaterial({ color: 0xeaf6ff, emissive: 0x56b4ff, emissiveIntensity: 1.1, roughness: 0.2 }), ey = new THREE.MeshBasicMaterial({ color: 0xa6e4ff }), gr2 = new THREE.MeshStandardMaterial({ color: 0x3a4660, metalness: 0.7, roughness: 0.35 });
+    add(new THREE.BoxGeometry(0.07, 0.32, 0.07), gr2, 0, -0.03, 0); add(new THREE.BoxGeometry(0.28, 0.07, 0.1), gr2, 0, 0.16, 0);
+    [[0, 0.42, 0.0], [0.1, 0.78, 0.0], [-0.08, 1.14, 0.0], [0.08, 1.5, 0.0]].forEach(function (q, i) { var sg2 = add(new THREE.BoxGeometry(0.17, 0.46, 0.04), bl, q[0], q[1] + 0.2, 0); sg2.rotation.z = (i % 2 ? 0.38 : -0.38); });   // zig-zag segments
+    add(new THREE.ConeGeometry(0.1, 0.4, 4), bl, 0.08, 1.95, 0);
+    var arcs = []; for (var aI = 0; aI < 4; aI++) arcs.push(add(new THREE.BoxGeometry(0.03, 0.34, 0.03), ey, 0, 0, 0));
+    c.wAnim = function (t) { arcs.forEach(function (m, i) { m.visible = Math.sin(t * 19 + i * 3.7) > 0.1; if (m.visible) { m.position.set((Math.random() - 0.5) * 0.45, 0.5 + Math.random() * 1.4, (Math.random() - 0.5) * 0.12); m.rotation.z = (Math.random() - 0.5) * 2.4; } }); };
   } else if (kind === 'cane') {               // giant candy cane (Bad Santa)
     var red = new THREE.MeshStandardMaterial({ color: 0xd01818, roughness: 0.5 }), whi = new THREE.MeshStandardMaterial({ color: 0xf4f4f4, roughness: 0.5 });
     for (var sI = 0; sI < 10; sI++) add(new THREE.BoxGeometry(0.1, 0.17, 0.1), sI % 2 ? whi : red, 0, -0.1 + sI * 0.17, 0);
@@ -468,12 +628,17 @@ function makeTag(c, color, showBar) {
   spr.scale.set(4.2 / c.scale, 1.05 / c.scale, 1);   // name tags are 2x bigger
   spr.position.y = 2.6; spr.renderOrder = 999;
   c.g.add(spr);
+  var lastFrac = showBar ? 1 : null;
   function draw(frac) {
+    if (frac !== undefined) lastFrac = frac;
     ctx.clearRect(0, 0, 256, 64);
-    ctx.font = 'bold 22px sans-serif'; ctx.textAlign = 'center';
-    ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(0,0,0,.85)';
+    ctx.textAlign = 'left'; ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(0,0,0,.85)';
+    var pre = c.rankTxt ? '[' + c.rankTxt + '] ' : '', suf = c.rbTxt ? ' [R' + c.rbTxt + ']' : '';
     var txt = (c.lvl && color !== '#ffffff' ? 'Lv' + c.lvl + ' ' : '') + c.name;   // heroes/bots: name only, white
-    ctx.strokeText(txt, 128, 24); ctx.fillStyle = color; ctx.fillText(txt, 128, 24);
+    var fs = 22, tw; do { ctx.font = 'bold ' + fs + 'px sans-serif'; tw = ctx.measureText(pre + txt + suf).width; fs--; } while (tw > 248 && fs > 10);
+    var x = 128 - tw / 2, parts = [[pre, c.rankCol || color], [txt, color], [suf, '#ffb84d']];
+    parts.forEach(function (p) { if (!p[0]) return; ctx.strokeText(p[0], x, 24); ctx.fillStyle = p[1]; ctx.fillText(p[0], x, 24); x += ctx.measureText(p[0]).width; });
+    frac = lastFrac;
     if (frac !== null && frac !== undefined) {
       ctx.fillStyle = 'rgba(0,0,0,.75)'; ctx.fillRect(38, 34, 180, 14);
       ctx.fillStyle = frac > 0.5 ? '#46d246' : (frac > 0.25 ? '#e0c020' : '#e03030');
@@ -483,6 +648,11 @@ function makeTag(c, color, showBar) {
   }
   draw(showBar ? 1 : null);
   return { spr: spr, draw: draw };
+}
+function setTagTitle(c, rank, reb, col) {      // rank on the left, rebirth on the right of the name tag
+  var rt = rank || '', rb = reb ? String(reb) : '', rc = col || '#ffffff';
+  if (c.rankTxt === rt && c.rbTxt === rb && c.rankCol === rc) return;
+  c.rankTxt = rt; c.rbTxt = rb; c.rankCol = rc; if (c.tag) c.tag.draw();
 }
 
 function newChar(look, name, lvl, tagColor, showBar, weapon) {
@@ -500,7 +670,7 @@ function slashPose(k) { // [armX, elbowX, torsoYaw, lean, lunge]
   var s3 = ease((k - 0.55) / 0.45); return [lerp(-0.35, -0.2, s3), lerp(-0.2, -0.9, s3), lerp(-0.6, 0, s3), lerp(0.3, 0, s3), 1 - s3];
 }
 
-function startAnim(c, type, dur) { c.anim = { type: type, t: 0, dur: dur }; if (c === P.c && typeof PVP !== 'undefined' && PVP.on) pvpAnim(type, dur); }
+function startAnim(c, type, dur) { if (c === P.c && P.dance && type !== 'death') stopDance(); c.anim = { type: type, t: 0, dur: dur }; if (c === P.c && typeof PVP !== 'undefined' && PVP.on) pvpAnim(type, dur); }
 /* death: drop (caller) -> kneel -> topple forward -> 1 s later a translucent ghost rises out of the body to heaven */
 function startDeath(c, pos) {
   startAnim(c, 'death', 1.3); c.deathKnee = 0;
@@ -562,6 +732,60 @@ function ringFxUpdate(r, t) {      // dark-lightning rings (god / dark) and neon
   var nu = r.necklaceG && r.necklaceG.userData;
   if (nu && nu.gm.visible) { var h2 = (t * 0.35) % 1; nu.gmC.emissive.setHSL(h2, 1, 0.5); nu.gmP.emissive.setHSL((h2 + 0.5) % 1, 1, 0.55); }
 }
+/* ---------- dances (Dance button): pose overrides while standing still; cancelled by moving / attacking / skills ---------- */
+var DANCES = [
+  { id: 'wave', name: 'Wave', e: '👋' }, { id: 'hiphop', name: 'Hip Hop', e: '🕺' }, { id: 'twirl', name: 'Twirl', e: '🌀' },
+  { id: 'robot', name: 'Robot', e: '🤖' }, { id: 'disco', name: 'Disco', e: '🪩' }, { id: 'party', name: 'Party Jump', e: '🎉' },
+  { id: 'gangnam', name: 'Gangnam Style', e: '🐴' }, { id: 'floss', name: 'Floss', e: '🧼' }, { id: 'chicken', name: 'Chicken', e: '🐔' },
+  { id: 'headbang', name: 'Headbang', e: '🤘' }, { id: 'kick', name: 'Can-Can', e: '💃' }, { id: 'flex', name: 'Flex', e: '💪' }, { id: 'sway', name: 'Sway', e: '🎶' }
+];
+function danceFx(id, t) {
+  var D = { aR: null, eR: null, aL: null, eL: null, armRZ: 0, armLZ: 0, tw: 0, lean: 0, yaw: 0, bY: 0, hipY: 0, hipX: 0, legs: null, headX: 0, headY: 0 }, s = Math.sin, b = t * 6.5;
+  if (id === 'wave') {
+    D.aR = -2.9 + s(b) * 0.25; D.eR = -0.3; D.armRZ = 0.5 + s(b * 1.5) * 0.4; D.aL = -2.9 - s(b) * 0.25; D.eL = -0.3; D.armLZ = -0.5 - s(b * 1.5) * 0.4;
+    D.tw = s(t * 3.2) * 0.25; D.hipX = s(t * 3.2) * 0.06; D.legs = [s(t * 3.2) * 0.2, -s(t * 3.2) * 0.2, 0.1, 0.1];
+  } else if (id === 'hiphop') {
+    var bn = Math.abs(s(b)); D.bY = -0.16 * bn; D.aR = -1.2 + s(b) * 0.7; D.eR = -1.4; D.aL = -1.2 - s(b) * 0.7; D.eL = -1.4; D.tw = s(b * 0.5) * 0.4; D.lean = 0.15 + bn * 0.1; D.headX = bn * 0.2;
+    D.legs = [-0.35 - bn * 0.3, -0.35 - bn * 0.3, 0.7 * bn + 0.3, 0.7 * bn + 0.3];
+  } else if (id === 'twirl') {
+    D.yaw = t * 4.5; D.aR = 0; D.aL = 0; D.eR = -0.15; D.eL = -0.15; D.armRZ = 1.45; D.armLZ = -1.45; D.legs = [0, 0, 0.05, 0.05]; D.hipX = 0;
+  } else if (id === 'robot') {
+    var q = Math.floor(t * 3.2), ph = q % 4;
+    D.aR = ph === 0 || ph === 1 ? -1.57 : -0.1; D.eR = ph === 0 || ph === 1 ? -1.57 : -0.1; D.aL = ph === 2 || ph === 3 ? -1.57 : -0.1; D.eL = ph === 2 || ph === 3 ? -1.57 : -0.1;
+    D.tw = (ph % 2 ? 0.35 : -0.35); D.headY = (ph < 2 ? 0.5 : -0.5); D.legs = [ph === 1 ? -0.3 : 0, ph === 3 ? -0.3 : 0, 0, 0];
+  } else if (id === 'disco') {
+    D.aR = -2.9; D.eR = -0.1; D.armRZ = -0.55 + s(b * 0.5) * 0.15; D.aL = 0.1; D.eL = -1.7; D.armLZ = -0.3; D.tw = s(b * 0.5) * 0.3; D.hipX = s(b * 0.5) * 0.1; D.bY = -0.04 * Math.abs(s(b * 0.5));
+    D.legs = [s(b * 0.5) * 0.35, -s(b * 0.5) * 0.35, 0.1, 0.1];
+  } else if (id === 'gangnam') {   // invisible-horse gallop with reins, then the lasso over the head
+    var g7 = t * 7.5, gb = Math.abs(s(g7)), lasso = Math.floor(t / 2.4) % 2 === 1;
+    D.bY = -0.12 - 0.07 * gb; D.lean = 0.12; D.tw = s(g7) * 0.12; D.headX = 0.05;
+    D.legs = [-0.55 + s(g7) * 0.4, -0.55 - s(g7) * 0.4, 0.8 + s(g7) * 0.3, 0.8 - s(g7) * 0.3]; D.hipX = s(g7) * 0.05;
+    if (lasso) { D.aR = -2.9; D.eR = -0.3; D.armRZ = 0.2 + Math.sin(t * 12) * 0.5; D.aL = -0.4; D.eL = -1.4; D.armLZ = -0.2; }
+    else { D.aR = -1.25 + s(g7) * 0.25; D.eR = -0.6; D.armRZ = -0.25; D.aL = -1.25 - s(g7) * 0.25; D.eL = -0.6; D.armLZ = 0.25; }
+  } else if (id === 'floss') {
+    var fw = s(b * 1.1); D.aR = 0.5; D.eR = -0.05; D.aL = 0.5; D.eL = -0.05; D.armRZ = 0.25 + 0.9 * fw; D.armLZ = 0.25 + 0.9 * fw; D.tw = -fw * 0.45; D.hipX = -fw * 0.1; D.bY = -0.05;
+    D.legs = [-0.15 - fw * 0.15, -0.15 + fw * 0.15, 0.3, 0.3];
+  } else if (id === 'chicken') {
+    var cf = s(b * 1.6); D.aR = -0.1; D.eR = -2.1; D.armRZ = 0.9 + cf * 0.5; D.aL = -0.1; D.eL = -2.1; D.armLZ = -0.9 - cf * 0.5; D.bY = -0.12 - 0.05 * Math.abs(s(b * 0.8)); D.headY = s(b * 0.8) * 0.4; D.headX = 0.15;
+    D.legs = [-0.5, -0.5, 0.9, 0.9];
+  } else if (id === 'headbang') {
+    var hb = s(b * 1.2); D.lean = 0.35 + hb * 0.15; D.headX = 0.5 + hb * 0.5; D.aR = -2.9 + hb * 0.25; D.eR = -0.2; D.armRZ = 0.2; D.aL = -0.5; D.eL = -1.5; D.armLZ = -0.3; D.bY = -0.1 - 0.04 * hb;
+    D.legs = [-0.35, -0.35, 0.6, 0.6]; D.hipX = hb * 0.03;
+  } else if (id === 'kick') {
+    var kc = s(b * 0.9); D.aR = -0.2; D.eR = -2.0; D.armRZ = 0.8; D.aL = -0.2; D.eL = -2.0; D.armLZ = -0.8; D.tw = kc * 0.15; D.bY = -0.03;
+    D.legs = [-Math.max(0, kc) * 1.3, -Math.max(0, -kc) * 1.3, Math.max(0, kc) * 0.2, Math.max(0, -kc) * 0.2];
+  } else if (id === 'flex') {
+    var fp = 0.5 + 0.5 * s(b * 0.8); D.aR = 0; D.eR = -2.3; D.armRZ = 1.35; D.aL = 0; D.eL = -2.3; D.armLZ = -1.35; D.lean = -0.05 + fp * 0.1; D.bY = -0.05 * fp; D.headX = -0.1;
+    D.legs = [-0.2, -0.2, 0.25 + fp * 0.2, 0.25 + fp * 0.2];
+  } else if (id === 'sway') {
+    var sy = s(t * 2.4); D.aR = -0.3 + sy * 0.3; D.eR = -0.6; D.armRZ = 0.5 + sy * 0.3; D.aL = -0.3 - sy * 0.3; D.eL = -0.6; D.armLZ = -0.5 + sy * 0.3; D.tw = sy * 0.3; D.hipX = sy * 0.08; D.headY = sy * 0.3;
+    D.legs = [sy * 0.22, -sy * 0.22, 0.08, 0.08];
+  } else {   // party jump
+    var jp = Math.abs(s(b * 0.75)); D.bY = jp * 0.35; D.aR = -2.6 + jp * 1.2; D.aL = -2.6 + jp * 1.2; D.eR = -0.25; D.eL = -0.25; D.armRZ = 0.3 + jp * 0.9; D.armLZ = -0.3 - jp * 0.9;
+    D.legs = [-0.3 * (1 - jp), -0.3 * (1 - jp), 0.5 * (1 - jp), 0.5 * (1 - jp)];
+  }
+  return D;
+}
 function animateChar(c, dt, spd) {
   if (c.croc) animCroc(c, dt, spd);
   if (c.box) animBox(c, dt, spd);
@@ -601,17 +825,22 @@ function animateChar(c, dt, spd) {
     lean = 0.1; tw = sw * 0.1 * mv; kneeB = 0.12; hipK = 1.1; headX = 0.04;      // walk: relaxed natural arm swing, small forward lean (run leans more); sword stays on the back
   }
 
+  var DN = (c.dance && !a && mv < 0.15 && !c.carry) ? danceFx(c.dance, t) : null;
+  if (DN) {
+    if (DN.aR !== null) { aR = DN.aR; eR = DN.eR; aL = DN.aL; eL = DN.eL; } armRZ = DN.armRZ; armLZ = DN.armLZ; tw = DN.tw; lean = DN.lean; bodyYaw = DN.yaw; bodyY = DN.bY; headX = DN.headX;
+  }
   r.legR.hp.rotation.x = -sw * 0.75 * hipK * mv; r.legL.hp.rotation.x = sw * 0.75 * hipK * mv;
   r.legR.kn.rotation.x = kneeB + Math.max(0, co) * 0.95 * mv; r.legL.kn.rotation.x = kneeB + Math.max(0, -co) * 0.95 * mv;
   r.armR.sh.rotation.x = aR; r.armR.el.rotation.x = eR; r.armR.sh.rotation.z = 0.08 + armRZ;
   r.armL.sh.rotation.x = aL; r.armL.el.rotation.x = eL; r.armL.sh.rotation.z = -0.08 + armLZ;
   r.torso.rotation.y = tw; r.torso.rotation.x = lean;
-  r.head.rotation.y = shoot ? 0 : -tw * 0.5; r.head.rotation.x = headX - lean * 0.5;
+  r.head.rotation.y = shoot ? 0 : (DN && DN.headY ? DN.headY : -tw * 0.5); r.head.rotation.x = headX - lean * 0.5;
   r.torso.scale.y = 1 + Math.sin(t * 2 + c.phase * 0.0) * 0.012;
   if (shoot) { r.legR.hp.rotation.x = r.legL.hp.rotation.x = 0; r.legR.kn.rotation.x = r.legL.kn.rotation.x = 0; kneeB = 0; co = 0; }   // legs and feet stay planted while shooting
   r.legR.hp.rotation.z = 0; r.legL.hp.rotation.z = 0;
   if ((c.wKind === 'bow' || c.wKind === 'godbow') && c.rig.wpn.parent === r.armL.el) c.rig.wpn.rotation.set(Math.PI / 2 - (aL + eL), 0, 0);   // keep the bow upright whatever the arm does
   if (c.nock) c.nock.visible = !!(a && a.type === 'shoot' && a.t / a.dur < 0.5);
+  if (DN && DN.legs) { r.legR.hp.rotation.x = DN.legs[0]; r.legL.hp.rotation.x = DN.legs[1]; r.legR.kn.rotation.x = DN.legs[2]; r.legL.kn.rotation.x = DN.legs[3]; }
   r.hips.position.y = 0.97 - kneeB * 0.12 + Math.abs(co) * 0.035 * mv;
   if (a && a.type === 'death') { var dk = c.deathKnee || 0; r.legR.hp.rotation.x = r.legL.hp.rotation.x = -1.0 * dk; r.legR.kn.rotation.x = r.legL.kn.rotation.x = 1.7 * dk; r.hips.position.y = 0.97 - 0.4 * dk; }
   r.body.rotation.y = bodyYaw; r.body.rotation.x = bodyRX; r.body.position.y = bodyY; r.body.position.z = lunge * 0.3;
@@ -655,8 +884,9 @@ var playerChar = newChar({ hairStyles: true, scale: 1, skin: 0xf0c8a0, shirt: 0x
 playerChar.sheath = true; playerChar.tag.spr.visible = true;
 P.c = playerChar; P.pos = playerChar.g.position;
 
-function applyLook(rig) {   // apply P.look (sex, hair style, colors) to a model (default: the player)
-  var r = rig || P.c.rig, L = P.look;
+function applyLook(rig, lo) {   // apply P.look (sex, hair style, colors) to a model (default: the player); lo = preview-only overrides
+  var r = rig || P.c.rig, L = lo ? Object.assign({}, P.look, lo) : P.look;
+  if (r.faceSets) { var fi = clamp(L.face | 0, 0, r.faceSets.length - 1); r.faceSets.forEach(function (arr, i) { arr.forEach(function (m) { m.visible = i === fi; }); }); }
   if (r.hairMat) r.hairMat.color.setHex(L.hair);
   r.pantsMat.color.setHex(L.pants);
   if (r.skirt) r.skirt.visible = L.sex === 'f';
@@ -670,7 +900,7 @@ function applyLook(rig) {   // apply P.look (sex, hair style, colors) to a model
 }
 function applyEquipVisuals(tc, ov) {   // tc: optional preview character; ov: costume overrides {slot: id} (preview only)
   var pc = tc || P.c, CW = Object.assign({}, P.costumeWorn || {}, ov || {}); pc.cwEff = CW;
-  applyLook(pc.rig);
+  applyLook(pc.rig, (typeof pvw !== 'undefined' && pvw && pc === pvw.c) ? pvLook : null);
   var r = pc.rig, w = CW.weapon ? COSTUME_DEFS[CW.weapon] : wItem();
   setWeapon(pc, w.kind, w.color, w.glow);   // a worn costume replaces (hides) the gear visual of its slot
   function vis(slot) { return CW[slot] ? COSTUME_DEFS[CW[slot]] : ITEMS[P.equip[slot]]; }
@@ -678,7 +908,11 @@ function applyEquipVisuals(tc, ov) {   // tc: optional preview character; ov: co
   var crown = !!(hm && hm.model === 'crown'); if (crown) hm = null;
   var ssj = !!(hm && hm.model === 'ssj3'); if (ssj) hm = null;
   var mask = !!(hm && hm.model === 'mask'); if (mask) hm = null;
+  var hcw = (hm && /^hm[1-5]$/.test(hm.model || '')) ? +hm.model.charAt(2) - 1 : -1; if (hcw >= 0) hm = null;
+  if (r.hmodels) r.hmodels.forEach(function (g, i) { g.visible = i === hcw; });
   var sw = !!(wg && wg.model === 'ssjwings'); if (sw) wg = null;
+  var cwi = (wg && /^cw[1-5]$/.test(wg.model || '')) ? +wg.model.charAt(2) - 1 : -1; if (cwi >= 0) wg = null;
+  if (r.cwings) r.cwings.forEach(function (g, i) { g.visible = i === cwi; });
   if (r.maskG) { r.maskG.visible = mask; r.ssjWings.visible = sw; }
   if (r.crownG) r.crownG.visible = crown;
   if (r.ssjG) { r.ssjG.visible = ssj; r.aura.visible = ssj; }
@@ -695,12 +929,15 @@ function applyEquipVisuals(tc, ov) {   // tc: optional preview character; ov: co
   if (a) r.padMat.color.setHex(gzA ? 0x141414 : (a.padColor || a.color));
   var radA = !!(a && a.model === 'radiant'), radG = !!(g && g.model === 'radiant'), radP = !!(p && p.model === 'radiant');
   r.radArmorMeshes.forEach(function (m) { m.visible = radA; }); r.radGloveMeshes.forEach(function (m) { m.visible = radG; }); r.radPantsMeshes.forEach(function (m) { m.visible = radP; });
+  function ctIdx(it) { return (it && /^ct[1-5]$/.test(it.model || '')) ? +it.model.charAt(2) - 1 : -1; }
+  var cA = ctIdx(a), cG = ctIdx(g), cP = ctIdx(p);
+  if (r.ctArmor) for (var cti = 0; cti < 5; cti++) { r.ctArmor[cti].forEach(function (m) { m.visible = cA === cti; }); r.ctGlove[cti].forEach(function (m) { m.visible = cG === cti; }); r.ctPants[cti].forEach(function (m) { m.visible = cP === cti; }); }
   var snA = !!(a && a.model === 'santa'), snG = !!(g && g.model === 'santa'), snP = !!(p && p.model === 'santa');
   r.snArmorMeshes.forEach(function (m) { m.visible = snA; }); r.snGloveMeshes.forEach(function (m) { m.visible = snG; }); r.snPantsMeshes.forEach(function (m) { m.visible = snP; });
   r.gloveMeshes.forEach(function (m) { m.visible = !!g; }); if (g) r.glovesMat.color.setHex(gzG ? 0x141414 : g.color);
   var godH = !!(hm && hm.model === 'god');
   var snH = !!(hm && hm.model === 'santa');
-  r.helmMeshes.forEach(function (m) { m.visible = !!hm && !godH && !snH; }); r.hairMeshes.forEach(function (m) { m.visible = (!hm || snH) && !ssj && !mask; }); if (r.santaG) r.santaG.visible = snH; if (r.godG) r.godG.visible = godH; if (hm) r.helmMat.color.setHex(hm.color);
+  r.helmMeshes.forEach(function (m) { m.visible = !!hm && !godH && !snH; }); r.hairMeshes.forEach(function (m) { m.visible = (!hm || snH) && !ssj && !mask && hcw < 0; }); if (r.santaG) r.santaG.visible = snH; if (r.godG) r.godG.visible = godH; if (hm) r.helmMat.color.setHex(hm.color);
   if (r.wingsG) {
     var gearW = !!(wg && wg.model === 'gear');
     r.wingsG.visible = !!wg && !gearW && !gzW; r.wingsG2.visible = gearW; r.wingsG3.visible = gzW;
@@ -876,6 +1113,9 @@ function updateCostumeFx(dt, pvc) {
   var cc = pvc || P.c, r = cc && cc.rig; if (!r) return;
   var cw = (cc.cwEff || P.costumeWorn || {}).weapon; if (cw && cc.wMat) cc.wMat.emissiveIntensity = 0.8 + 0.5 * Math.sin(performance.now() / 150);
   if (r.ssjWings && r.ssjWings.visible) { var wt = performance.now() / 1000; r.ssjWings.userData.sides.forEach(function (sd) { sd.g.rotation.y = sd.s * (0.35 + Math.sin(wt * 2.2) * 0.12); sd.g.rotation.z = sd.s * Math.sin(wt * 2.2 + 1) * 0.04; }); }
+  var ft = performance.now() / 1000; if (r.ctMats) { var cpl = 0.75 + 0.4 * Math.sin(ft * 5); r.ctMats.forEach(function (q) { q.b.emissiveIntensity = cpl; }); }
+  if (cc.wAnim) cc.wAnim(ft); if (r.hmodels) r.hmodels.forEach(function (g) { if (g.visible && g.userData.anim) g.userData.anim(ft); });
+  if (r.cwings) { var ct = performance.now() / 1000; r.cwings.forEach(function (g) { if (g.visible && g.userData.anim) g.userData.anim(ct); }); }
   if (!r.aura || !r.aura.visible) return;
   var sg = r.ssjG, tt = performance.now() / 1000;
   sg.userData.sway.forEach(function (s) { s.pv.rotation.x = s.rx + Math.sin(tt * 3 + s.ph) * 0.07; s.pv.rotation.z = s.rz + Math.cos(tt * 2.4 + s.ph) * 0.05; });

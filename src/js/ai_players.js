@@ -111,7 +111,7 @@ function damageAI(a, dmg, by) {
   if (a.state === 'dead') return;
   if (a.shield > 0) { var ab = Math.min(a.shield, dmg); a.shield -= ab; dmg -= ab; }
   a.hp -= Math.max(0, dmg); a.c.flash = 0.1; a.c.tag.draw(Math.max(0, a.hp / a.maxHp));
-  if (a.hp <= 0) { a.state = 'dead'; a.deadT = 0; a.tgt = null; a.hostile = 0; startDeath(a.c, a.pos); a.c.tag.spr.visible = false; if (P.target === a) P.target = null; }
+  if (a.hp <= 0) { arenaScore(by ? by.name : '', a.name); a.state = 'dead'; a.deadT = 0; a.tgt = null; a.hostile = 0; startDeath(a.c, a.pos); a.c.tag.spr.visible = false; if (P.target === a) P.target = null; }
 }
 function eachFoe(a, fn) {
   eachMob(fn);

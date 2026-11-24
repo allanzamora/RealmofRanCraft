@@ -39,14 +39,15 @@
 
 <button id="w-play">Play Now &raquo;</button>
 <div id="w-scroll">
-<h2>What's New! (Nov 23, 2026) Update</h2>
+<br>
+<h2>What's New! (Nov 24, 2026) Update</h2>
 <ul>
-    <li>Added 20 new emojis.</li>
-    <li>Christmas Tree event: Claim daily Gold and Diamond rewards.</li>
-    <li>Item upgrade cap increased from +50 to +80.</li>
-    <li>PVP Arena: Fixed visual effects, skills, emojis, costumes, and more.</li>
-    <li>Max rebirth cap raised to 50.</li>
+    <li>Added more costume.</li>
     <li>GM Necklace and GM Rings (Left &amp; Right) can now drop in the Boss Room.</li>
+    <li>Add more mount.</li>
+    <li>Add Rank System (E to GM) rank</li>
+    <li>PVP Arena: Fixed visual effects, skills, emojis, costumes, and more.</li>
+    <li>PvP kill ranking show the top 5 players.</li>
 </ul>
 <br>
 <h3>Links</h3>
@@ -109,9 +110,14 @@
 <div id="pet-btn" class="ui box"><span id="pet-ico">&#128062;</span></div>
 <div id="emo-btn" class="ui box"><span>&#128578;</span></div>
 <div id="emo-menu" class="ui box"></div>
+<div id="dance-btn" class="ui box"><span>&#128131;</span></div>
+<div id="dance-menu" class="ui box"></div>
 <div id="emoji-layer"></div>
 <div id="dun-timer" class="ui box"></div>
 <div id="pvp-hud" style="display:none"></div>
+<div id="arena-board" class="ui" style="display:none"></div>
+<div id="moba-hud" class="ui" style="display:none"></div>
+<div id="moba-banner" style="display:none"><h1 id="moba-banner-t"></h1><p id="moba-banner-s"></p><div><button id="moba-rematch">REMATCH</button><button id="moba-leave">LEAVE</button></div></div>
 <div id="tracker" class="ui box"></div>
 <div id="log" class="ui"></div>
 
@@ -132,6 +138,7 @@
   <div class="navbtn" id="m-skill"><b>&#9876;</b>Skills</div>
   <div class="navbtn" id="m-quest"><b>&#128220;</b>Quest</div>
   <div class="navbtn" id="m-ach"><b>&#127942;</b>Achievements</div>
+  <div class="navbtn" id="m-rank"><b>&#127894;</b>Rank</div>
   <div class="navbtn" id="m-map"><b>&#128506;</b>Map</div>
   <div class="navbtn" id="m-redeem"><b>&#127873;</b>Redeem Code</div>
   <div class="navbtn" id="m-support"><b>&#128153;</b>Support</div>
@@ -210,16 +217,19 @@
 <script src="src/js/map_14.js"></script>
 <script src="src/js/map_15.js"></script>
 <script src="src/js/map_16.js"></script>
+<script src="src/js/map_17.js"></script>
 <script src="src/js/combat.js"></script>
 <script src="src/js/enemy_ai.js"></script>
 <script src="src/js/ai_players.js"></script>
 <script src="src/js/pets.js"></script>
 <script src="src/js/input.js"></script>
 <script src="src/js/achievements.js"></script>
+<script src="src/js/rank.js"></script>
 <script src="src/js/emoji.js"></script>
 <script src="src/js/ui.js"></script>
 <script src="src/js/auto.js"></script>
 <script src="src/js/pvp.js"></script>
+<script src="src/js/moba.js"></script>
 <script src="src/js/main.js"></script>
 </body>
 </html>

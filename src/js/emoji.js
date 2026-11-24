@@ -1,4 +1,6 @@
-
+/* emoji.js - emoji bubbles above a character's name (everyone in the PvP arena sees yours).
+   Add your own pictures here: {id:'wow', name:'Wow', src:'src/emoji/wow.gif'}  (.png / .gif / .webp / https:// links all work; gifs animate).
+   Put the image files in the src/emoji/ folder next to the game page. 'e' = a normal text emoji. */
 var EMOJI_LIST = [
   { id: 'card', name: "Credit Card", src: 'https://cdn3.emoji.gg/emojis/761219-pepe-credit-card.gif' },
   { id: 'smoke', name: "Smoke", src: 'https://cdn3.emoji.gg/emojis/136857-pepesmoke.gif' },
@@ -92,5 +94,23 @@ function emoPeer(a, cw) {                                // an emoji coming from
     menu.appendChild(c);
   });
   btn.addEventListener('click', function (e) { e.stopPropagation(); menu.style.display = menu.style.display === 'grid' ? 'none' : 'grid'; });
+  document.addEventListener('pointerdown', function (e) { if (menu.style.display === 'grid' && !menu.contains(e.target) && e.target !== btn && !btn.contains(e.target)) menu.style.display = 'none'; }, true);
+})();
+
+/* ---------- Dance button (right of the emoji button): pick a dance, it repeats until you move, attack or use a skill ---------- */
+function stopDance() { P.dance = ''; if (P.c) P.c.dance = ''; }
+function startDance(id) {
+  if (P.dead) return; if (P.mounted) { log('Get off your mount to dance.', '#ffcc88'); return; }
+  P.dance = id; P.c.dance = id; P.dest = null; if (typeof P.target !== 'undefined') P.target = null;
+}
+(function () {
+  var btn = document.getElementById('dance-btn'), menu = document.getElementById('dance-menu'); if (!btn || !menu) return;
+  DANCES.forEach(function (d) {
+    var c = document.createElement('div'); c.className = 'dn-cell'; c.innerHTML = '<span>' + d.e + '</span><b>' + d.name + '</b>';
+    c.addEventListener('click', function () { menu.style.display = 'none'; startDance(d.id); });
+    menu.appendChild(c);
+  });
+  btn.addEventListener('click', function (e) { e.stopPropagation(); var em = document.getElementById('emo-menu'); if (em) em.style.display = 'none'; menu.style.display = menu.style.display === 'grid' ? 'none' : 'grid'; });
+  var eb = document.getElementById('emo-btn'); if (eb) eb.addEventListener('click', function () { menu.style.display = 'none'; });
   document.addEventListener('pointerdown', function (e) { if (menu.style.display === 'grid' && !menu.contains(e.target) && e.target !== btn && !btn.contains(e.target)) menu.style.display = 'none'; }, true);
 })();

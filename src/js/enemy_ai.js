@@ -72,6 +72,7 @@ function updateEnemies(dt) {
   if (edgeOn !== edgeWas) { edgeWas = edgeOn; if (edgeOn) { var tl = mapTopLvl(curMap); log('You reached the edge of the world... Edge Elites (Lv ' + Math.max(1, tl - 4) + '-' + tl + ') awaken!', '#d08aff'); sfx('level'); } }
   for (var i = 0; i < enemies.length; i++) {
     var e = enemies[i], T = e.T, c = e.c, pos = e.pos;
+    if (e.moba) continue;
     var dxp = P.pos.x - pos.x, dzp = P.pos.z - pos.z, d = Math.hypot(dxp, dzp), spd = 0;
 
     if (e.state === 'dead') {

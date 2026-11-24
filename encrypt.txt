@@ -13,7 +13,7 @@ combat.js
 cloud.js
 anticheat.js
 achievement.js
-
+rank.js
 
 
 

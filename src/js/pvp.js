@@ -1,18 +1,20 @@
-
-var PVP_SERVER_URL = 'wss://testgg-jh7k.onrender.com';        
-var PVP_DMG_MUL = 0.5; 
+/* pvp.js - ONLINE PvP ARENA client. Talks to server/pvp_server.js over a WebSocket.
+   Other real players appear as remote fighters (entries in `ais` flagged remote:true). Damage is computed by the attacker and applied by the victim. */
+var PVP_SERVER_URL = 'wss://testgg-jh7k.onrender.com';          // <-- put your deployed server here, e.g. 'wss://my-pvp.onrender.com'  (players can also type it in Settings)
+var PVP_DMG_MUL = 0.5;            // PvP damage scale (tune: lower = longer fights)
 var PVP = { ws: null, on: false, id: 0, status: 'off', ping: 0, n: 0, top: [], tries: 0, sendT: 0, eqKey: '', pingT: 0, eqT: 0, hudT: 0, lastX: 0, lastZ: 0, spd: 0, retry: null };
 function pvpUrl() { return String((S.pvpUrl || PVP_SERVER_URL || '')).trim(); }
 function pvpPeers() { return ais.filter(function (a) { return a.remote; }); }
 function pvpPeer(id) { for (var i = 0; i < ais.length; i++) if (ais[i].remote && ais[i].pid === id) return ais[i]; return null; }
 function pvpSend(o) { if (PVP.ws && PVP.ws.readyState === 1) { try { PVP.ws.send(JSON.stringify(o)); } catch (e) {} } }
-function pvpEq() {                                    
+function pvpEq() {                                              // my gear as BASE item ids (instance ids only exist on my own device)
   var o = {}; EQ_SLOTS.forEach(function (sl) { var id = P.equip[sl], it = id && ITEMS[id]; if (it) o[sl] = it.base || id; }); return o;
 }
 function pvpUp() { var o = {}; EQ_SLOTS.forEach(function (sl) { var id = P.equip[sl]; if (id && upgLvl(id) > 0) o[sl] = upgLvl(id); }); return o; }
-function pvpCw() { return Object.assign({}, P.costumeWorn || {}, { _mt: (P.mounted && P.mountSel) ? P.mountSel : '', _pt: P.pet || '', _up: pvpUp(), _em: P.emoNow || '' }); } 
+function pvpCw() { return Object.assign({}, P.costumeWorn || {}, { _mt: (P.mounted && P.mountSel) ? P.mountSel : '', _pt: P.pet || '', _up: pvpUp(), _em: P.emoNow || '', _dn: P.dance || '', _rk: rankIdx() + 1, _rb: P.reb | 0 }); }   // mount + pet + upgrade levels ride inside cw (no server change needed)
+/* run fn() with the global P dressed as another player (look / gear / costumes / upgrade levels), then restore */
 function pvpDress(L, eq, cw, fn) {
-  var sv = [P.look, P.equip, P.costumeWorn, P.upg], up = {}, e2 = eq || {}, w2 = Object.assign({}, cw || {}); delete w2._up; delete w2._em;
+  var sv = [P.look, P.equip, P.costumeWorn, P.upg], up = {}, e2 = eq || {}, w2 = Object.assign({}, cw || {}); delete w2._up; delete w2._em; delete w2._dn; delete w2._rk; delete w2._rb;
   for (var sl in e2) if (cw && cw._up && cw._up[sl]) up[e2[sl]] = cw._up[sl] | 0;
   P.look = L; P.equip = e2; P.costumeWorn = w2; P.upg = up;
   try { fn(); } catch (e) {} finally { P.look = sv[0]; P.equip = sv[1]; P.costumeWorn = sv[2]; P.upg = sv[3]; }
@@ -68,14 +70,14 @@ function pvpReskin(a, m) {
 
 /* ----- other players' mount + pet ----- */
 function pvpExtras(a, cw) {
-  emoPeer(a, cw);
+  emoPeer(a, cw); rankTagPeer(a.c, cw); a.c.dance = (cw && cw._dn) || '';
   var mt = (cw._mt && MOUNTS[cw._mt]) ? cw._mt : '', pt = (cw._pt && PETS[cw._pt]) ? cw._pt : '', c = a.c;
   if (mt !== (a.mt || '')) {
     if (a.mount && (!mt || a.mt !== mt)) { c.g.remove(a.mount.g); a.mount = null; }
-    if (mt && !a.mount) { try { a.mount = mt === 'dragon' ? makeDragonMount() : makeCrocMount(); c.g.add(a.mount.g); } catch (e) { a.mount = null; } }
+    if (mt && !a.mount) { try { a.mount = makeMountById(mt); c.g.add(a.mount.g); } catch (e) { a.mount = null; } }
     a.mt = mt; c.forceSheath = !!mt;
     if (!mt) c.rig.body.position.y = 0;
-    if (c.tag && c.tag.spr) c.tag.spr.position.y = mt ? 2.75 + (mt === 'dragon' ? MOUNTS.dragon.hover : 0) : 2.6;
+    if (c.tag && c.tag.spr) c.tag.spr.position.y = mt ? 2.75 + mountHover(mt) : 2.6;
   }
   if (pt !== (a.pt || '')) {
     pvpDropPet(a);
@@ -86,18 +88,12 @@ function pvpExtras(a, cw) {
 function pvpMountAnim(a, dt) {     // same riding pose as updateMount() but for a remote rider
   var m = a.mount; if (!m) return;
   if (!a.mt) { m.g.visible = false; return; }
-  var c = a.c, r = c.rig, t = performance.now() / 1000, mv = c.mv, ph = c.phase * 0.9, hov = m.dragon ? MOUNTS.dragon.hover + Math.sin(t * 2.4) * 0.1 : 0;
+  var c = a.c, r = c.rig, t = performance.now() / 1000, mv = c.mv, ph = c.phase * 0.9, hov = mountHover(a.mt) ? mountHover(a.mt) + Math.sin(t * 2.4) * 0.1 : 0;
   m.g.visible = true;
-  r.armR.sh.rotation.x = -0.95; r.armR.el.rotation.x = -0.85; r.armR.sh.rotation.z = 0.08; r.armL.sh.rotation.x = -0.45; r.armL.el.rotation.x = -0.8; r.torso.rotation.y = 0;
-  r.body.position.y += MOUNT_H + hov;
-  r.legR.hp.rotation.x = -1.15; r.legL.hp.rotation.x = -1.15; r.legR.kn.rotation.x = 0.8; r.legL.kn.rotation.x = 0.8;
+  mountRiderPose(r, m, hov);
   for (var i = 0; i < m.tail.length; i++) m.tail[i].rotation.y = Math.sin(t * (2.2 + mv * 5) - i * 0.7) * (0.12 + 0.2 * mv);
   for (var k = 0; k < m.legs.length; k++) m.legs[k].rotation.x = Math.sin(ph + (k === 0 || k === 3 ? 0 : Math.PI)) * 0.6 * Math.min(1, mv);
-  if (m.dragon) {
-    m.g.position.y = hov; m.g.rotation.x = -0.1 * mv;
-    var fa = Math.sin(t * (4.5 + mv * 3)) * 0.6 + 0.2; m.wings.forEach(function (w) { w.g.rotation.z = fa * w.s; });
-    var fs = 0.75 + Math.sin(t * 22) * 0.25; m.fl.scale.set(fs, fs, 0.8 + fs * 0.5); m.tip.scale.y = 0.8 + Math.sin(t * 17) * 0.3;
-  } else m.g.position.y = Math.abs(Math.sin(ph)) * 0.03 * mv;
+  mountAnim(m, a.mt, t, mv, ph, hov);
 }
 function pvpPetAnim(a, dt) {       // pet follows its owner (simplified updatePets)
   var o = a.petObj; if (!o) return;
@@ -258,3 +254,27 @@ function renderPvpServer(body) {
     if (PVP.on) { PVP.tries = 0; if (PVP.ws) { try { PVP.ws.onclose = null; PVP.ws.close(); } catch (e) {} PVP.ws = null; } pvpClearPeers(); pvpConnect(); }
   }, { cls: 'good' });
 }
+
+/* ---------- Top 5 most kills (left side) in the PvP maps: Online PvP Arena = server scoreboard, Blood Arena = local scoreboard ---------- */
+var ARENA_SB = {};
+function arenaReset() { ARENA_SB = {}; var b = $('arena-board'); if (b) b.style.display = 'none'; }
+function arenaScore(killer, victim) {
+  if (!curMap || !curMap.arena || curMap.online) return;
+  if (killer) { var k = ARENA_SB[killer] || (ARENA_SB[killer] = { k: 0, d: 0 }); k.k++; }
+  if (victim) { var v = ARENA_SB[victim] || (ARENA_SB[victim] = { k: 0, d: 0 }); v.d++; }
+}
+function arenaBoard() {
+  var b = $('arena-board'); if (!b) return;
+  if (!curMap || !curMap.arena) { b.style.display = 'none'; return; }
+  var rows;
+  if (curMap.online) rows = (PVP.on && PVP.top || []).map(function (r) { return { n: r[0], k: r[1] | 0, d: r[2] | 0 }; });
+  else rows = Object.keys(ARENA_SB).map(function (n) { return { n: n, k: ARENA_SB[n].k, d: ARENA_SB[n].d }; }).filter(function (r) { return r.k > 0; }).sort(function (a, c) { return c.k - a.k || a.d - c.d; }).slice(0, 5);
+  var medals = ['🥇', '🥈', '🥉', '4', '5'], html = '<b>🏆 TOP 5 KILLS</b>';
+  if (!rows.length) html += '<div class="ab-empty">No kills yet</div>';
+  rows.slice(0, 5).forEach(function (r, i) {
+    html += '<div class="ab-row' + (r.n === P.name ? ' me' : '') + '"><span class="ab-n">' + medals[i] + '</span><span class="ab-nm">' + String(r.n).replace(/[<>&]/g, '') + '</span><span class="ab-k">' + r.k + '</span></div>';
+  });
+  if (b._h !== html) { b._h = html; b.innerHTML = html; }
+  b.style.display = 'block';
+}
+setInterval(arenaBoard, 500);
