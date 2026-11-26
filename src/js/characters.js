@@ -476,8 +476,15 @@ function makeHumanoid(o) {
 
   var wpn = new THREE.Group(); wpn.position.y = -0.26; wpn.rotation.x = 1.9; armR.el.add(wpn);
 
+  var gAura = new THREE.Group(); gAura.position.y = 0.05; gAura.scale.setScalar(2); gAura.visible = false; root.add(gAura);
+  (function () {
+    var gm = function (op) { return new THREE.MeshBasicMaterial({ color: 0x66e0ff, transparent: true, opacity: op, side: THREE.DoubleSide, depthWrite: false }); };
+    var ring = new THREE.Mesh(new THREE.RingGeometry(0.88, 1.0, 40), gm(0.8)), ring2 = new THREE.Mesh(new THREE.RingGeometry(0.5, 0.56, 40), gm(0.6)), disc = new THREE.Mesh(new THREE.CircleGeometry(0.88, 36), gm(0.2));
+    [ring, ring2, disc].forEach(function (m) { m.rotation.x = -Math.PI / 2; gAura.add(m); }); ring2.position.y = 0.01; disc.position.y = -0.01;
+    gAura.userData = { ring: ring, ring2: ring2, disc: disc, mats: [ring.material, ring2.material, disc.material] };
+  })();
   root.scale.setScalar(o.scale);
-  return { root: root, mats: mats, rig: { body: body, hips: hips, torso: torso, head: head, armL: armL, armR: armR, legL: legL, legR: legR, cape: cape, wpn: wpn, armor: armor, armorMat: armorMat,
+  return { root: root, mats: mats, groundAura: gAura, rig: { groundAura: gAura, body: body, hips: hips, torso: torso, head: head, armL: armL, armR: armR, legL: legL, legR: legR, cape: cape, wpn: wpn, armor: armor, armorMat: armorMat,
     pantsMat: pantsMat, padMat: padMat, padMeshes: padMeshes, glovesMat: glovesMat, gloveMeshes: gloveMeshes, helmMat: helmMat, helmMeshes: helmMeshes,
     hairMeshes: hairMeshes, hairStyles: hairStyles, faceSets: faceSets, cwings: cwings, ctArmor: ctArmor, ctGlove: ctGlove, ctPants: ctPants, ctMats: CT, hmodels: hmodels, santaG: santaG, snArmorMeshes: snArmorMeshes, snGloveMeshes: snGloveMeshes, snPantsMeshes: snPantsMeshes, necklaceG: necklaceG, ringL: armL.ring, ringR: armR.ring, crownG: crownG, maskG: maskG, ssjWings: ssjWings, ssjG: ssjG, aura: aura, skirt: skirt, hairMat: hm, shirtMats: shirtMats, wingMat: wingMat, wingsG: wingsG, wingsG2: wingsG2, wingsG3: wingsG3, wingMat2: wingMat2, gzTrim: gzTrim, radArmorMeshes: radArmorMeshes, radGloveMeshes: radGloveMeshes, radPantsMeshes: radPantsMeshes, gzArmorMeshes: gzArmorMeshes, gzGloveMeshes: gzGloveMeshes, gzPantsMeshes: gzPantsMeshes, wings: wings, godG: godG, godMat: godMat, flameMat: flameMat } };
 }
@@ -634,12 +641,18 @@ function makeTag(c, color, showBar) {
     ctx.clearRect(0, 0, 256, 64);
     ctx.textAlign = 'left'; ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(0,0,0,.85)';
     var pre = c.rankTxt ? '[' + c.rankTxt + '] ' : '', suf = c.rbTxt ? ' [R' + c.rbTxt + ']' : '';
+    var col = c.tagWhite ? '#ffffff' : color;     // mobs that give no EXP anymore turn white
     var txt = (c.lvl && color !== '#ffffff' ? 'Lv' + c.lvl + ' ' : '') + c.name;   // heroes/bots: name only, white
     var fs = 22, tw; do { ctx.font = 'bold ' + fs + 'px sans-serif'; tw = ctx.measureText(pre + txt + suf).width; fs--; } while (tw > 248 && fs > 10);
-    var x = 128 - tw / 2, parts = [[pre, c.rankCol || color], [txt, color], [suf, '#ffb84d']];
-    parts.forEach(function (p) { if (!p[0]) return; ctx.strokeText(p[0], x, 24); ctx.fillStyle = p[1]; ctx.fillText(p[0], x, 24); x += ctx.measureText(p[0]).width; });
+    var x = 128 - tw / 2, parts = [[pre, c.rankCol || color], [txt, col], [suf, '#ffb84d']], ny = c.guildTxt ? 50 : 24;   // guild name sits on top of the name line
+    parts.forEach(function (p) { if (!p[0]) return; ctx.strokeText(p[0], x, ny); ctx.fillStyle = p[1]; ctx.fillText(p[0], x, ny); x += ctx.measureText(p[0]).width; });
+    if (c.guildTxt) {      // <guild> above [rank] Name [R], same font size as the player name
+      var gt = '<' + c.guildTxt + '>', gf = fs + 1; do { ctx.font = 'bold ' + gf + 'px sans-serif'; gf--; } while (ctx.measureText(gt).width > 248 && gf > 8);
+      var gw = ctx.measureText(gt).width; ctx.strokeText(gt, 128 - gw / 2, 24); ctx.fillStyle = '#ffd86b'; ctx.fillText(gt, 128 - gw / 2, 24);
+    }
+    spr.position.y = c.guildTxt ? 3.0 : 2.6;     // keep the name line at the same height with or without a guild
     frac = lastFrac;
-    if (frac !== null && frac !== undefined) {
+    if (frac !== null && frac !== undefined && curMap && curMap.moba) {      // overhead HP bars only exist in the 5v5 map now
       ctx.fillStyle = 'rgba(0,0,0,.75)'; ctx.fillRect(38, 34, 180, 14);
       ctx.fillStyle = frac > 0.5 ? '#46d246' : (frac > 0.25 ? '#e0c020' : '#e03030');
       ctx.fillRect(40, 36, Math.max(0, 176 * frac), 10);
@@ -915,7 +928,8 @@ function applyEquipVisuals(tc, ov) {   // tc: optional preview character; ov: co
   if (r.cwings) r.cwings.forEach(function (g, i) { g.visible = i === cwi; });
   if (r.maskG) { r.maskG.visible = mask; r.ssjWings.visible = sw; }
   if (r.crownG) r.crownG.visible = crown;
-  if (r.ssjG) { r.ssjG.visible = ssj; r.aura.visible = ssj; }
+  if (r.ssjG) { r.ssjG.visible = ssj; r.aura.visible = ssj && !lowFx(); }
+  if (r.groundAura) { var ai = ITEMS[P.equip.aura]; r.groundAura.userData.want = !!(ai && ai.aura); r.groundAura.visible = r.groundAura.userData.want && !lowFx(); if (ai && ai.aura) { r.groundAura.userData.mats.forEach(function (m) { m.color.setHex(ai.color); }); auraSetStyle(r.groundAura, ai.astyle || ''); } }
   if (r.necklaceG) {   // jewelry visuals (items without a jw style, e.g. Starter jewelry, show nothing)
     var jn = ITEMS[P.equip.necklace], jl = ITEMS[P.equip.ringL], jr = ITEMS[P.equip.ringR], nu = r.necklaceG.userData, jwN = jn && jn.jw || '';
     r.necklaceG.visible = !!jwN; nu.god.visible = jwN === 'god'; nu.dark.visible = jwN === 'dark'; nu.gm.visible = jwN === 'gm';
@@ -1099,16 +1113,68 @@ function populateTown(m) {
   var pfood = makeNpc('Kibble Kay (Pet Food)', 'petfood', q9[0], q9[1], { scale: 1.0, skin: 0xe0b894, shirt: 0x4aa05a, pants: 0x3a3a22, hair: 0x6a3a1a, sleeve: 0x4aa05a, cape: 0xc89850, boots: 0x3a2a1a });
   var cshop = makeNpc('Costume Shop', 'costume', q10[0], q10[1], { scale: 1.0, skin: 0xf0c8a0, shirt: 0x8a2ad0, pants: 0x1a1a3a, hair: 0xe8e8e8, sleeve: 0x8a2ad0, cape: 0xffd54f, boots: 0x1a1a1a });
   var stable = makeNpc('Stable Master Garrick', 'mount', q5[0], q5[1], { scale: 1.02, skin: 0xc89870, shirt: 0x3f6a3a, pants: 0x4a3a22, hair: 0x2a1a10, sleeve: 0x3f6a3a, cape: 0x2a4a22, boots: 0x2a1a10 });
+  var mg = makeNpc('Item Star Upgrade', 'merge', RR * 0.5 * Math.cos(0.6), RR * 0.5 * Math.sin(0.6), { scale: 1.04, skin: 0xe0b894, shirt: 0x6a2ad0, pants: 0x2a1a4a, hair: 0x2a2a3a, sleeve: 0x6a2ad0, cape: 0xd9a8ff, boots: 0x1a1a24 });
+  var mkn = makeNpc('Market Place', 'market', RR * 0.5 * Math.cos(2.1), RR * 0.5 * Math.sin(2.1), { scale: 1.04, skin: 0xd9a77c, shirt: 0x1f8a4a, pants: 0x3a2a1a, hair: 0x4a2a10, sleeve: 0x1f8a4a, cape: 0xffd54f, boots: 0x2a1a10 });
+  var pol = makeNpc('Police Station', 'police', RR * 0.5 * Math.cos(3.7), RR * 0.5 * Math.sin(3.7), { scale: 1.04, skin: 0xd9a77c, shirt: 0x1a3a7a, pants: 0x14203a, hair: 0x1a1a1a, sleeve: 0x1a3a7a, cape: 0x14203a, armor: 0x2a4a9a, pads: true, padColor: 0xd9c050, boots: 0x101018 });
   npcs.forEach(function (n) { if (!n.sit) n.c.g.rotation.y = Math.atan2(-n.pos.x, -n.pos.z); });   // face the middle of the safe zone
 }
 function clearPopulation() {
-  npcs.forEach(function (n) { disposeChar(n.c); }); npcs.length = 0; npcQuest = null;
+  lootClear(); npcs.forEach(function (n) { disposeChar(n.c); }); npcs.length = 0; npcQuest = null;
   bots.forEach(function (b) { disposeChar(b.c); }); bots.length = 0;
   enemies.forEach(function (e) { disposeChar(e.c); }); enemies.length = 0;
   ais.forEach(function (a) { disposeChar(a.c); }); ais.length = 0;
 }
 
 /* animated golden aura of the Super Saiyan 3 costume */
+
+/* ---------- ground auras: a circle at the feet (2x range) + a different animated effect per aura ---------- */
+function auraBuild(style) {
+  var g = new THREE.Group(), L = [], AB = THREE.AdditiveBlending || 0;
+  function M(col, op, dbl) { return new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: op, side: THREE.DoubleSide, depthWrite: false, blending: AB }); }
+  function add(geo, col, op, x, y, z) { var m = new THREE.Mesh(geo, M(col, op)); m.position.set(x || 0, y || 0, z || 0); g.add(m); return m; }
+  function flat(m) { m.rotation.x = -Math.PI / 2; return m; }
+  var i, a, m, T = Math.PI * 2;
+  if (style === 'flame') {
+    for (i = 0; i < 16; i++) { a = i / 16 * T; m = add(new THREE.ConeGeometry(0.17, 0.8, 6), i % 2 ? 0xffd24a : 0xff5a14, 0.8, Math.cos(a) * 1.75, 0.4, Math.sin(a) * 1.75); m.userData.i = i; L.push(m); }
+    g.userData.anim = function (t) { L.forEach(function (c, k) { var s = 0.7 + 0.6 * Math.abs(Math.sin(t * 7 + k * 1.3)); c.scale.set(1, s, 1); c.position.y = 0.4 * s; }); g.rotation.y = t * 0.4; };
+  } else if (style === 'frost') {
+    for (i = 0; i < 8; i++) { a = i / 8 * T; m = add(new THREE.ConeGeometry(0.14, 1.0, 4), 0xcff6ff, 0.75, Math.cos(a) * 1.6, 0.5, Math.sin(a) * 1.6); L.push(m); }
+    var sp = []; for (i = 0; i < 3; i++) { m = flat(add(new THREE.PlaneGeometry(3.6, 0.07), 0xaeeeff, 0.7, 0, 0.02, 0)); m.rotation.z = i * T / 6; sp.push(m); }
+    g.userData.anim = function (t) { g.rotation.y = -t * 0.35; sp.forEach(function (s) { s.material.opacity = 0.45 + 0.35 * Math.sin(t * 3); }); L.forEach(function (c, k) { c.scale.y = 0.85 + 0.25 * Math.sin(t * 2 + k); }); };
+  } else if (style === 'thunder') {
+    for (i = 0; i < 6; i++) { var bg = new THREE.Group(), px = 0.2, pz = 0; for (var s2 = 0; s2 < 4; s2++) { var nx = px + 0.4, nz = (s2 % 2 ? -1 : 1) * 0.22, len = Math.hypot(nx - px, nz - pz), seg = new THREE.Mesh(new THREE.BoxGeometry(len, 0.05, 0.07), M(0xfff08a, 0.95)); seg.position.set((px + nx) / 2, 0.04, (pz + nz) / 2); seg.rotation.y = -Math.atan2(nz - pz, nx - px); bg.add(seg); px = nx; pz = nz; } bg.rotation.y = i / 6 * T; g.add(bg); L.push(bg); }
+    var spk = add(new THREE.CylinderGeometry(0.05, 0.05, 1.4, 5, 1, true), 0xfff08a, 0.7, 0, 0.7, 0);
+    g.userData.anim = function (t) { L.forEach(function (b) { if (Math.random() < 0.12) { b.visible = !b.visible || Math.random() < 0.5; b.rotation.y = Math.random() * T; b.scale.setScalar(0.8 + Math.random() * 0.4); } }); spk.scale.y = 0.5 + Math.random(); spk.material.opacity = 0.3 + Math.random() * 0.6; };
+  } else if (style === 'toxic') {
+    for (i = 0; i < 14; i++) { m = add(new THREE.SphereGeometry(0.14, 6, 6), i % 3 ? 0x6dff3a : 0xc6ff6a, 0.75, 0, 0, 0); m.userData = { r: 0.5 + (i * 0.37 % 1.4), a: i * 2.4, ph: i / 14, sp: 0.35 + (i % 4) * 0.08 }; L.push(m); }
+    var tr = flat(add(new THREE.RingGeometry(1.3, 1.38, 40), 0x9dff5a, 0.6, 0, 0.03, 0));
+    g.userData.anim = function (t) { L.forEach(function (b) { var u = b.userData, k = (t * u.sp + u.ph) % 1, ang = u.a + t * 0.5; b.position.set(Math.cos(ang) * u.r, 0.1 + k * 1.7, Math.sin(ang) * u.r); b.scale.setScalar(Math.max(0.1, 1 - k) * (0.8 + 0.3 * Math.sin(t * 9 + u.a))); }); tr.rotation.z = t; tr.material.opacity = 0.4 + 0.3 * Math.sin(t * 4); };
+  } else if (style === 'shadow') {
+    var rr = [0.9, 1.4, 1.9]; rr.forEach(function (r, k) { var rg = flat(add(new THREE.RingGeometry(r - 0.05, r, 6 + k * 2), 0xb070ff, 0.8, 0, 0.02 + k * 0.005, 0)); for (var q = 0; q < 6; q++) { var tk = flat(add(new THREE.PlaneGeometry(0.18, 0.06), 0xd9b0ff, 0.9, 0, 0, 0)); tk.position.set(Math.cos(q / 6 * T) * r, 0, Math.sin(q / 6 * T) * r); tk.rotation.z = q / 6 * T; rg.add(tk); tk.position.set(r * Math.cos(q / 6 * T), r * Math.sin(q / 6 * T), 0); tk.rotation.z = q / 6 * T; g.remove(tk); } L.push(rg); });
+    var sm = []; for (i = 0; i < 8; i++) { a = i / 8 * T; m = add(new THREE.CylinderGeometry(0.28, 0.1, 1.3, 8, 1, true), 0x4a1a8a, 0.4, Math.cos(a) * 1.65, 0.65, Math.sin(a) * 1.65); sm.push(m); }
+    g.userData.anim = function (t) { L.forEach(function (r, k) { r.rotation.z += (k % 2 ? -1 : 1) * 0.02 * (k + 1); }); sm.forEach(function (c, k) { var s = 1 + 0.4 * Math.sin(t * 2.2 + k); c.scale.set(s, 0.8 + 0.5 * Math.abs(Math.sin(t * 1.6 + k)), s); c.material.opacity = 0.25 + 0.2 * Math.sin(t * 3 + k); }); };
+  } else if (style === 'blossom') {
+    for (i = 0; i < 20; i++) { m = add(new THREE.PlaneGeometry(0.22, 0.14), i % 2 ? 0xffb6dc : 0xff7ab8, 0.85, 0, 0, 0); m.userData = { r: 0.5 + (i * 0.43 % 1.5), a: i * 1.9, ph: i / 20, sp: 0.18 + (i % 3) * 0.05 }; L.push(m); }
+    g.userData.anim = function (t) { L.forEach(function (p, k) { var u = p.userData, h = (t * u.sp + u.ph) % 1, ang = u.a + t * (0.7 - u.r * 0.2); p.position.set(Math.cos(ang) * u.r, 0.05 + h * 1.8, Math.sin(ang) * u.r); p.rotation.set(t * 3 + k, t * 2 + k, t * 4); p.material.opacity = 0.9 * (1 - h * h); }); };
+  } else if (style === 'holy') {
+    var bm = []; for (i = 0; i < 8; i++) { a = i / 8 * T; m = add(new THREE.CylinderGeometry(0.07, 0.07, 2.4, 6, 1, true), 0xfff6c0, 0.55, Math.cos(a) * 1.7, 1.2, Math.sin(a) * 1.7); bm.push(m); }
+    var core = add(new THREE.CylinderGeometry(0.5, 0.5, 2.6, 16, 1, true), 0xffffff, 0.15, 0, 1.3, 0);
+    var st1 = flat(add(new THREE.RingGeometry(1.2, 1.28, 4), 0xffe27a, 0.9, 0, 0.03, 0)), st2 = flat(add(new THREE.RingGeometry(1.2, 1.28, 4), 0xffe27a, 0.9, 0, 0.035, 0)); st2.rotation.z = Math.PI / 4;
+    g.userData.anim = function (t) { bm.forEach(function (b, k) { var s = 0.6 + 0.5 * Math.abs(Math.sin(t * 1.8 + k * 0.8)); b.scale.y = s; b.position.y = 1.2 * s; b.material.opacity = 0.3 + 0.35 * Math.sin(t * 2 + k); }); core.material.opacity = 0.1 + 0.1 * Math.sin(t * 2.5); st1.rotation.z = t * 0.6; st2.rotation.z = Math.PI / 4 - t * 0.6; };
+  } else if (style === 'galaxy') {
+    for (i = 0; i < 8; i++) { m = add(new THREE.SphereGeometry(0.09 + (i % 3) * 0.05, 8, 8), [0x8a9bff, 0xff8aff, 0x8affff][i % 3], 0.95, 0, 0, 0); m.userData = { r: 0.7 + i * 0.16, a: i * 0.8, sp: (1.4 - i * 0.12) * (i % 2 ? -1 : 1) }; L.push(m); }
+    var o1 = add(new THREE.RingGeometry(1.45, 1.5, 48), 0xa0b0ff, 0.6, 0, 0.5, 0), o2 = add(new THREE.RingGeometry(1.1, 1.14, 48), 0xff9aff, 0.6, 0, 0.5, 0); o1.rotation.x = 1.1; o2.rotation.x = 1.1; o2.rotation.y = 1.0;
+    g.userData.anim = function (t) { L.forEach(function (p) { var u = p.userData, ang = u.a + t * u.sp; p.position.set(Math.cos(ang) * u.r, 0.4 + 0.35 * Math.sin(ang * 2 + u.a), Math.sin(ang) * u.r); }); o1.rotation.z = t * 0.5; o2.rotation.z = -t * 0.7; };
+  }
+  return g;
+}
+function auraSetStyle(ga, style) {
+  var u = ga.userData; u.sty = u.sty || {};
+  if (u.cur && u.cur !== u.sty[style]) u.cur.visible = false;
+  if (!style) { u.cur = null; return; }
+  if (!u.sty[style]) { u.sty[style] = auraBuild(style); ga.add(u.sty[style]); }
+  u.cur = u.sty[style]; u.cur.visible = true;
+}
 function updateCostumeFx(dt, pvc) {
   var cc = pvc || P.c, r = cc && cc.rig; if (!r) return;
   var cw = (cc.cwEff || P.costumeWorn || {}).weapon; if (cw && cc.wMat) cc.wMat.emissiveIntensity = 0.8 + 0.5 * Math.sin(performance.now() / 150);
@@ -1116,6 +1182,10 @@ function updateCostumeFx(dt, pvc) {
   var ft = performance.now() / 1000; if (r.ctMats) { var cpl = 0.75 + 0.4 * Math.sin(ft * 5); r.ctMats.forEach(function (q) { q.b.emissiveIntensity = cpl; }); }
   if (cc.wAnim) cc.wAnim(ft); if (r.hmodels) r.hmodels.forEach(function (g) { if (g.visible && g.userData.anim) g.userData.anim(ft); });
   if (r.cwings) { var ct = performance.now() / 1000; r.cwings.forEach(function (g) { if (g.visible && g.userData.anim) g.userData.anim(ct); }); }
+  var ga = cc.groundAura || (cc.rig && cc.rig.groundAura);
+  if (ga && ga.userData.want !== undefined) ga.visible = ga.userData.want && !lowFx();
+  if (cc.rig && cc.rig.aura && cc.rig.ssjG) cc.rig.aura.visible = cc.rig.ssjG.visible && !lowFx();
+  if (ga && ga.visible) { var gt = performance.now() / 1000, gu = ga.userData, gp = 0.5 + 0.5 * Math.sin(gt * 2.4); gu.ring.rotation.z += dt * 0.8; gu.ring2.rotation.z -= dt * 1.4; ga.scale.setScalar(2 * (1 + 0.06 * gp)); if (gu.cur && gu.cur.userData.anim) gu.cur.userData.anim(gt, dt); gu.mats[0].opacity = 0.55 + 0.4 * gp; gu.mats[1].opacity = 0.35 + 0.45 * (1 - gp); gu.mats[2].opacity = 0.1 + 0.25 * gp; }
   if (!r.aura || !r.aura.visible) return;
   var sg = r.ssjG, tt = performance.now() / 1000;
   sg.userData.sway.forEach(function (s) { s.pv.rotation.x = s.rx + Math.sin(tt * 3 + s.ph) * 0.07; s.pv.rotation.z = s.rz + Math.cos(tt * 2.4 + s.ph) * 0.05; });

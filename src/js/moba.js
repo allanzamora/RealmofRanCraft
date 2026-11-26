@@ -1,4 +1,6 @@
-
+/* moba.js - 5v5 Battle Arena (Mobile-Legends style): towers, nexus, minion waves, AI heroes on both teams.
+   Blue = you + 4 AI allies, Red = 5 AI enemies. Red units live in the normal `enemies` list (so your attacks / skills / auto target them);
+   blue units live in MOBA.units.blue (never targetable by you). Destroy the enemy Nexus to win. */
 var MOBA = { on: false, over: false, t: 0, waveT: 5, units: { blue: [], red: [] }, S: { blue: {}, red: {} }, score: { blue: 0, red: 0 }, pa: 12, ph: 100, pd: 0, hudT: 0, deaths: { blue: 0, red: 0 } };
 var MOBA_SPAWN = { blue: [-52, 52], red: [52, -52] };
 var MOBA_COL = { blue: 0x3a7fd0, red: 0xd03a3a };

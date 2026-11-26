@@ -1,5 +1,5 @@
 /* map_15.js - Online PvP Arena: real players fight each other here (needs the PvP server, see server/pvp_server.js). Free PK, no drops, no penalty. */
-MAPS.push({ id: 'pvp', name: 'Online PvP Arena', min: 10, R: 70, safeR: 0, tier: 4, hub: false, noCamp: true, arena: true, online: true, noAI: true, weather: null, enemies: [],
+[1, 2, 3, 4, 5].forEach(function (n) { MAPS.push({ id: n === 1 ? 'pvp' : 'pvp' + n, name: 'PvP Arena Room ' + n, min: 10, R: 70, safeR: 0, tier: 4, hub: false, noCamp: true, arena: true, online: true, noAI: true, weather: null, enemies: [],
   theme: { sky: 0x1a2a4a, fog: [45, 190], hemi: [0xc8e0ff, 0x1a2230, 0.95], sun: 0xbcd8ff, ground: '#3a4a60', speck: ['#34445a', '#45566e', '#2a3a50'], mount: 0x1a2438, cloud: 0x5a7aa8 },
   build: function (g, m) {
     var R = m.R;
@@ -20,4 +20,4 @@ MAPS.push({ id: 'pvp', name: 'Online PvP Arena', min: 10, R: 70, safeR: 0, tier:
       var cp = new THREE.Mesh(new THREE.BoxGeometry(3, 6, 3), stone); cp.position.set(cx, 3, cz); g.add(cp); addObstacle(cx, cz, 2.2);
     }
   }
-});
+}); });

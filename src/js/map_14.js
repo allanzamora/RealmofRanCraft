@@ -3,8 +3,8 @@
 E('inmate', 'Death Row Inmate', 120, 'm', 1.2, W('dagger', 0xb8b8c0), { skin: 0xc9a27e, shirt: 0xe8731c, pants: 0xe8731c, hair: null, bald: true, boots: 0x2a2018, eye: 0xff4422 }, { hpMul: 3 });
 E('warden', 'Prison Warden', 140, 'b', 1.35, W('greatsword', 0x3a3f4a), { skin: 0xd6b08c, shirt: 0x16233f, pants: 0x0e1630, hair: null, bald: true, helmet: true, armor: 0x22345a, pads: true, padColor: 0x9aa3b8, boots: 0x0a0e1c, eye: 0xffcc33, eyeGlow: true, bulk: 1.15 }, { hpMul: 3 });
 (function (a, b) {
-  a.xp = 15000; a.fixedXp = true; a.goldOnly = true; a.gold = [3000, 6000]; a.aggro = 12;
-  b.xp = 16000; b.fixedXp = true; b.goldOnly = true; b.gold = [4000, 8000]; b.aggro = 12;
+  a.xp = 13600; a.fixedXp = true; a.goldOnly = true; a.gold = [3000, 6000]; a.aggro = 12;
+  b.xp = 14600; b.fixedXp = true; b.goldOnly = true; b.gold = [4000, 8000]; b.aggro = 12;
 })(ENEMY_TYPES.inmate, ENEMY_TYPES.warden);
 
 function buildPrison(g, m, c) {

@@ -62,7 +62,7 @@ function aiRareGear(a, role) {
   a.gm = 1.1 + 0.08 * got.length; aiStats(a); a.hp = a.maxHp; a.gz = got;
 }
 function spawnAIs(m) {
-  if (m.noAI) return;
+  if (m.noAI || !m.arena) return;      // AI bot players only live in the Blood Arena now (normal maps show real players instead)
   if (m.arena) {
     var na = randInt(20, 25), used0 = {}, nGz = randInt(4, 5), nCr = randInt(2, 4);   // 4-5 bots wear Godzilla gear, 2-4 wield the Crimson Eye Blade
     for (var q = 0; q < na; q++) {

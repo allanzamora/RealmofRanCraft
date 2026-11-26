@@ -172,7 +172,7 @@ function layoutActions() {
   function put(id, size, x, y) { var el = $(id); el.style.width = el.style.height = size + 'px'; el.style.left = (x - size / 2).toFixed(1) + 'px'; el.style.top = (y - size / 2).toFixed(1) + 'px'; }
   put('b-attack', sa, cx, cy);
   var x1 = cx - sa / 2 - 4 - sk / 2;                      // bottom row (right -> left): ATTACK, DASH, RIDE, HP, MP
-  put('b-dash', sk, x1, cy); put('b-mount', sk, x1 - g, cy); put('b-hp', sk, x1 - 2 * g, cy); put('b-mp', sk, x1 - 3 * g, cy);
+  put('b-dash', sk, x1, cy); put('b-mount', sk, x1 - g, cy); put('b-hp', sk, x1 - 2 * g, cy); put('b-mp', sk, x1 - 3 * g, cy); put('b-chat', sk, x1 - 4 * g, cy);
   var y1 = cy - sa / 2 - 4 - sk / 2;                      // second row: 4 skills (+ WALK/RUN above ATTACK)
   for (var j = 0; j < 4; j++) put('b-k' + (1 + j), sk, x1 - j * g, y1);
   put('b-walk', sk, cx, y1);

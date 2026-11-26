@@ -29,6 +29,7 @@ function updateFloaters(dt) {
 var particleGeo = new THREE.BoxGeometry(0.09, 0.09, 0.09);
 var particleMats = {};
 function burst(pos, color, n, speed, up) {
+  if (lowFx()) return;
   if (fxList.length > 160) return;
   if (!particleMats[color]) particleMats[color] = new THREE.MeshBasicMaterial({ color: color });
   for (var i = 0; i < n; i++) {
@@ -42,11 +43,13 @@ function burst(pos, color, n, speed, up) {
   }
 }
 function ringFx(x, z, radius, color, dur) {
+  if (lowFx()) return;
   var m = new THREE.Mesh(new THREE.RingGeometry(0.85, 1, 40), new THREE.MeshBasicMaterial({ color: color, transparent: true, opacity: 0.9, side: THREE.DoubleSide, depthWrite: false }));
   m.rotation.x = -Math.PI / 2; m.position.set(x, 0.08, z); scene.add(m);
   fxList.push({ t: 0, dur: dur, obj: m, update: function (k) { var s = lerp(0.3, radius, ease(k)); m.scale.set(s, s, s); m.material.opacity = 0.9 * (1 - k); } });
 }
 function slashFx(x, z, yaw, color, radius, arc) {
+  if (lowFx()) return;
   var g = new THREE.Group();
   var m = new THREE.Mesh(new THREE.RingGeometry(radius * 0.45, radius, 28, 1, -arc / 2, arc), new THREE.MeshBasicMaterial({ color: color, transparent: true, opacity: 0.85, side: THREE.DoubleSide, depthWrite: false }));
   m.rotation.x = -Math.PI / 2; g.add(m);
@@ -54,6 +57,7 @@ function slashFx(x, z, yaw, color, radius, arc) {
   fxList.push({ t: 0, dur: 0.28, obj: g, geoOwner: m, update: function (k) { m.material.opacity = 0.85 * (1 - k); var s = 0.85 + 0.25 * k; g.scale.set(s, s, s); } });
 }
 function pillarFx(x, z, color) {
+  if (lowFx()) return;
   var m = new THREE.Mesh(new THREE.CylinderGeometry(1.1, 1.1, 8, 20, 1, true), new THREE.MeshBasicMaterial({ color: color, transparent: true, opacity: 0.6, side: THREE.DoubleSide, depthWrite: false }));
   m.position.set(x, 4, z); scene.add(m);
   fxList.push({ t: 0, dur: 1.2, obj: m, update: function (k) { m.material.opacity = 0.6 * (1 - k); m.scale.set(1 - k * 0.6, 1 + k * 0.4, 1 - k * 0.6); } });
@@ -61,6 +65,7 @@ function pillarFx(x, z, color) {
 function updateFx(dt) {
   for (var i = fxList.length - 1; i >= 0; i--) {
     var f = fxList[i]; f.t += dt;
+    if (f.obj && f.obj.visible !== !lowFx()) f.obj.visible = !lowFx();      // Low graphics: skill effects stay hidden (not rendered)
     var k = Math.min(1, f.t / f.dur);
     f.update(k, dt);
     if (f.t >= f.dur) {

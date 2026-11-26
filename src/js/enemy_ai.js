@@ -1,5 +1,23 @@
 /* enemy_ai.js - per-map enemy spawning (radial level bands), enemy AI, bots + chat */
-function spawnEnemies(m) {
+/* ---- shared mobs: every player in a map room sees the same mobs (same spawn layout; a kill is shown to everyone) ---- */
+var SIDN = {}, SPAWNING = false, SEEDMAP = '';
+function MOBQ() { return 1; }   // Low / Medium / High graphics all spawn the same number of mobs (only visuals differ)
+function seedRng(str) { var hh = 1779033703 ^ str.length, i; for (i = 0; i < str.length; i++) { hh = Math.imul(hh ^ str.charCodeAt(i), 3432918353); hh = hh << 13 | hh >>> 19; } var a = hh >>> 0; return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function spawnEnemies(m) { SIDN = {}; SEEDMAP = String(m.id); SPAWNING = true; var rm = Math.random; Math.random = seedRng(String(m.id)); try { spawnEnemies0(m); } finally { Math.random = rm; SPAWNING = false; } }
+function mobSyncKill(e) {
+  if (!e.sid || e.edge || e.world || e.moba || !PVP.on || PVP.hidden || !PVP.ws || PVP.ws.readyState !== 1 || !(PVP.ver >= 3)) return;
+  var rt = Math.round((RESPAWN_TIME[0] + RESPAWN_TIME[1]) / 2 * (e.T.boss ? 6 : 1)); e.fixedResp = rt; pvpSend({ t: 'mk', s: e.sid, rt: rt });
+}
+function mobSyncApply(sid, secs, late) {
+  for (var i = 0; i < enemies.length; i++) {
+    var e = enemies[i]; if (e.sid !== sid || e.state === 'dead') continue;
+    e.state = 'dead'; e.hp = 0; e.target = null; if (P.target === e) P.target = null;
+    if (late) { e.deadT = 3.3; e.c.g.visible = false; e.c.tag.spr.visible = false; e.respawnT = secs; }
+    else { e.deadT = 0; e.fixedResp = secs; startDeath(e.c, e.pos); e.c.tag.spr.visible = false; }
+    return;
+  }
+}
+function spawnEnemies0(m) {
   if (m.arena) return;
   if (m.prison) {               // Prison: 4 cell rooms (one per quadrant), 7-8 mobs each, none near the central yard
     var quads = [[1, 1], [-1, 1], [-1, -1], [1, -1]];
@@ -35,25 +53,32 @@ function spawnEnemies(m) {
   var regular = m.enemies.slice(0, m.enemies.length - 1), bossKey = m.enemies[m.enemies.length - 1];
   var r0 = m.safeR + 2, r1 = m.R - 3, n = regular.length, step = (r1 - r0) / n;
   regular.forEach(function (key, i) {           // main bands (area-weighted so big outer bands do not look empty)
-    var lo = r0 + i * step, hi = lo + step, cnt = Math.round(ENEMIES_PER_TYPE * GQ().mob * (0.7 + 0.6 * (i + 0.5) / n));
+    var lo = r0 + i * step, hi = lo + step, cnt = Math.round(ENEMIES_PER_TYPE * MOBQ() * (0.7 + 0.6 * (i + 0.5) / n));
     for (var k = 0; k < cnt; k++) makeEnemy(key, lo, hi);
   });
   for (var q = 0; q < 2; q++) {                 // extra mobs: centre (weakest types) and edge (strongest types)
-    for (var k2 = 0, c9 = Math.max(2, Math.round(9 * GQ().mob)); k2 < c9; k2++) makeEnemy(regular[q], m.safeR + 2, m.safeR + 16);
-    for (var k3 = 0, c9b = Math.max(2, Math.round(9 * GQ().mob)); k3 < c9b; k3++) makeEnemy(regular[n - 1 - q], m.R - 14, m.R - 3);
+    for (var k2 = 0, c9 = Math.max(2, Math.round(9 * MOBQ())); k2 < c9; k2++) makeEnemy(regular[q], m.safeR + 2, m.safeR + 16);
+    for (var k3 = 0, c9b = Math.max(2, Math.round(9 * MOBQ())); k3 < c9b; k3++) makeEnemy(regular[n - 1 - q], m.R - 14, m.R - 3);
   }
   makeEnemy(bossKey, r1 - 4, r1 - 4, true);
   var mid0 = Math.max(r0, m.R * 0.35), mid1 = m.R * 0.65;      // extra mobs in the middle of the map (all types mixed)
-  regular.forEach(function (key) { for (var q = 0, c6 = Math.max(2, Math.round(6 * GQ().mob)); q < c6; q++) makeEnemy(key, mid0, mid1); });
+  regular.forEach(function (key) { for (var q = 0, c6 = Math.max(2, Math.round(6 * MOBQ())); q < c6; q++) makeEnemy(key, mid0, mid1); });
   var top = mapTopLvl(m);
   EDGE_TYPES.forEach(function (k, i) {          // edge elites: levels capped to this map's top level; dormant until the player reaches the edge
     var ek = edgeType(k, Math.max(1, top - (2 - i) * 2));
-    for (var q2 = 0, ce = Math.max(3, Math.round(EDGE_PER_TYPE * GQ().mob)); q2 < ce; q2++) { var ee = makeEnemy(ek, m.R - 20, m.R - 3); ee.edge = true; edgeSleep(ee, rand(1, 4)); }
+    for (var q2 = 0, ce = Math.max(3, Math.round(EDGE_PER_TYPE * MOBQ())); q2 < ce; q2++) { var ee = makeEnemy(ek, m.R - 20, m.R - 3); ee.edge = true; edgeSleep(ee, rand(1, 4)); }
   });
 }
 function edgeSleep(e, delay) { e.state = 'dead'; e.deadT = 3; e.c.g.visible = false; e.c.tag.spr.visible = false; e.respawnT = delay; e.target = null; }
 var edgeWas = false;
-function makeEnemy(key, rLo, rHi, boss) {
+function makeEnemy(key, rLo, rHi, boss) {          // while a map spawns, each mob gets its own seeded position (same on every device)
+  if (!SPAWNING) return makeEnemy0(key, rLo, rHi, boss);
+  SIDN[key] = (SIDN[key] || 0) + 1; var sid = key + '#' + SIDN[key], outer = Math.random, e;
+  Math.random = seedRng(SEEDMAP + sid);
+  try { e = makeEnemy0(key, rLo, rHi, boss); } finally { Math.random = outer; }
+  e.sid = sid; return e;
+}
+function makeEnemy0(key, rLo, rHi, boss) {
   var T = ENEMY_TYPES[key];
   var c = newChar(Object.assign({ scale: T.scale }, T.look), T.name, T.lvl, T.boss ? '#ff8a3a' : '#ff9a9a', true, T.weapon);
   if (T.croc) attachCroc(c);
@@ -66,7 +91,13 @@ function makeEnemy(key, rLo, rHi, boss) {
   enemies.push(e); return e;
 }
 
+var noXpT = 0;
+function refreshNoXpTags(dt) {                       // name turns white once a mob/boss gives no EXP to your level
+  noXpT -= dt; if (noXpT > 0) return; noXpT = 1;
+  for (var i = 0; i < enemies.length; i++) { var e = enemies[i]; if (e.moba || !e.c || !e.T) continue; var w = xpFor(e.T) <= 0; if (!!e.c.tagWhite !== w) { e.c.tagWhite = w; e.c.tag.draw(); } }
+}
 function updateEnemies(dt) {
+  refreshNoXpTags(dt);
   var inSafe = inSafeZone();
   var edgeOn = !!(curMap && !curMap.arena && !curMap.bossR && !curMap.prison && Math.hypot(P.pos.x, P.pos.z) > curMap.R - EDGE_ACTIVE);
   if (edgeOn !== edgeWas) { edgeWas = edgeOn; if (edgeOn) { var tl = mapTopLvl(curMap); log('You reached the edge of the world... Edge Elites (Lv ' + Math.max(1, tl - 4) + '-' + tl + ') awaken!', '#d08aff'); sfx('level'); } }
@@ -79,10 +110,10 @@ function updateEnemies(dt) {
       e.deadT += dt;
       if (c.g.visible) { c.mv = 0; animateChar(c, dt, 0); }
       if (e.world && e.deadT > 3.3) continue;   // world boss never respawns (removed by updateWorldBoss)
-      if (e.deadT > 3.2 && c.g.visible) { c.g.visible = false; e.respawnT = rand(RESPAWN_TIME[0], RESPAWN_TIME[1]) * (T.boss ? 6 : 1); }
+      if (e.deadT > 3.2 && c.g.visible) { c.g.visible = false; e.respawnT = (e.fixedResp != null) ? Math.max(0, e.fixedResp - 3.2) : rand(RESPAWN_TIME[0], RESPAWN_TIME[1]) * (T.boss ? 6 : 1); e.fixedResp = null; }
       if (!c.g.visible) {
         e.respawnT -= dt;
-        if (e.respawnT <= 0 && (!e.edge || edgeOn) && Math.hypot(P.pos.x - e.spawn.x, P.pos.z - e.spawn.z) > 14) {
+        if (e.respawnT <= 0 && (!e.edge || edgeOn) && (e.sid && PVP.on && !PVP.hidden || Math.hypot(P.pos.x - e.spawn.x, P.pos.z - e.spawn.z) > 14)) {
           e.hp = e.maxHp; e.state = 'idle'; pos.copy(e.spawn); c.anim = null; c.g.visible = true; c.tag.spr.visible = true; c.tag.draw(1);
           c.rig.body.rotation.x = 0; c.rig.body.position.y = 0; e.stun = 0; e.slow = 0;
         }

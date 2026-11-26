@@ -76,6 +76,12 @@ function updateAuto(dt) {
 }
 function openAutoPanel() { if (P.dead || ui.open) return; autoCleanSkills(); openPanel('Auto Attack', renderAuto); }
 function renderAuto(body) {
+  var top = h('div', null, null, body);
+  var rr = h('div', 'setrow', null, top), rl = h('span', null, 'Circle radius: ' + AUTO.R + ' m', rr);
+  var rg = h('input', null, null, top); rg.type = 'range'; rg.min = '8'; rg.max = '45'; rg.step = '1'; rg.value = String(AUTO.R);
+  rg.addEventListener('input', function () { AUTO.R = +rg.value; rl.textContent = 'Circle radius: ' + AUTO.R + ' m'; if (AUTO.on && AUTO.ring) AUTO.ring.scale.set(AUTO.R, AUTO.R, AUTO.R); saveAuto(); });
+  var br = h('div', 'setrow', null, top);
+  btn(br, AUTO.on ? 'STOP AUTO ATTACK' : 'START AUTO ATTACK', function () { closePanel(); if (AUTO.on) stopAuto(); else startAuto(); }, { cls: AUTO.on ? 'danger' : 'good' });
   h('div', 'ds', 'Pick 1 to 8 skills to use while auto attacking (' + AUTO.skills.length + '/8). Your hero walks to mobs inside the circle and fights them.', body);
   function row(id, name, icon, emoji, desc) {
     var on = AUTO.skills.indexOf(id) >= 0, r = h('div', 'item', null, body); iconEl(r, icon, emoji);
@@ -88,10 +94,5 @@ function renderAuto(body) {
   }
   row('basic', 'Basic Attack', null, '⚔', 'Normal attack (used when no chosen skill is ready)');
   P.skills.forEach(function (id) { var sk = SKILLS[id]; if (sk) row(id, sk.name, sk.icon, sk.emoji, 'MP ' + sk.mp + ' · CD ' + sk.cd + 's'); });
-  var rr = h('div', 'setrow', null, body), rl = h('span', null, 'Circle radius: ' + AUTO.R + ' m', rr);
-  var rg = h('input', null, null, body); rg.type = 'range'; rg.min = '8'; rg.max = '45'; rg.step = '1'; rg.value = String(AUTO.R);
-  rg.addEventListener('input', function () { AUTO.R = +rg.value; rl.textContent = 'Circle radius: ' + AUTO.R + ' m'; if (AUTO.on && AUTO.ring) AUTO.ring.scale.set(AUTO.R, AUTO.R, AUTO.R); saveAuto(); });
-  var br = h('div', 'setrow', null, body);
-  btn(br, AUTO.on ? 'STOP AUTO ATTACK' : 'START AUTO ATTACK', function () { closePanel(); if (AUTO.on) stopAuto(); else startAuto(); }, { cls: AUTO.on ? 'danger' : 'good' });
 }
 bindBtn('b-auto', function () { openAutoPanel(); });

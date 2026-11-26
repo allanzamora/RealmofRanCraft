@@ -1,50 +1,21 @@
+<style>
+.meurl {color:#A8D9DB;font-weight:bold;}
+</style>
 <body class="wm">
 <div id="welcome"><div id="welcome-card">
 <img id="w-logo" src="rancraft.png" alt="Realm of RanCraft logo" onerror="this.style.display='none'">
 <h1>Realm of RanCraft - 3D MMORPG</h1>
 <p>Step into a free 3D fantasy world made for your phone. Fight monsters, defeat giant bosses, tame loyal pets and become a legend of the Realm - right in your browser, no download needed.</p>
-
 <button id="w-play">Play Now &raquo;</button>
-<div id="w-scroll">
+<p>Or</p>
+<h3><a href="https://drive.google.com/file/d/15YbuA8UJDWHWyhpr_EqnYmtTS4g41f6e/view?usp=drivesdk" target="_blank" class="meurl">Download Android Version</a></h3>
 <br>
-<h2>What's New! (Nov 24, 2026) Update</h2>
-<ul>
-    <li>Added more costume.</li>
-    <li>GM Necklace and GM Rings (Left &amp; Right) can now drop in the Boss Room.</li>
-    <li>Add more mount.</li>
-    <li>Add Rank System (E to GM) rank</li>
-    <li>PVP Arena: Fixed visual effects, skills, emojis, costumes, and more.</li>
-    <li>PvP kill ranking show the top 5 players.</li>
-</ul>
-<br>
-<h3>Links</h3>
-<ul>
-    <li><a href="https://www.youtube.com/@realmofrancraft" target="_blank">Official YouTube channel</a></li>
-    <li><a href="https://youtube.com/shorts/gGQzEzqTKUg?si=L5J5gF8LnuS6MucV" target="_blank">Test Online PvP Arena - (Realm of RanCraft) Comming soon</a></li>
-    <li><a href="https://youtu.be/1ofoYBkNTDI?si=c-8rOERqm17knp5N" target="_blank">Auto Attack & AFK Farming Gameplay! | Realm of RanCraft (3D Browser MMORPG - the Full Showcase) </a></li>
-    <li><a href="https://youtu.be/1M_LIfQL2zs?si=6-65AAaKaUaB79z8" target="_blank">I Hunted the GODZILLA Boss for Rare Wings & Weapons! | Realm of RanCraft (3D Browser MMORPG)</a></li>
-    <li><a href="https://youtu.be/-kc1iv5fJEA?si=D2_veb9R1Qc7HdG4" target="_blank">Battle Arena - Realm of RanCraft</a></li>
-</ul>
-<br>
-<h3>Game Features</h3>
-<ul>
-<li><b>12 Maps</b> - from peaceful Moviex Plains to dangerous boss lands and the Blood Arena.</li>
-<li><b>30+ Skills</b> - summon a giant skeleton, call down anvils and unleash energy waves.</li>
-<li><b>World Bosses</b> - Big Boss alerts appear at random, with big Godzilla Fragment loot.</li>
-<li><b>Pets</b> - healers, robots, dogs, fairies and birds that follow and help you.</li>
-<li><b>Costumes &amp; Diamonds</b> - wings, crowns, masks, swords and armor with special bonuses.</li>
-<li><b>Gear &amp; Crafting</b> - random stats, upgrades, rebirth and mounts.</li>
-<li><b>AI Players</b> - a lively world with bots, quests and NPC shops.</li>
-<li><b>Mobile First</b> - touch joystick, pinch zoom, online account with cloud save (login on any phone).</li>
-</ul>
-<!-- BEGIN AADS AD UNIT 2462668 -->
-
 <div id="frame" style="width: 100%;margin: auto;position: relative; z-index: 99998;">
           <iframe data-aa='2462668' src='//acceptable.a-ads.com/2462668/?size=Adaptive'
                             style='border:0; padding:0; width:70%; height:auto; overflow:hidden;display: block;margin: auto'></iframe>
         </div>
-
-<!-- END AADS AD UNIT 2462668 -->
 <br>
 <p class="w-small">This a work of fiction, any name, items, maps etc. are fictional.</p>
+<p class="w-small"><a href="privacy.html" class="meurl" target="_blank">Privacy Policy</a> | <a href="https://www.youtube.com/@realmofrancraft" target="_blank" class="meurl">YouTube</a> | <a href="https://t.me/realmofrancraft" target="_blank" class="meurl">Telegram</a> | <a href="https://facebook.com/realmofrancraft" target="_blank" class="meurl">Facebook</a><br>
+Other app <a href="https://tagalog-movies.vercel.app/" target="_blank" class="meurl">Tagalog Moviex</a></p>
 </div></div></div>
