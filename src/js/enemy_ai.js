@@ -19,6 +19,10 @@ function mobSyncApply(sid, secs, late) {
 }
 function spawnEnemies0(m) {
   if (m.arena) return;
+  if (CUR_EDIT && CUR_EDIT.spawns) {          // Map Editor: exact mob positions
+    CUR_EDIT.spawns.forEach(function (s) { if (!ENEMY_TYPES[s[0]]) return; var e = makeEnemy(s[0], 5, 5, !!ENEMY_TYPES[s[0]].boss); e.pos.set(s[1], 0, s[2]); e.spawn.set(s[1], 0, s[2]); e.wx = s[1]; e.wz = s[2]; e.ed = 1; });
+    return;
+  }
   if (m.prison) {               // Prison: 4 cell rooms (one per quadrant), 7-8 mobs each, none near the central yard
     var quads = [[1, 1], [-1, 1], [-1, -1], [1, -1]];
     m.perRoom.forEach(function (n, qi) {

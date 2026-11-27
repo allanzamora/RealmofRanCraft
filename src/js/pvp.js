@@ -150,10 +150,11 @@ function pvpPetAnim(a, dt) {       // pet follows its owner (simplified updatePe
 function pvpOnMsg(m) {
   if (typeof socialOnMsg === 'function' && socialOnMsg(m)) return;
   if (typeof lootOnMsg === 'function' && lootOnMsg(m)) return;
+  if (typeof duelOnMsg === 'function' && m.t && m.t.length === 2 && m.t.charAt(0) === 'd' && duelOnMsg(m)) return;
   if (typeof marketOnMsg === 'function' && m.t && m.t.indexOf('mx') === 0 && marketOnMsg(m)) return;
   if (m.t === 'w') {                                            // welcome: my id + spawn + players already inside
     if (!m.v || m.v < 2) { if (!(curMap && curMap.online)) { log('Your server is the old version, so other players cannot be shown here. Update server/pvp_server.js to enable multiplayer in every map.', '#ffb86b'); pvpLeave(); PVP.status = 'oldsrv'; return; } }
-    PVP.id = m.id; PVP.top = m.top || []; pvpClearPeers(); PVP.ver = m.v | 0;
+    PVP.id = m.id; PVP.top = m.top || []; pvpClearPeers(); PVP.ver = m.v | 0; PVP.wAt = performance.now();
     if (PVP.hidden) return;
     if (curMap && curMap.online) { P.pos.set(m.x, 0, m.z); P.invuln = 3; }
     (m.dead || []).forEach(function (d) { mobSyncApply(d[0], d[1], true); });
@@ -209,6 +210,7 @@ function pvpTakeHit(m) {
   if (dmg <= 0) return;
   P.hp -= dmg; spawnText('-' + dmg, P.pos, m.c ? 'fl crit' : 'fl hurt', 2.2);
   var vg = $('vignette'); vg.style.opacity = '1'; setTimeout(function () { vg.style.opacity = '0'; }, 160);
+  if (P.hp <= 0 && duelHit(m)) return;
   if (P.hp <= 0) { P.hp = 0; pvpSend({ t: 'k', by: m.from }); playerDie(m.n || 'a player'); }
 }
 /* ----- other players' skills: visual-only copy of the AI skill effects (no damage; damage is sent as 'h' hits) ----- */

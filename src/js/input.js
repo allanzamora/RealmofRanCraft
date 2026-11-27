@@ -110,6 +110,9 @@ tapBtn('m-ach', function () { openAchievements(); });
 tapBtn('m-rank', function () { openRank(); });
 tapBtn('m-map', function () { openWorldMap(); });
 tapBtn('m-menu', function () { openSettings(); });
+tapBtn('btn-duel', function () { if (P.target && P.target.remote) duelRequest(P.target); });
+tapBtn('duel-yes', function () { duelAccept(); });
+tapBtn('duel-no', function () { duelDecline(); });
 tapBtn('btn-pk', function () { if (P.target && P.target.isAI) startPK(P.target); });
 tapBtn('btn-talk', function () { var n = nearestInteract(); if (n) interact(n); });
 

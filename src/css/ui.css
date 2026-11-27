@@ -471,3 +471,11 @@ body.wm #side-tabs{display:none!important}
 #chat-feed .cm b{cursor:pointer}
 .chat-row{display:flex;gap:6px;margin-top:6px;align-items:center}.chat-row select,.chat-row input{padding:8px;border-radius:8px;border:1px solid #888;background:#111a33;color:#fff;font-size:14px;box-sizing:border-box}
 .chat-row input{flex:1;min-width:0}
+#btn-duel{position:fixed;z-index:11;left:calc(50% - 86px);top:calc(52px + env(safe-area-inset-top));display:none;pointer-events:auto;touch-action:none;padding:6px 14px;border-radius:18px;background:linear-gradient(#ffb02a,#c06a00);color:#fff;font-weight:800;font-size:12px;border:2px solid #ffe0a0;box-shadow:0 3px 10px rgba(0,0,0,.6)}
+@media (max-width:600px){#btn-duel{left:calc(8px + env(safe-area-inset-left));top:calc(140px + env(safe-area-inset-top))}#btn-pk{left:calc(78px + env(safe-area-inset-left))!important}}
+#duel-hud{position:fixed;z-index:12;left:50%;top:calc(8px + env(safe-area-inset-top));transform:translateX(-50%);display:none;pointer-events:none;background:rgba(120,10,10,.8);color:#fff;font-weight:800;font-size:13px;padding:4px 14px;border-radius:14px;border:1px solid #ff8a8a}
+#duel-req{position:fixed;z-index:30;left:50%;top:30%;transform:translateX(-50%);display:none;background:#1a1030;border:2px solid #ffb02a;border-radius:12px;padding:14px 16px;color:#fff;text-align:center;font-weight:700;box-shadow:0 6px 24px rgba(0,0,0,.7)}
+#duel-req .dr{display:flex;gap:10px;justify-content:center;margin-top:10px}#duel-req button{pointer-events:auto;padding:8px 16px;border-radius:10px;border:0;font-weight:800;background:#2fa84f;color:#fff}#duel-req #duel-no{background:#b3182b}
+#map-loading{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;background:radial-gradient(#1c1440,#07050f);color:#fff;transition:opacity .25s;pointer-events:auto}
+#map-loading .ml{width:min(80vw,360px);text-align:center}#map-loading-n{font-size:22px;font-weight:800;margin-bottom:6px;text-shadow:0 2px 8px #000}#map-loading .mlt{font-size:12px;opacity:.7;margin-bottom:10px}
+#map-loading .mlbar{height:10px;border-radius:6px;background:rgba(255,255,255,.15);overflow:hidden}#map-loading-b{height:100%;width:0;background:linear-gradient(90deg,#ffd54f,#ff8a3a);transition:width .25s}

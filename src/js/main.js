@@ -3,12 +3,14 @@ MAPS.forEach(function (m) { if (!m.arena && !m.safe2x) { m.safeR *= 2; m.safe2x 
 function mapById(id) { for (var i = 0; i < MAPS.length; i++) if (MAPS[i].id === id) return MAPS[i]; return MAPS[0]; }
 function loadMap(id, quiet) {
   var m = mapById(id);
+  if (typeof duelCancel === 'function') duelCancel();
+  mapEditBegin(m);
   curMap = m; WORLD_R = m.R; SAFE_R = m.safeR; AREA = 4; P.map = m.id;
   arenaReset(); mobaClear(); stopAuto(true); pvpClearPeers(); clearPopulation(); clearPickups(); P.target = null;
   timers.length = 0;
   clearWorld(); buildEnvironment(m);
   makePortal(worldGroup, m.portalAt ? m.portalAt[0] : (m.arena ? 0 : 9.5), m.portalAt ? m.portalAt[1] : (m.arena ? 0 : 9.5));   // Blood Arena: only the portal, in the centre
-  P.dest = null;
+  P.dest = null; mapEditBuild(m);
   if (!m.arena) populateTown(m); spawnEnemies(m); spawnAIs(m); worldBossOnMap(m);
   P.pos.set(0, 0, 7); P.c.g.rotation.y = Math.PI;
   if (m.moba) { mobaStart(m); P.pos.set(MOBA_SPAWN.blue[0], 0, MOBA_SPAWN.blue[1]); P.c.g.rotation.y = -Math.PI * 0.25; }
@@ -31,7 +33,7 @@ function travelTo(id) {
     log('Used a Golden Key. You may enter ' + m.name + ' freely for ' + GOLD_PASS_MIN + ' minutes.', '#ffd54f');
   }
   ringFx(P.pos.x, P.pos.z, 4, 0x66ccff, 0.6); pillarFx(P.pos.x, P.pos.z, 0x66ccff); sfx('level');
-  loadMap(id);
+  mapLoading(m.name, function () { loadMap(id); });
 }
 
 var last = performance.now(), fpsAcc = 0, fpsN = 0, saveT = 0, hudT = 0, miniT = 0;
@@ -48,7 +50,7 @@ function frame(now) {
   updateZoomHold(dt); updateAntiCheat(dt);
   if (welcomeOn) cam.yaw += dt * 0.05;
   if (ui.open !== 'name' && !welcomeOn) {      // popups no longer pause the game (only the first-launch name screen does)
-    gameTime += dt; updateTimers(dt); updateAuto(dt); updatePlayer(dt); updatePets(dt); updatePvp(dt); updateLoot(dt); emoUpdate(dt); updateMoba(dt); updateCostumeFx(dt); updateEnemies(dt); updateWorldBoss(dt); updateAIs(dt); updateBots(dt); updatePickups(dt);
+    gameTime += dt; updateTimers(dt); updateAuto(dt); updatePlayer(dt); updatePets(dt); updatePvp(dt); updateLoot(dt); updateDuel(dt); emoUpdate(dt); updateMoba(dt); updateCostumeFx(dt); updateEnemies(dt); updateWorldBoss(dt); updateAIs(dt); updateBots(dt); updatePickups(dt);
     saveT += dt; if (saveT > 15) { saveT = 0; saveGame(); }
   }
   npcs.forEach(function (n) {

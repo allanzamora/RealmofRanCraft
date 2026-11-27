@@ -14,7 +14,7 @@ cloud.js
 anticheat.js
 achievement.js
 rank.js
-
+loot.js
 
 
 

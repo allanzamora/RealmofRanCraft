@@ -3,9 +3,9 @@
    WORLD: every map is built on demand (terrain, props, camp/village, portal, weather)
    ===================================================================== */
 var obstacles = [], bigObs = [], obGrid = {};
-var OB_CELL = 12;
+var OB_CELL = 12, OBS_TAG = null;   // OBS_TAG: 'sc' = scatter() prop, 'rk' = addRocks() rock, 'ed' = placed by the Map Editor data
 function addObstacle(x, z, r) {
-  var o = { x: x, z: z, r: r };
+  var o = { x: x, z: z, r: r, tag: OBS_TAG };
   obstacles.push(o);
   if (r > 5) { bigObs.push(o); return; }
   var k = Math.floor(x / OB_CELL) + ',' + Math.floor(z / OB_CELL);
@@ -75,6 +75,11 @@ function clearWorld() {
 /* scatter instanced props. parts: [{geo, mat, tint}]  o: {rMin, rMax, sMin, sMax, obs, gap, color(i), scaleFn(s), clear(x,z), shadow, y} */
 var _dm = new THREE.Object3D();
 function scatter(g, parts, n, o) {
+  if ((o.obs || o.obsFn) && typeof mapEditSkipScatter === 'function' && mapEditSkipScatter()) return 0;      // Map Editor: this map's props come from MAP_EDITS
+  var prevTag = OBS_TAG; if (!prevTag) OBS_TAG = 'sc';
+  try { return scatter0(g, parts, n, o); } finally { OBS_TAG = prevTag; }
+}
+function scatter0(g, parts, n, o) {
   n = Math.max(1, Math.round(n * AREA * GQ().prop)); var gridG = {}, GC = 8;
   if (S.gfx === 'low') {                                    // Low graphics: every prop becomes one semi-transparent box (1 draw call per prop group)
     var bb = null; try { parts.forEach(function (p) { p.geo.computeBoundingBox(); var b = p.geo.boundingBox; if (!bb) bb = { x0: b.min.x, x1: b.max.x, y0: b.min.y, y1: b.max.y, z0: b.min.z, z1: b.max.z }; else { bb.x0 = Math.min(bb.x0, b.min.x); bb.x1 = Math.max(bb.x1, b.max.x); bb.y0 = Math.min(bb.y0, b.min.y); bb.y1 = Math.max(bb.y1, b.max.y); bb.z0 = Math.min(bb.z0, b.min.z); bb.z1 = Math.max(bb.z1, b.max.z); } }); } catch (e) { bb = null; }
@@ -119,6 +124,9 @@ function geoUp(geo, y) { geo.translate(0, y, 0); return geo; }
 function hsl(h, s, l) { return new THREE.Color().setHSL(h, s, l); }
 
 function addRocks(g, m, n, color) {
+  var pt = OBS_TAG; OBS_TAG = 'rk'; try { addRocks0(g, m, n, color); } finally { OBS_TAG = pt; }
+}
+function addRocks0(g, m, n, color) {
   scatter(g, [{ geo: new THREE.DodecahedronGeometry(1, 0), mat: stdMat(color, { flatShading: true }) }], n,
     { rMin: m.safeR + 6, rMax: m.R + 5, sMin: 0.5, sMax: 1.7, obs: 0.85, y: 0.4, scaleFn: function (s) { return [s, s * 0.8, s]; } });
 }
