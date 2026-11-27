@@ -1,7 +1,17 @@
 /* mapeditor_ui.js - Map Editor (only in three_bundle_map_editor.html): import map_XX.js, view layout, edit, resize, Save = copy-paste code */
 /* ======================= editor UI ======================= */
 var ME = { files: [], on: false, id: null, tool: 'pan', cx: 0, cz: 0, zoom: 2, base: null, size: 0, mob: null, wallA: null, drag: null, pts: {}, pinch: 0, msg: '', root: null };
-var ME_KIND = { tree: [0.55, '#2f9f45'], rock: [0.85, '#9aa0aa'], pillar: [0.9, '#d8d2b8'], crate: [0.9, '#b87a40'], bush: [0.5, '#4fc060'] };
+var ME_KIND = { tree: [0.55, '#2f9f45'], rock: [0.85, '#9aa0aa'], pillar: [0.9, '#d8d2b8'], crate: [0.9, '#b87a40'], bush: [0.5, '#4fc060'],
+  cactus: [0.5, '#3c9a4a'], stump: [0.5, '#7a5230'], mushroom: [0.5, '#d94a4a'], barrel: [0.55, '#8a5a2e'], lamp: [0.35, '#ffd36a'], crystal: [0.7, '#6ad8ff'], tomb: [0.6, '#8a8f98'],
+  statue: [0.8, '#b0aa9a'], well: [1.1, '#8a8478'], tent: [1.6, '#d8c090'], torch: [0.3, '#ff8a3a'], hay: [0.9, '#d8b84a'], flower: [0.35, '#ff7ab8'] };
+var ME_ICON = { tree: '🌲', rock: '🪨', pillar: '🏛', crate: '📦', bush: '🌿', cactus: '🌵', stump: '🪵', mushroom: '🍄', barrel: '🛢', lamp: '💡', crystal: '💎', tomb: '🪦', statue: '🗿', well: '⛲', tent: '⛺', torch: '🔥', hay: '🌾', flower: '🌸', wall: '🧱', mob: '👾', portal: '🌀' };
+var ME_UNDO = [];
+function meUndoPush() { try { ME_UNDO.push(JSON.stringify(MAP_EDITS)); if (ME_UNDO.length > 80) ME_UNDO.shift(); } catch (e) {} }
+function meUndo() {
+  ME.wallA = null; if (!ME_UNDO.length) { ME.msg = 'Nothing to undo.'; meDraw(); return; }
+  var s = JSON.parse(ME_UNDO.pop()); for (var k in MAP_EDITS) delete MAP_EDITS[k]; for (var k2 in s) MAP_EDITS[k2] = s[k2];
+  meSaveWip(); meReload(ME.id, true); ME.msg = 'Undone (' + ME_UNDO.length + ' more).'; meDraw();
+}
 function meEdit(create) { var id = ME.id; if (!MAP_EDITS[id] && create) MAP_EDITS[id] = {}; return MAP_EDITS[id] || null; }
 function meSaveWip() { try { localStorage.setItem('moviex_mapedit_wip', JSON.stringify(MAP_EDITS)); } catch (e) {} }
 function meLoadWip() { try { var w = JSON.parse(localStorage.getItem('moviex_mapedit_wip') || 'null'); if (w) for (var k in w) MAP_EDITS[k] = w[k]; } catch (e) {} }
@@ -24,6 +34,24 @@ function meFreezeMobs() {
   ed.spawns = ME.base.mobs.map(function (b) { return [b.key, +b.x.toFixed(1), +b.z.toFixed(1)]; });
   ME.base.frozenMobs = true; ME.msg = 'Mob spawns frozen (' + ed.spawns.length + ' now editable).'; meSaveWip();
 }
+function meFreezeBuild() {
+  var ed = meEdit(true); if (ed.nb) return;
+  var src = ME.base.obs.filter(function (o) { return o.tag === 'bd'; }), used = new Array(src.length), walls = [], decor = [];
+  function runs(axis) {                      // axis 'x': circles sharing the same z in a row (wall along X); 'z': same x (wall along Z)
+    var key = axis === 'x' ? 'z' : 'x', mv = axis === 'x' ? 'x' : 'z', groups = {};
+    src.forEach(function (o, i) { if (used[i] || o.r > 1.05) return; var k = o[key].toFixed(1); (groups[k] = groups[k] || []).push(i); });
+    Object.keys(groups).forEach(function (k) {
+      var ids = groups[k].sort(function (a, b) { return src[a][mv] - src[b][mv]; }), cur = [];
+      function flush() { if (cur.length >= 3) { var a = src[cur[0]], b = src[cur[cur.length - 1]]; walls.push([+a.x.toFixed(1), +a.z.toFixed(1), +b.x.toFixed(1), +b.z.toFixed(1)]); cur.forEach(function (i) { used[i] = 1; }); } cur = []; }
+      ids.forEach(function (i) { if (cur.length && src[i][mv] - src[cur[cur.length - 1]][mv] > 1.7) flush(); cur.push(i); }); flush();
+    });
+  }
+  runs('x'); runs('z');
+  src.forEach(function (o, i) { if (!used[i]) decor.push([o.r >= 1.2 ? 'crate' : 'pillar', +o.x.toFixed(1), +o.z.toFixed(1), +Math.max(0.3, o.r / 1.1).toFixed(2)]); });
+  ed.nb = true; ed.walls = (ed.walls || []).concat(walls); ed.decor = (ed.decor || []).concat(decor);
+  ME.msg = 'Unlocked the map\'s built-in walls/objects: ' + walls.length + ' walls + ' + decor.length + ' objects are now editable (original 3D decorations removed).'; meSaveWip();
+}
+function meUnlockAll() { var had0 = meEdit(false) && meEdit(false).nb; if (!had0 && ME.tool === 'pan') meUndoPush(); var had = !!(meEdit(false) && meEdit(false).nb); meFreezeDecor(); meFreezeMobs(); meFreezeBuild(); if (!had) { var m = ME.msg; meReload(ME.id, true); ME.msg = m; } meDraw(); }
 function meReload(id, keepView) {
   ME.id = id; var m = mapById(id); mapEditBegin(m);
   try { loadMap(id, true); } catch (e) { ME.msg = 'Map error: ' + e.message; }
@@ -44,9 +72,9 @@ function meDraw() {
   pt = meS(0, 0); g.fillStyle = '#1b2236'; g.beginPath(); g.arc(pt[0], pt[1], R * ME.zoom, 0, 6.2832); g.fill(); g.strokeStyle = '#5aa0ff'; g.lineWidth = 2; g.stroke();
   g.fillStyle = 'rgba(80,220,120,.15)'; g.beginPath(); g.arc(pt[0], pt[1], SR * ME.zoom, 0, 6.2832); g.fill(); g.strokeStyle = '#46d878'; g.lineWidth = 1.5; g.stroke();
   function dot(x, z, r, col, ring) { var p = meS(x, z); g.fillStyle = col; g.beginPath(); g.arc(p[0], p[1], Math.max(1.5, r * ME.zoom), 0, 6.2832); g.fill(); if (ring) { g.strokeStyle = ring; g.lineWidth = 1.5; g.stroke(); } }
-  b.obs.forEach(function (o) { if (o.tag === 'ed') return; if ((o.tag === 'sc' || o.tag === 'rk') && b.frozenDecor) return; dot(o.x, o.z, o.r, o.tag ? '#5f7a66' : '#7d8493'); });
-  if (ed && ed.decor) ed.decor.forEach(function (d) { dot(d[1], d[2], d[3], ME_KIND[d[0]][1], '#ffffff55'); });
-  if (ed && ed.walls) ed.walls.forEach(function (w) { var p1 = meS(w[0], w[1]), p2 = meS(w[2], w[3]); g.strokeStyle = '#d0c8b0'; g.lineWidth = Math.max(2, 1.2 * ME.zoom); g.lineCap = 'round'; g.beginPath(); g.moveTo(p1[0], p1[1]); g.lineTo(p2[0], p2[1]); g.stroke(); });
+  b.obs.forEach(function (o) { if (o.tag === 'ed' || (o.tag === 'bd' && ed && ed.nb)) return; if ((o.tag === 'sc' || o.tag === 'rk') && b.frozenDecor) return; dot(o.x, o.z, o.r, o.tag ? '#5f7a66' : '#7d8493'); });
+  if (ed && ed.decor) ed.decor.forEach(function (d) { dot(d[1], d[2], d[3], (ME_KIND[d[0]] || [0, '#ccc'])[1], '#ffffff55'); });
+  if (ed && ed.walls) ed.walls.forEach(function (w) { var p1 = meS(w[0], w[1]), p2 = meS(w[2], w[3]); g.strokeStyle = '#d0c8b0'; g.lineWidth = Math.max(2, 1.2 * ME.zoom); g.lineCap = 'round'; g.beginPath(); g.moveTo(p1[0], p1[1]); g.lineTo(p2[0], p2[1]); g.stroke(); g.fillStyle = '#ffd54f'; [p1, p2].forEach(function (q) { g.beginPath(); g.arc(q[0], q[1], 4, 0, 6.2832); g.fill(); }); });
   if (ME.wallA) dot(ME.wallA[0], ME.wallA[1], 0.8, '#ffffff');
   var mobs = (ed && ed.spawns) ? ed.spawns.map(function (s) { return { key: s[0], x: s[1], z: s[2], boss: !!(ENEMY_TYPES[s[0]] && ENEMY_TYPES[s[0]].boss), ed: 1 }; }) : b.mobs;
   mobs.forEach(function (s) { dot(s.x, s.z, s.boss ? 3 : 1.6, meColor(s.key), s.boss ? '#fff' : (s.ed ? '#000' : null)); });
@@ -61,36 +89,38 @@ function meNearest(x, z) {
   if (ed) {
     (ed.decor || []).forEach(function (o, i) { consider('decor', i, Math.max(0, Math.hypot(o[1] - x, o[2] - z) - o[3])); });
     (ed.spawns || []).forEach(function (o, i) { consider('spawn', i, Math.hypot(o[1] - x, o[2] - z)); });
-    (ed.walls || []).forEach(function (w, i) { var dx = w[2] - w[0], dz = w[3] - w[1], L2 = dx * dx + dz * dz || 1, t = Math.max(0, Math.min(1, ((x - w[0]) * dx + (z - w[1]) * dz) / L2)); consider('wall', i, Math.hypot(w[0] + dx * t - x, w[1] + dz * t - z)); });
+    (ed.walls || []).forEach(function (w, i) { var dx = w[2] - w[0], dz = w[3] - w[1], L2 = dx * dx + dz * dz || 1, t = Math.max(0, Math.min(1, ((x - w[0]) * dx + (z - w[1]) * dz) / L2)); var d0 = Math.hypot(w[0] - x, w[1] - z), d1 = Math.hypot(w[2] - x, w[3] - z);
+      if (Math.min(d0, d1) < tol) { var bb = { kind: 'wall', idx: i, d: Math.min(d0, d1) - 0.5, end: d0 <= d1 ? 0 : 1 }; if (!best || bb.d < best.d) best = bb; } else consider('wall', i, Math.hypot(w[0] + dx * t - x, w[1] + dz * t - z)); });
   }
   return best;
 }
 function meTap(x, z) {
   var t = ME.tool, ed;
   if (t === 'pan') return;
-  if (['tree', 'rock', 'pillar', 'crate', 'bush'].indexOf(t) >= 0) { meFreezeDecor(); ed = meEdit(true); ed.decor.push([t, +x.toFixed(1), +z.toFixed(1), +(ME.size || ME_KIND[t][0]).toFixed(2)]); }
-  else if (t === 'wall') { if (!ME.wallA) { ME.wallA = [x, z]; ME.msg = 'Tap the wall end point.'; } else { ed = meEdit(true); ed.walls = ed.walls || []; ed.walls.push([+ME.wallA[0].toFixed(1), +ME.wallA[1].toFixed(1), +x.toFixed(1), +z.toFixed(1)]); ME.wallA = null; ME.msg = ''; } }
-  else if (t === 'mob') { if (!ME.mob) { ME.msg = 'Pick a mob type first.'; } else { meFreezeMobs(); ed = meEdit(true); ed.spawns.push([ME.mob, +x.toFixed(1), +z.toFixed(1)]); } }
-  else if (t === 'portal') { ed = meEdit(true); ed.portal = [+x.toFixed(1), +z.toFixed(1)]; }
+  if (ME_KIND[t]) { meUndoPush(); meFreezeDecor(); ed = meEdit(true); ed.decor.push([t, +x.toFixed(1), +z.toFixed(1), +(ME.size || ME_KIND[t][0]).toFixed(2)]); }
+  else if (t === 'wall') { if (!ME.wallA) { ME.wallA = [x, z]; ME.msg = 'Tap the wall end point.'; } else { meUndoPush(); ed = meEdit(true); ed.walls = ed.walls || []; ed.walls.push([+ME.wallA[0].toFixed(1), +ME.wallA[1].toFixed(1), +x.toFixed(1), +z.toFixed(1)]); ME.wallA = null; ME.msg = ''; } }
+  else if (t === 'mob') { if (!ME.mob) { ME.msg = 'Pick a mob type first.'; } else { meUndoPush(); meFreezeMobs(); ed = meEdit(true); ed.spawns.push([ME.mob, +x.toFixed(1), +z.toFixed(1)]); } }
+  else if (t === 'portal') { meUndoPush(); ed = meEdit(true); ed.portal = [+x.toFixed(1), +z.toFixed(1)]; }
   else if (t === 'erase') {
-    meFreezeDecor(); meFreezeMobs(); var h = meNearest(x, z); ed = meEdit(true);
+    meUndoPush(); meUnlockAll(); var h = meNearest(x, z); ed = meEdit(true);
     if (h) { (h.kind === 'decor' ? ed.decor : h.kind === 'spawn' ? ed.spawns : ed.walls).splice(h.idx, 1); } else ME.msg = 'Nothing editable here.';
   }
   meSaveWip(); meDraw();
 }
-function meDragStart(x, z) { if (ME.tool !== 'move') return false; meFreezeDecor(); meFreezeMobs(); var h = meNearest(x, z); if (!h) return false; ME.drag = h; return true; }
+function meDragStart(x, z) { if (ME.tool !== 'move') return false; meUndoPush(); meUnlockAll(); var h = meNearest(x, z); if (!h) return false; ME.drag = h; return true; }
 function meDragMove(x, z) {
   var h = ME.drag, ed = meEdit(false); if (!h || !ed) return;
   if (h.kind === 'decor') { ed.decor[h.idx][1] = +x.toFixed(1); ed.decor[h.idx][2] = +z.toFixed(1); }
   else if (h.kind === 'spawn') { ed.spawns[h.idx][1] = +x.toFixed(1); ed.spawns[h.idx][2] = +z.toFixed(1); }
+  else if (h.end != null) { var we = ed.walls[h.idx]; we[h.end * 2] = +x.toFixed(1); we[h.end * 2 + 1] = +z.toFixed(1); }
   else { var w = ed.walls[h.idx], dx = w[2] - w[0], dz = w[3] - w[1], mx = (w[0] + w[2]) / 2, mz = (w[1] + w[3]) / 2; w[0] = +(x - dx / 2).toFixed(1); w[1] = +(z - dz / 2).toFixed(1); w[2] = +(x + dx / 2).toFixed(1); w[3] = +(z + dz / 2).toFixed(1); }
   meDraw();
 }
 function meResize(R, SR, scaleObjs) {
   var m = mapById(ME.id), old = (meEdit(false) && meEdit(false).R) || m._R0 || m.R; R = Math.max(40, Math.min(1200, R | 0)); SR = Math.max(0, Math.min(R - 10, +SR || 0));
-  var ed = meEdit(true), k = R / old;
+  meUndoPush(); var ed = meEdit(true), k = R / old;
   if (scaleObjs && k !== 1) {
-    meFreezeDecor(); meFreezeMobs();
+    meUnlockAll(); ed = meEdit(true);
     ed.decor.forEach(function (d) { d[1] = +(d[1] * k).toFixed(1); d[2] = +(d[2] * k).toFixed(1); });
     ed.spawns.forEach(function (d) { d[1] = +(d[1] * k).toFixed(1); d[2] = +(d[2] * k).toFixed(1); });
     (ed.walls || []).forEach(function (w) { for (var i = 0; i < 4; i++) w[i] = +(w[i] * k).toFixed(1); });
@@ -155,6 +185,7 @@ function meUI() {
     keys.forEach(function (k) { var o = document.createElement('option'); o.value = k; o.textContent = ENEMY_TYPES[k].name + ' Lv' + ENEMY_TYPES[k].lvl; o.style.color = meColor(k); ms.appendChild(o); }); ms.value = cv && ENEMY_TYPES[cv] ? cv : keys[0]; ME.mob = ms.value; }
   var ed = meEdit(false), m = mapById(ME.id); if (ME.rIn) { ME.rIn.value = (ed && ed.R) || m.R; ME.sIn.value = (ed && ed.safeR != null) ? ed.safeR : m.safeR; }
   Array.prototype.forEach.call(ME.root.querySelectorAll('[data-tool]'), function (b) { b.style.outline = b.dataset.tool === ME.tool ? '2px solid #ffd54f' : 'none'; });
+  if (ME.place) ME.place.value = ME_KIND[ME.tool] || ME.tool === 'wall' || ME.tool === 'mob' || ME.tool === 'portal' ? ME.tool : '';
 }
 function openMapEditor() {
   if (ME.on) return; meLoadWip(); ME.on = true; ME.prevUi = ui.open; ui.open = 'editor';
@@ -169,8 +200,15 @@ function openMapEditor() {
   var imp = mk('input', 'display:none', null, top); imp.type = 'file'; imp.accept = '.js,text/javascript'; imp.multiple = true; imp.addEventListener('change', function () { if (imp.files.length) meImport(imp.files); imp.value = ''; });
   B('Import map .js', function () { imp.click(); }, top);
   B('💾 Save code', function () { meSaveDialog(); }, top).style.background = '#1f7a3a';
+  B('↶ Undo', function () { meUndo(); }, top);
+  ME.place = mk('select', 'max-width:44vw;padding:6px;margin:2px;background:#222a44;color:#fff;border:1px solid #556;border-radius:7px;font-size:13px;font-weight:700', null, top);
+  var og = document.createElement('option'); og.value = ''; og.textContent = '➕ Place object…'; ME.place.appendChild(og);
+  [['Nature', ['tree', 'bush', 'flower', 'mushroom', 'cactus', 'stump', 'rock']], ['Structures', ['wall', 'pillar', 'crate', 'barrel', 'hay', 'tent', 'well', 'statue', 'tomb']], ['Lights / magic', ['lamp', 'torch', 'crystal']], ['Game', ['mob', 'portal']]].forEach(function (grp) {
+    var g = document.createElement('optgroup'); g.label = grp[0]; grp[1].forEach(function (k) { var o = document.createElement('option'); o.value = k; o.textContent = ME_ICON[k] + ' ' + k.charAt(0).toUpperCase() + k.slice(1); g.appendChild(o); }); ME.place.appendChild(g);
+  });
+  ME.place.addEventListener('change', function () { if (ME.place.value) { ME.tool = ME.place.value; ME.wallA = null; ME.msg = ''; meUI(); meDraw(); } });
   var tools = mk('div', 'padding:2px 4px;background:#12162a;display:flex;flex-wrap:wrap;align-items:center');
-  [['pan', '✋ Pan'], ['tree', '🌲 Tree'], ['rock', '🪨 Rock'], ['pillar', '🏛 Pillar'], ['crate', '📦 Crate'], ['bush', '🌿 Bush'], ['wall', '🧱 Wall'], ['mob', '👾 Mob'], ['portal', '🌀 Portal'], ['move', '↔ Move'], ['erase', '🗑 Erase']].forEach(function (t) {
+  [['pan', '✋ Pan'], ['move', '↔ Move'], ['erase', '🗑 Erase']].forEach(function (t) {
     B(t[1], function () { ME.tool = t[0]; ME.wallA = null; ME.msg = ''; meUI(); meDraw(); }, tools, t[0]);
   });
   ME.mobSel = mk('select', 'max-width:40vw;padding:5px;background:#222a44;color:#fff;border:1px solid #556;border-radius:6px', null, tools); ME.mobSel.addEventListener('change', function () { ME.mob = ME.mobSel.value; ME.tool = 'mob'; meUI(); });
@@ -180,9 +218,9 @@ function openMapEditor() {
   mk('span', null, 'Safe zone', rs); ME.sIn = mk('input', 'width:54px;margin:0 6px 0 4px;padding:4px;background:#222a44;color:#fff;border:1px solid #556;border-radius:6px', null, rs); ME.sIn.type = 'number';
   var lab = mk('label', 'margin-right:6px', null, rs), cb = mk('input', null, null, lab); cb.type = 'checkbox'; cb.checked = true; lab.appendChild(document.createTextNode(' scale objects'));
   B('Apply resize', function () { meResize(+ME.rIn.value, +ME.sIn.value, cb.checked); }, rs);
-  B('Freeze props', function () { meFreezeDecor(); meDraw(); }, rs); B('Freeze mobs', function () { meFreezeMobs(); meDraw(); }, rs);
+  B('🔓 Unlock everything', function () { meUnlockAll(); }, rs);
   B('+', function () { ME.zoom = Math.min(8, ME.zoom * 1.3); meDraw(); }, rs); B('−', function () { ME.zoom = Math.max(0.2, ME.zoom / 1.3); meDraw(); }, rs);
-  B('Clear edits of this map', function () { delete MAP_EDITS[ME.id]; meSaveWip(); meReload(ME.id, true); }, rs);
+  B('Clear edits of this map', function () { meUndoPush(); delete MAP_EDITS[ME.id]; meSaveWip(); meReload(ME.id, true); }, rs);
   ME.info = mk('div', 'padding:3px 6px;background:#0f1322;color:#9fd8ff;font-size:11px;min-height:15px');
   var cv = mk('canvas', 'flex:1;width:100%;min-height:0;touch-action:none'); ME.cv = cv;
   document.body.appendChild(r);

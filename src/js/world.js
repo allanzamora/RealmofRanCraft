@@ -76,7 +76,7 @@ function clearWorld() {
 var _dm = new THREE.Object3D();
 function scatter(g, parts, n, o) {
   if ((o.obs || o.obsFn) && typeof mapEditSkipScatter === 'function' && mapEditSkipScatter()) return 0;      // Map Editor: this map's props come from MAP_EDITS
-  var prevTag = OBS_TAG; if (!prevTag) OBS_TAG = 'sc';
+  var prevTag = OBS_TAG; if (!prevTag || prevTag === 'bd') OBS_TAG = 'sc';
   try { return scatter0(g, parts, n, o); } finally { OBS_TAG = prevTag; }
 }
 function scatter0(g, parts, n, o) {
@@ -169,7 +169,7 @@ function buildEnvironment(m) {
   ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; g.add(ground);
   ground.material.map.repeat.set((m.R * 2 + 600) / 8.2, (m.R * 2 + 600) / 8.2);
 
-  if (m.build) m.build(g, m);
+  if (m.build && !(CUR_EDIT && CUR_EDIT.nb)) { var bt = OBS_TAG; OBS_TAG = 'bd'; try { m.build(g, m); } finally { OBS_TAG = bt; } }   // 'bd' = the map's own built-in walls/furniture (the Map Editor can unlock these)
   if (!m.hub && !m.noCamp) buildCamp(g, m);
   addMountains(g, m, T.mount);
 

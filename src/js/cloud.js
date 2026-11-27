@@ -1,1 +1,223 @@
-var _0x2cde8a=_0x4130;(function(_0x2d7495,_0x131325){var _0x237781=_0x4130,_0x1f30b3=_0x2d7495();while(!![]){try{var _0x503014=-parseInt(_0x237781(0x232))/0x1+parseInt(_0x237781(0x225))/0x2*(parseInt(_0x237781(0x1e3))/0x3)+parseInt(_0x237781(0x26e))/0x4+parseInt(_0x237781(0x25b))/0x5*(parseInt(_0x237781(0x259))/0x6)+-parseInt(_0x237781(0x274))/0x7+parseInt(_0x237781(0x21e))/0x8*(-parseInt(_0x237781(0x206))/0x9)+-parseInt(_0x237781(0x279))/0xa;if(_0x503014===_0x131325)break;else _0x1f30b3['push'](_0x1f30b3['shift']());}catch(_0x1d4747){_0x1f30b3['push'](_0x1f30b3['shift']());}}}(_0x5104,0x7c5a5));var FIREBASE_CONFIG={'apiKey':'AIzaSyDW3stEoUduTdsrCl9v6mCdQcHBLahG80A','authDomain':_0x2cde8a(0x252),'databaseURL':'https://html-codes-encrytper.firebaseio.com','projectId':_0x2cde8a(0x24e),'storageBucket':_0x2cde8a(0x273),'messagingSenderId':_0x2cde8a(0x1f9),'appId':'1:755964720135:web:0087dad8e2b4a5715366a2'},CLOUD={'rt':![],'sid':Math[_0x2cde8a(0x200)]()[_0x2cde8a(0x1fd)](0x24)['slice'](0x2)+Date[_0x2cde8a(0x28d)]()[_0x2cde8a(0x1fd)](0x24),'baseTs':0x0,'conflict':![],'auth':null,'db':null,'user':null,'ready':![],'synced':![],'dirty':![],'last':0x0,'status':'','err':'','waiters':[],'pushing':![]},CLOUD_UID_KEY=_0x2cde8a(0x231),CLOUD_TS_KEY=_0x2cde8a(0x244),CLOUD_CFG_KEY=_0x2cde8a(0x1f3);function lsGet(_0x5aaf91){var _0x28bd8f=_0x2cde8a;try{return localStorage[_0x28bd8f(0x25d)](_0x5aaf91);}catch(_0x1ec0cb){return null;}}function lsSet(_0x211510,_0x344eec){var _0x1a5b76=_0x2cde8a;try{localStorage[_0x1a5b76(0x25f)](_0x211510,_0x344eec);}catch(_0x1bc875){}}function lsDel(_0x5ef3be){var _0x4fd1ff=_0x2cde8a;try{localStorage[_0x4fd1ff(0x1ea)](_0x5ef3be);}catch(_0xf1c92a){}}function cloudCfg(){var _0x4f126e=_0x2cde8a,_0x5d5f54=FIREBASE_CONFIG;if(_0x5d5f54&&_0x5d5f54[_0x4f126e(0x26c)]&&_0x5d5f54[_0x4f126e(0x215)])return _0x5d5f54;return null;}function cloudInit(){var _0x336419=_0x2cde8a;if(CLOUD['auth'])return!![];if(typeof firebase==='undefined')return CLOUD[_0x336419(0x247)]='sdk',![];var _0xddf38f=cloudCfg();if(!_0xddf38f)return CLOUD['err']=_0x336419(0x20f),![];try{if(!firebase[_0x336419(0x27e)]||!firebase[_0x336419(0x27e)][_0x336419(0x254)])firebase['initializeApp'](_0xddf38f);CLOUD[_0x336419(0x1e2)]=firebase[_0x336419(0x1e2)]();if(_0xddf38f[_0x336419(0x281)]&&typeof firebase['database']===_0x336419(0x233))CLOUD['rt']=!![],CLOUD['db']=firebase[_0x336419(0x28c)]();else{CLOUD['rt']=![],CLOUD['db']=firebase['firestore']();try{CLOUD['db'][_0x336419(0x224)]({'experimentalAutoDetectLongPolling':!![],'merge':!![]});}catch(_0x5a30da){}}return CLOUD[_0x336419(0x1e2)]['onAuthStateChanged'](function(_0x12b36b){var _0x48aff9=_0x336419;CLOUD[_0x48aff9(0x203)]=_0x12b36b||null,CLOUD[_0x48aff9(0x1ed)]=!![];var _0x420b48=CLOUD[_0x48aff9(0x275)];CLOUD[_0x48aff9(0x275)]=[],_0x420b48['forEach'](function(_0x389e78){_0x389e78();});}),!![];}catch(_0x266917){return CLOUD[_0x336419(0x247)]=_0x336419(0x249),CLOUD[_0x336419(0x1e2)]=null,![];}}function cloudWhenReady(_0x1b8267){var _0x37476a=_0x2cde8a;if(CLOUD[_0x37476a(0x1ed)]){_0x1b8267();return;}var _0x291389=![],_0x2c1527=function(){if(_0x291389)return;_0x291389=!![],_0x1b8267();};CLOUD['waiters'][_0x37476a(0x22e)](_0x2c1527),setTimeout(_0x2c1527,0x1b58);}function cloudMark(){var _0xebba6f=_0x2cde8a;if(!CLOUD['synced'])return;lsSet(CLOUD_TS_KEY,String(Date['now']()));if(CLOUD[_0xebba6f(0x203)])CLOUD['dirty']=!![];}function cloudPeek(_0xf3dd0b){var _0xb7e7d7=_0x2cde8a;try{if(!_0xf3dd0b)return null;var _0x5ce418=_0xf3dd0b;if(_0xf3dd0b['slice'](0x0,0x4)===_0xb7e7d7(0x263))_0x5ce418=_0xf3dd0b[_0xb7e7d7(0x284)](_0xf3dd0b[_0xb7e7d7(0x288)]('.',0x4)+0x1);var _0xef3714=JSON['parse'](_0x5ce418);return _0xef3714&&typeof _0xef3714==='object'?_0xef3714:null;}catch(_0x1928c8){return null;}}function cloudTimeout(_0x416b36,_0x4301d7){return new Promise(function(_0x205e1e,_0x400e05){var _0x4597e8=_0x4130,_0x4d597e=setTimeout(function(){var _0x9c7db0=_0x4130;_0x400e05(new Error(_0x9c7db0(0x22d)));},_0x4301d7);_0x416b36[_0x4597e8(0x258)](function(_0x5aec19){clearTimeout(_0x4d597e),_0x205e1e(_0x5aec19);},function(_0xc89ad2){clearTimeout(_0x4d597e),_0x400e05(_0xc89ad2);});});}function cloudGet(_0x326251){var _0x2a3784=_0x2cde8a;if(CLOUD['rt'])return CLOUD['db'][_0x2a3784(0x242)](_0x2a3784(0x24f)+_0x326251)['once']('value')[_0x2a3784(0x258)](function(_0x4f7536){return _0x4f7536['val']()||null;});return CLOUD['db'][_0x2a3784(0x277)]('users')[_0x2a3784(0x1db)](_0x326251)[_0x2a3784(0x205)]()[_0x2a3784(0x258)](function(_0x24e4c2){var _0x3b6c24=_0x2a3784;return _0x24e4c2['exists']?_0x24e4c2[_0x3b6c24(0x23e)]():null;});}function _0x5104(){var _0x5e424f=['body','no\x20time','A\x20hero\x20already\x20exists\x20on\x20this\x20device\x20AND\x20in\x20your\x20account.\x20Which\x20one\x20do\x20you\x20want\x20to\x20keep?','html-codes-encrytper.firebasestorage.app','2353526EfDYBI','waiters','placeholder','collection','key','5548390gmtWTv','Password\x20reset\x20link\x20sent\x20to\x20','Changes\x20pending\x20(auto-saves\x20every\x2030s)','\x20gold','Realm\x20of\x20RanCraft','apps','div','\x20-\x20Lv\x20','databaseURL','Online\x20login\x20is\x20not\x20available\x20right\x20now.','asub','slice','value','Wrong\x20email\x20or\x20password.','Could\x20not\x20reach\x20the\x20cloud\x20save.\x20Check\x20your\x20internet\x20and\x20log\x20in\x20again.','indexOf','abox','Enter','replace','database','now','amsg','update','Password\x20must\x20be\x20at\x20least\x206\x20characters.','reload','set','doc','className','lvl','appendChild','offline','CREATE\x20ACCOUNT','Online\x20login\x20is\x20not\x20available\x20right\x20now.\x20You\x20can\x20Play\x20offline.','auth','1269GgjWgs','Enter\x20your\x20password.','.\x20Check\x20your\x20inbox\x20(and\x20spam).','visibilitychange','message','code','textContent','removeItem','PAUSED\x20-\x20account\x20used\x20on\x20another\x20device.\x20Log\x20out\x20and\x20in\x20again.','status','ready','name','signOut','Password\x20(min\x206\x20characters)','Please\x20enter\x20a\x20valid\x20email\x20address.','display','moviex_fbcfg','Email/Password\x20sign-in\x20is\x20not\x20enabled\x20in\x20Firebase\x20(Authentication\x20>\x20Sign-in\x20method).','uid','save','flex','type','755964720135','reb','used','opacity','toString','Error:\x20','toLowerCase','random','busy','Cloud\x20save\x20is\x20up\x20to\x20date','user','Could\x20not\x20sync\x20-\x20will\x20retry','get','90JeIbcQ','exists','disabled','root','signInWithEmailAndPassword','conflict','Not\x20logged\x20in\x20(offline\x20mode)','atabs','button','cfg','forEach','catch','resolve','createUserWithEmailAndPassword','preventDefault','projectId','error','pw2','LOGIN','sign','max','pagehide','currentUser','current-password','473672ajrEUE','val','This\x20account\x20is\x20being\x20played\x20on\x20another\x20device.\x20Cloud\x20saving\x20is\x20paused\x20here\x20-\x20log\x20out\x20and\x20log\x20in\x20again.','block','choose','test','settings','1954hoHvkM','click','trim','createElement','Hero','That\x20email\x20already\x20has\x20an\x20account.\x20Use\x20Login.','baseTs','sid','timeout','push','none','codes','moviex_uid','159123UshVwp','function','innerHTML','#ffcc88','Cannot\x20load\x20the\x20online\x20service\x20(no\x20internet?).\x20You\x20can\x20Play\x20offline.','Play\x20offline','ago','auth-screen','new-password','password','spellcheck','addEventListener','data','Online\x20login\x20is\x20misconfigured\x20(API\x20key).','msg','keydown','ref','Cloud\x20account:\x20','moviex_ts','gold','named','err','style','init','This\x20account\x20is\x20disabled.','email','sendPasswordResetEmail','last','html-codes-encrytper','users/','\x20bad','moviex_auto','html-codes-encrytper.firebaseapp.com','codes/','length','reject','Logging\x20in...','login','then','12bkbSkT','This\x20device:\x20','2015120loVZGu','synced','getItem','alinks','setItem','off','input','.info/serverTimeOffset','AC1.','Forgot\x20password?','No\x20internet\x20connection.','retry','mode','dirty','once','hidden','pushing','apiKey','Saving...','3729200joBkWD','Confirm\x20password'];_0x5104=function(){return _0x5e424f;};return _0x5104();}function cloudCodeKey(_0x26822d){var _0x35d985=_0x2cde8a;return String(_0x26822d||'')['trim']()[_0x35d985(0x1ff)]()[_0x35d985(0x28b)](/[^a-z0-9_-]+/g,'_')[_0x35d985(0x28b)](/^_+|_+$/g,'')[_0x35d985(0x284)](0x0,0x28);}function cloudGetCode(_0x9e09fe){var _0x1d7669=_0x2cde8a;if(!CLOUD['user']||!CLOUD['db'])return Promise['reject'](new Error(_0x1d7669(0x1df)));var _0xb1198b=CLOUD['rt']?CLOUD['db'][_0x1d7669(0x242)](_0x1d7669(0x253)+_0x9e09fe)[_0x1d7669(0x269)](_0x1d7669(0x285))[_0x1d7669(0x258)](function(_0x11f3bd){var _0x22b0bf=_0x1d7669;return _0x11f3bd[_0x22b0bf(0x21f)]()||null;}):CLOUD['db']['collection'](_0x1d7669(0x230))[_0x1d7669(0x1db)](_0x9e09fe)[_0x1d7669(0x205)]()[_0x1d7669(0x258)](function(_0x354a48){var _0x2a85fa=_0x1d7669;return _0x354a48[_0x2a85fa(0x207)]?_0x354a48[_0x2a85fa(0x23e)]():null;});return cloudTimeout(_0xb1198b,0x2710);}function cloudClaimCode(_0x9d5fe){var _0xf123c6=_0x2cde8a;if(!CLOUD['user']||!CLOUD['db'])return Promise[_0xf123c6(0x255)](new Error('offline'));var _0x35543e=CLOUD[_0xf123c6(0x203)][_0xf123c6(0x1f5)];if(CLOUD['rt'])return cloudTimeout(CLOUD['db']['ref'](_0xf123c6(0x253)+_0x9d5fe+'/used')['set'](_0x35543e)['then'](function(){return!![];},function(_0x3c4395){var _0x4031b1=_0xf123c6;if(_0x3c4395&&/permission|denied/i[_0x4031b1(0x223)](String(_0x3c4395[_0x4031b1(0x1e8)]||_0x3c4395[_0x4031b1(0x1e7)])))return![];throw _0x3c4395;}),0x2710);var _0x20ee7a=CLOUD['db'][_0xf123c6(0x277)]('codes')['doc'](_0x9d5fe);return cloudTimeout(CLOUD['db']['runTransaction'](function(_0x156c62){var _0x24ec98=_0xf123c6;return _0x156c62[_0x24ec98(0x205)](_0x20ee7a)[_0x24ec98(0x258)](function(_0x1358da){var _0x58506c=_0x24ec98;if(!_0x1358da['exists']||_0x1358da['data']()[_0x58506c(0x1fb)])return![];return _0x156c62[_0x58506c(0x28f)](_0x20ee7a,{'used':_0x35543e}),!![];});})[_0xf123c6(0x211)](function(_0x597035){var _0x523573=_0xf123c6;if(_0x597035&&/permission|denied/i[_0x523573(0x223)](String(_0x597035[_0x523573(0x1e8)]||_0x597035[_0x523573(0x1e7)])))return![];throw _0x597035;}),0x2710);}function cloudServerDay(){var _0x292218=_0x2cde8a;if(!CLOUD['user']||!CLOUD['db']||!CLOUD['rt'])return Promise['reject'](new Error('offline'));return cloudTimeout(CLOUD['db'][_0x292218(0x242)](_0x292218(0x262))[_0x292218(0x269)]('value'),0x1f40)[_0x292218(0x258)](function(_0x5dfe41){var _0x4949c2=_0x292218,_0x23e507=+_0x5dfe41[_0x4949c2(0x21f)]();if(!isFinite(_0x23e507))throw new Error(_0x4949c2(0x271));return new Date(Date[_0x4949c2(0x28d)]()+_0x23e507+0x8*0xe10*0x3e8)['toISOString']()[_0x4949c2(0x284)](0x0,0xa);});}function cloudSet(_0x56e7a4,_0x18e1d6){var _0x15bacc=_0x2cde8a;return CLOUD['rt']?CLOUD['db']['ref'](_0x15bacc(0x24f)+_0x56e7a4)[_0x15bacc(0x1da)](_0x18e1d6):CLOUD['db'][_0x15bacc(0x277)]('users')['doc'](_0x56e7a4)[_0x15bacc(0x1da)](_0x18e1d6);}function _0x4130(_0x512cc3,_0x52a64f){_0x512cc3=_0x512cc3-0x1da;var _0x51049e=_0x5104();var _0x41300e=_0x51049e[_0x512cc3];return _0x41300e;}function cloudPush(_0x2a0342){var _0x1f6f44=_0x2cde8a;if(!CLOUD[_0x1f6f44(0x203)]||!CLOUD['db']||!CLOUD[_0x1f6f44(0x25c)]||CLOUD[_0x1f6f44(0x20b)])return Promise[_0x1f6f44(0x212)](![]);if(!_0x2a0342&&!CLOUD[_0x1f6f44(0x268)])return Promise[_0x1f6f44(0x212)](!![]);var _0x18f306=lsGet(SAVE_KEY);if(!_0x18f306)return Promise[_0x1f6f44(0x212)](![]);var _0x4441bb=+lsGet(CLOUD_TS_KEY)||Date[_0x1f6f44(0x28d)](),_0x9b1e6d=CLOUD[_0x1f6f44(0x203)][_0x1f6f44(0x1f5)];return CLOUD[_0x1f6f44(0x268)]=![],CLOUD[_0x1f6f44(0x26b)]=!![],cloudTimeout(cloudGet(_0x9b1e6d),0x2710)[_0x1f6f44(0x258)](function(_0xb3b8ac){var _0x1bedcd=_0x1f6f44;if(_0xb3b8ac&&_0xb3b8ac[_0x1bedcd(0x22c)]&&_0xb3b8ac[_0x1bedcd(0x22c)]!==CLOUD['sid']&&(+_0xb3b8ac['ts']||0x0)>CLOUD['baseTs']){CLOUD['conflict']=!![],CLOUD[_0x1bedcd(0x26b)]=![],CLOUD[_0x1bedcd(0x1ec)]=_0x1bedcd(0x20b);try{log(_0x1bedcd(0x220),'#ff9a9a');}catch(_0xceb788){}return![];}return cloudTimeout(cloudSet(_0x9b1e6d,{'save':_0x18f306,'ts':_0x4441bb,'sid':CLOUD[_0x1bedcd(0x22c)],'name':String(P['name']||''),'lvl':P[_0x1bedcd(0x1dd)]|0x0,'email':String(CLOUD[_0x1bedcd(0x203)]['email']||'')}),0x2710)[_0x1bedcd(0x258)](function(){var _0x5bdd9a=_0x1bedcd;return CLOUD[_0x5bdd9a(0x26b)]=![],CLOUD[_0x5bdd9a(0x24d)]=Date[_0x5bdd9a(0x28d)](),CLOUD[_0x5bdd9a(0x22b)]=_0x4441bb,CLOUD['status']='ok',!![];});})[_0x1f6f44(0x211)](function(){var _0x4a71da=_0x1f6f44;return CLOUD[_0x4a71da(0x26b)]=![],CLOUD[_0x4a71da(0x268)]=!![],CLOUD[_0x4a71da(0x1ec)]=_0x4a71da(0x216),![];});}setInterval(function(){var _0x5793fc=_0x2cde8a;if(CLOUD[_0x5793fc(0x268)]&&CLOUD[_0x5793fc(0x203)]&&!CLOUD[_0x5793fc(0x26b)]&&Date[_0x5793fc(0x28d)]()-CLOUD[_0x5793fc(0x24d)]>0x7530)cloudPush();},0x2710),document[_0x2cde8a(0x23d)](_0x2cde8a(0x1e6),function(){var _0x458aa2=_0x2cde8a;if(document[_0x458aa2(0x26a)])setTimeout(function(){var _0x8b504b=_0x458aa2;if(CLOUD[_0x8b504b(0x268)])cloudPush();},0x32);}),window[_0x2cde8a(0x23d)](_0x2cde8a(0x21b),function(){var _0x47831e=_0x2cde8a;if(CLOUD[_0x47831e(0x268)])cloudPush();});function cloudStatusText(){var _0x23051d=_0x2cde8a;if(!CLOUD[_0x23051d(0x203)])return _0x23051d(0x20c);if(CLOUD['conflict'])return _0x23051d(0x1eb);if(CLOUD[_0x23051d(0x1ec)]===_0x23051d(0x216))return _0x23051d(0x204);if(CLOUD[_0x23051d(0x26b)])return _0x23051d(0x26d);if(CLOUD[_0x23051d(0x268)])return _0x23051d(0x27b);return CLOUD[_0x23051d(0x24d)]?'Saved\x20to\x20cloud\x20'+Math[_0x23051d(0x21a)](0x0,Math['round']((Date[_0x23051d(0x28d)]()-CLOUD[_0x23051d(0x24d)])/0x3e8))+'s\x20ago':_0x23051d(0x202);}function cloudLogout(_0x564f02){var _0x3dc053=_0x2cde8a;noSave=!![],saveGameRaw(),CLOUD[_0x3dc053(0x25c)]=!![],CLOUD[_0x3dc053(0x268)]=!![],cloudPush(!![])['then'](function(_0x73a430){var _0x143522=_0x3dc053;if(!_0x73a430&&!CLOUD[_0x143522(0x20b)]){noSave=![];if(_0x564f02)_0x564f02(![]);return;}lsDel(SAVE_KEY),lsDel(CLOUD_UID_KEY),lsDel(CLOUD_TS_KEY);var _0x1cc252=function(){var _0x49c43=_0x143522;location[_0x49c43(0x291)]();};try{CLOUD[_0x143522(0x1e2)][_0x143522(0x1ef)]()[_0x143522(0x258)](_0x1cc252,_0x1cc252);}catch(_0x396b3c){_0x1cc252();}});}function saveGameRaw(){noSave=![];try{saveGame();}catch(_0x35f200){}noSave=!![];}var authUI=null,authStart=null;function authMsg(_0x16073f,_0x247f10){var _0x331b64=_0x2cde8a;if(!authUI)return;authUI[_0x331b64(0x240)][_0x331b64(0x1e9)]=_0x16073f||'',authUI[_0x331b64(0x240)][_0x331b64(0x1dc)]='amsg'+(_0x247f10?_0x331b64(0x250):'');}function authErrText(_0x219c7c){var _0x10671c=_0x2cde8a,_0x111d8a=_0x219c7c&&_0x219c7c[_0x10671c(0x1e8)]||'',_0x107868={'auth/email-already-in-use':_0x10671c(0x22a),'auth/invalid-email':_0x10671c(0x1f1),'auth/weak-password':_0x10671c(0x290),'auth/user-not-found':'No\x20account\x20with\x20that\x20email.\x20Use\x20Sign\x20Up.','auth/wrong-password':'Wrong\x20password.','auth/invalid-credential':'Wrong\x20email\x20or\x20password.','auth/invalid-login-credentials':_0x10671c(0x286),'auth/too-many-requests':'Too\x20many\x20attempts.\x20Wait\x20a\x20few\x20minutes\x20and\x20try\x20again.','auth/network-request-failed':_0x10671c(0x265),'auth/operation-not-allowed':_0x10671c(0x1f4),'auth/invalid-api-key':_0x10671c(0x23f),'auth/api-key-not-valid.-please-pass-a-valid-api-key.':_0x10671c(0x23f),'auth/unauthorized-domain':'This\x20website\x20address\x20is\x20not\x20allowed\x20in\x20Firebase\x20(Authentication\x20>\x20Settings\x20>\x20Authorized\x20domains).','auth/user-disabled':_0x10671c(0x24a),'auth/missing-password':_0x10671c(0x1e4),'auth/missing-email':'Enter\x20your\x20email.'};return _0x107868[_0x111d8a]||_0x10671c(0x1fe)+(_0x111d8a||_0x219c7c&&_0x219c7c[_0x10671c(0x1e7)]||'unknown');}function authBuild(){var _0x1a4114=_0x2cde8a;if(authUI)return;var _0x88360e=document[_0x1a4114(0x228)](_0x1a4114(0x27f));_0x88360e['id']=_0x1a4114(0x239),document[_0x1a4114(0x270)][_0x1a4114(0x1de)](_0x88360e);var _0x1ae74a=h(_0x1a4114(0x27f),_0x1a4114(0x289),null,_0x88360e);h('h2',null,_0x1a4114(0x27d),_0x1ae74a);var _0x4269c5=h('p',_0x1a4114(0x283),'Log\x20in\x20to\x20save\x20your\x20hero\x20online\x20and\x20play\x20on\x20any\x20device.',_0x1ae74a),_0x5dd2c2=h(_0x1a4114(0x27f),_0x1a4114(0x20d),null,_0x1ae74a),_0x262b6a=h(_0x1a4114(0x20e),'on','Login',_0x5dd2c2),_0x213586=h(_0x1a4114(0x20e),null,'Sign\x20Up',_0x5dd2c2),_0x3516b2=h(_0x1a4114(0x261),null,null,_0x1ae74a);_0x3516b2[_0x1a4114(0x1f8)]=_0x1a4114(0x24b),_0x3516b2[_0x1a4114(0x276)]='Email',_0x3516b2['autocomplete']='email',_0x3516b2['autocapitalize']=_0x1a4114(0x260),_0x3516b2[_0x1a4114(0x23c)]=![];var _0x99286b=h(_0x1a4114(0x261),null,null,_0x1ae74a);_0x99286b[_0x1a4114(0x1f8)]=_0x1a4114(0x23b),_0x99286b[_0x1a4114(0x276)]=_0x1a4114(0x1f0),_0x99286b['autocomplete']='current-password';var _0x196a0d=h('input',null,null,_0x1ae74a);_0x196a0d[_0x1a4114(0x1f8)]=_0x1a4114(0x23b),_0x196a0d[_0x1a4114(0x276)]=_0x1a4114(0x26f),_0x196a0d['autocomplete']=_0x1a4114(0x23a),_0x196a0d[_0x1a4114(0x248)][_0x1a4114(0x1f2)]=_0x1a4114(0x22f);var _0x4919a6=h(_0x1a4114(0x20e),_0x1a4114(0x238),_0x1a4114(0x218),_0x1ae74a),_0x2012fd=h('div',_0x1a4114(0x28e),'',_0x1ae74a),_0x58bdc8=h(_0x1a4114(0x27f),_0x1a4114(0x25e),null,_0x1ae74a),_0x5053d9=h('a',null,_0x1a4114(0x264),_0x58bdc8),_0x31b40d=h('a',null,_0x1a4114(0x237),_0x58bdc8);_0x31b40d[_0x1a4114(0x248)][_0x1a4114(0x1f2)]='none';var _0x49c941=h('div','achoose',null,_0x1ae74a);_0x49c941[_0x1a4114(0x248)]['display']=_0x1a4114(0x22f),authUI={'root':_0x88360e,'box':_0x1ae74a,'msg':_0x2012fd,'tabs':[_0x262b6a,_0x213586],'email':_0x3516b2,'pw':_0x99286b,'pw2':_0x196a0d,'go':_0x4919a6,'off':_0x31b40d,'choose':_0x49c941,'mode':_0x1a4114(0x257),'busy':![],'sub':_0x4269c5};function _0x433cf4(_0x1e0f8e){var _0x505fb5=_0x1a4114;authUI[_0x505fb5(0x267)]=_0x1e0f8e,_0x262b6a['className']=_0x1e0f8e===_0x505fb5(0x257)?'on':'',_0x213586['className']=_0x1e0f8e===_0x505fb5(0x219)?'on':'',_0x196a0d[_0x505fb5(0x248)][_0x505fb5(0x1f2)]=_0x1e0f8e===_0x505fb5(0x219)?'':'none',_0x4919a6['textContent']=_0x1e0f8e===_0x505fb5(0x219)?_0x505fb5(0x1e0):_0x505fb5(0x218),_0x99286b['autocomplete']=_0x1e0f8e===_0x505fb5(0x219)?'new-password':_0x505fb5(0x21d),authMsg('');}_0x262b6a[_0x1a4114(0x23d)](_0x1a4114(0x226),function(){var _0x3286a2=_0x1a4114;_0x433cf4(_0x3286a2(0x257));}),_0x213586[_0x1a4114(0x23d)](_0x1a4114(0x226),function(){var _0x594f67=_0x1a4114;_0x433cf4(_0x594f67(0x219));});function _0x2e7f57(_0x2074a5){var _0x4c6777=_0x1a4114;authUI[_0x4c6777(0x201)]=_0x2074a5,_0x4919a6[_0x4c6777(0x208)]=_0x2074a5,_0x4919a6[_0x4c6777(0x248)][_0x4c6777(0x1fc)]=_0x2074a5?'.6':'1';}_0x4919a6[_0x1a4114(0x23d)](_0x1a4114(0x226),function(){var _0x2e58f1=_0x1a4114;if(authUI['busy'])return;if(!CLOUD['auth']&&!cloudInit()){authMsg(CLOUD[_0x2e58f1(0x247)]==='sdk'?_0x2e58f1(0x236):_0x2e58f1(0x1e1),!![]);return;}var _0x245e18=_0x3516b2[_0x2e58f1(0x285)][_0x2e58f1(0x227)](),_0x994f19=_0x99286b[_0x2e58f1(0x285)];if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/['test'](_0x245e18)){authMsg(_0x2e58f1(0x1f1),!![]);return;}if(_0x994f19[_0x2e58f1(0x254)]<0x6){authMsg('Password\x20must\x20be\x20at\x20least\x206\x20characters.',!![]);return;}if(authUI[_0x2e58f1(0x267)]===_0x2e58f1(0x219)&&_0x994f19!==_0x196a0d[_0x2e58f1(0x285)]){authMsg('Passwords\x20do\x20not\x20match.',!![]);return;}_0x2e7f57(!![]),authMsg(authUI[_0x2e58f1(0x267)]==='sign'?'Creating\x20account...':_0x2e58f1(0x256));var _0x100903=authUI[_0x2e58f1(0x267)]===_0x2e58f1(0x219)?CLOUD['auth'][_0x2e58f1(0x213)](_0x245e18,_0x994f19):CLOUD[_0x2e58f1(0x1e2)][_0x2e58f1(0x20a)](_0x245e18,_0x994f19);_0x100903[_0x2e58f1(0x258)](function(_0x56f596){var _0x2a873c=_0x2e58f1,_0x4a3850=_0x56f596&&_0x56f596['user']||CLOUD[_0x2a873c(0x1e2)][_0x2a873c(0x21c)];CLOUD[_0x2a873c(0x203)]=_0x4a3850,_0x2e7f57(![]),authSync(_0x4a3850);})['catch'](function(_0x4f9e12){_0x2e7f57(![]),authMsg(authErrText(_0x4f9e12),!![]);});}),[_0x3516b2,_0x99286b,_0x196a0d]['forEach'](function(_0xcf5392){var _0x5684aa=_0x1a4114;_0xcf5392[_0x5684aa(0x23d)](_0x5684aa(0x241),function(_0x5aca89){var _0x562e86=_0x5684aa;_0x5aca89[_0x562e86(0x278)]===_0x562e86(0x28a)&&(_0x5aca89[_0x562e86(0x214)](),_0x4919a6[_0x562e86(0x226)]());});}),_0x5053d9[_0x1a4114(0x23d)](_0x1a4114(0x226),function(){var _0x21f233=_0x1a4114;if(!CLOUD['auth']&&!cloudInit()){authMsg(_0x21f233(0x282),!![]);return;}var _0x26ceee=_0x3516b2[_0x21f233(0x285)][_0x21f233(0x227)]();if(!_0x26ceee){authMsg('Type\x20your\x20email\x20above\x20first,\x20then\x20tap\x20Forgot\x20password.',!![]);return;}CLOUD[_0x21f233(0x1e2)][_0x21f233(0x24c)](_0x26ceee)[_0x21f233(0x258)](function(){var _0x509bf0=_0x21f233;authMsg(_0x509bf0(0x27a)+_0x26ceee+_0x509bf0(0x1e5));})[_0x21f233(0x211)](function(_0xbb67f0){authMsg(authErrText(_0xbb67f0),!![]);});}),_0x31b40d['addEventListener'](_0x1a4114(0x226),function(){authFinish();});}function authShow(_0x42b336){var _0x10fc06=_0x2cde8a;authBuild(),authUI[_0x10fc06(0x209)][_0x10fc06(0x248)][_0x10fc06(0x1f2)]=_0x10fc06(0x1f7),authInputs(!![]),authUI['choose'][_0x10fc06(0x248)][_0x10fc06(0x1f2)]=_0x10fc06(0x22f),busy0();var _0x5490e6=!CLOUD[_0x10fc06(0x1e2)];authUI[_0x10fc06(0x260)][_0x10fc06(0x248)][_0x10fc06(0x1f2)]=_0x5490e6||CLOUD['err']?'':_0x10fc06(0x22f);if(CLOUD[_0x10fc06(0x247)]==='sdk')authMsg(_0x10fc06(0x236),!![]);else{if(CLOUD[_0x10fc06(0x247)]==='cfg'||CLOUD[_0x10fc06(0x247)]===_0x10fc06(0x249))authMsg(_0x10fc06(0x1e1),!![]);else authMsg(_0x42b336===_0x10fc06(0x266)?_0x10fc06(0x287):'');}}function busy0(){var _0x3b34e9=_0x2cde8a;authUI&&(authUI['busy']=![],authUI['go'][_0x3b34e9(0x208)]=![],authUI['go']['style'][_0x3b34e9(0x1fc)]='1');}function authInputs(_0x1a0200){var _0x3acdd0=_0x2cde8a;if(authUI)[authUI[_0x3acdd0(0x24b)],authUI['pw'],authUI[_0x3acdd0(0x217)]][_0x3acdd0(0x210)](function(_0x20f500){var _0x37d297=_0x3acdd0;if(_0x20f500)_0x20f500[_0x37d297(0x208)]=!_0x1a0200;});}function authHide(){var _0x39b0f7=_0x2cde8a;authUI&&(authUI['root']['style'][_0x39b0f7(0x1f2)]=_0x39b0f7(0x22f),authInputs(![]));}function authFinish(){CLOUD['synced']=!![],authHide();var _0x23c2b8=authStart;authStart=null;if(_0x23c2b8)_0x23c2b8();}function authReload(){var _0x425319=_0x2cde8a;noSave=!![];try{sessionStorage['setItem'](_0x425319(0x251),'1');}catch(_0x14b34c){}location[_0x425319(0x291)]();}function authSync(_0x4b86d5){var _0xc94ab9=_0x2cde8a;authBuild(),authUI[_0xc94ab9(0x209)][_0xc94ab9(0x248)][_0xc94ab9(0x1f2)]=_0xc94ab9(0x1f7),authInputs(!![]),authUI['choose'][_0xc94ab9(0x248)][_0xc94ab9(0x1f2)]=_0xc94ab9(0x22f),authMsg('Syncing\x20your\x20progress...');var _0x239e31=![],_0x9ef0fa=setTimeout(function(){var _0x108723=_0xc94ab9;_0x145c8e(_0x108723(0x22d));},0x2328);function _0x145c8e(_0x2cc0ea,_0x2ea7af){var _0xd904f6=_0xc94ab9;if(_0x239e31)return;_0x239e31=!![],clearTimeout(_0x9ef0fa);if(_0x2cc0ea){var _0x2d188d=cloudPeek(lsGet(SAVE_KEY));if(_0x2d188d&&_0x2d188d[_0xd904f6(0x246)]&&lsGet(CLOUD_UID_KEY)===_0x4b86d5[_0xd904f6(0x1f5)]){CLOUD[_0xd904f6(0x1ec)]=_0xd904f6(0x216),CLOUD[_0xd904f6(0x268)]=!![],CLOUD[_0xd904f6(0x22b)]=+lsGet(CLOUD_TS_KEY)||0x0,authFinish();try{log('Offline\x20-\x20progress\x20will\x20sync\x20to\x20the\x20cloud\x20when\x20the\x20connection\x20is\x20back.',_0xd904f6(0x235));}catch(_0x1bfb42){}}else authShow(_0xd904f6(0x266));return;}authResolve(_0x4b86d5,_0x2ea7af);}cloudGet(_0x4b86d5['uid'])[_0xc94ab9(0x258)](function(_0x54cb65){_0x145c8e(null,_0x54cb65);})[_0xc94ab9(0x211)](function(_0x11ce4b){var _0xdb7344=_0xc94ab9;_0x145c8e(_0x11ce4b||_0xdb7344(0x247));});}function authResolve(_0x5589d4,_0x4678c0){var _0xc8937e=_0x2cde8a,_0x2c3b70=lsGet(SAVE_KEY),_0x39002d=lsGet(CLOUD_UID_KEY)||'',_0x3576d5=+lsGet(CLOUD_TS_KEY)||0x0,_0x17495d=cloudPeek(_0x2c3b70),_0x2c2ef6=!!(_0x17495d&&_0x17495d[_0xc8937e(0x246)]),_0x95a178=_0x4678c0&&_0x4678c0[_0xc8937e(0x1f6)]?cloudPeek(_0x4678c0['save']):null,_0x5a3ce8=_0x4678c0?+_0x4678c0['ts']||0x0:0x0;CLOUD[_0xc8937e(0x22b)]=_0x5a3ce8;function _0x4488e8(){var _0x130e40=_0xc8937e;noSave=!![],lsSet(SAVE_KEY,_0x4678c0[_0x130e40(0x1f6)]),lsSet(CLOUD_UID_KEY,_0x5589d4[_0x130e40(0x1f5)]),lsSet(CLOUD_TS_KEY,String(_0x5a3ce8)),authReload();}function _0x332e4d(_0x411ca4){var _0xec1030=_0xc8937e;lsSet(CLOUD_UID_KEY,_0x5589d4[_0xec1030(0x1f5)]);if(!lsGet(CLOUD_TS_KEY))lsSet(CLOUD_TS_KEY,String(Date[_0xec1030(0x28d)]()));CLOUD[_0xec1030(0x25c)]=!![],CLOUD['user']=_0x5589d4;if(!_0x411ca4){authFinish();return;}CLOUD[_0xec1030(0x268)]=!![];var _0x1bcb19=![],_0x1e3db8=function(){!_0x1bcb19&&(_0x1bcb19=!![],authFinish());};cloudPush(!![])['then'](_0x1e3db8),setTimeout(_0x1e3db8,0xfa0);}if(!_0x95a178){if(_0x2c2ef6&&(!_0x39002d||_0x39002d===_0x5589d4[_0xc8937e(0x1f5)])){_0x332e4d(!![]);return;}if(_0x2c2ef6){noSave=!![],lsDel(SAVE_KEY),lsDel(CLOUD_TS_KEY),lsSet(CLOUD_UID_KEY,_0x5589d4['uid']),authReload();return;}lsSet(CLOUD_UID_KEY,_0x5589d4[_0xc8937e(0x1f5)]),CLOUD[_0xc8937e(0x25c)]=!![],authFinish();return;}if(!_0x2c2ef6){_0x4488e8();return;}if(_0x39002d===_0x5589d4[_0xc8937e(0x1f5)]){if(_0x5a3ce8>_0x3576d5)_0x4488e8();else _0x332e4d(_0x5a3ce8!==_0x3576d5);return;}if(_0x39002d){_0x4488e8();return;}var _0x383c01=authUI[_0xc8937e(0x222)];_0x383c01[_0xc8937e(0x234)]='',_0x383c01[_0xc8937e(0x248)][_0xc8937e(0x1f2)]=_0xc8937e(0x221),h('div','ds',_0xc8937e(0x272),_0x383c01);function _0x379d3e(_0x6a7469){var _0x5b2bd6=_0xc8937e;return(_0x6a7469[_0x5b2bd6(0x1ee)]||_0x5b2bd6(0x229))+_0x5b2bd6(0x280)+(_0x6a7469['lvl']|0x0)+(_0x6a7469[_0x5b2bd6(0x1fa)]?'\x20(R'+_0x6a7469[_0x5b2bd6(0x1fa)]+')':'')+',\x20'+(_0x6a7469[_0x5b2bd6(0x245)]|0x0)+_0x5b2bd6(0x27c);}var _0x269609=h('button',_0xc8937e(0x238),_0xc8937e(0x25a)+_0x379d3e(_0x17495d),_0x383c01),_0xfc4c72=h(_0xc8937e(0x20e),'ago\x20alt',_0xc8937e(0x243)+_0x379d3e(_0x95a178),_0x383c01);_0x269609[_0xc8937e(0x23d)]('click',function(){var _0x46881f=_0xc8937e;_0x383c01[_0x46881f(0x248)][_0x46881f(0x1f2)]=_0x46881f(0x22f),lsSet(CLOUD_TS_KEY,String(Date[_0x46881f(0x28d)]())),_0x332e4d(!![]);}),_0xfc4c72[_0xc8937e(0x23d)]('click',function(){_0x4488e8();});}function cloudGate(_0x49ddac){authStart=_0x49ddac;if(!cloudInit()){authShow();return;}cloudWhenReady(function(){if(CLOUD['user'])authSync(CLOUD['user']);else authShow();});}
+/* cloud.js - Firebase LOGIN / SIGN-UP + CLOUD SAVE (Firebase Authentication email+password, Cloud Firestore doc users/{uid}).
+   Put your Firebase web-app config below. Firebase web configs are public by design; the database rules protect the data. */
+var FIREBASE_CONFIG = { apiKey: 'AIzaSyDW3stEoUduTdsrCl9v6mCdQcHBLahG80A', authDomain: 'html-codes-encrytper.firebaseapp.com', databaseURL: 'https://html-codes-encrytper.firebaseio.com', projectId: 'html-codes-encrytper', storageBucket: 'html-codes-encrytper.firebasestorage.app', messagingSenderId: '755964720135', appId: '1:755964720135:web:0087dad8e2b4a5715366a2' };
+
+var CLOUD = { rt: false, sid: Math.random().toString(36).slice(2) + Date.now().toString(36), baseTs: 0, conflict: false, auth: null, db: null, user: null, ready: false, synced: false, dirty: false, last: 0, status: '', err: '', waiters: [], pushing: false };
+var CLOUD_UID_KEY = 'moviex_uid', CLOUD_TS_KEY = 'moviex_ts', CLOUD_CFG_KEY = 'moviex_fbcfg';
+function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+function lsDel(k) { try { localStorage.removeItem(k); } catch (e) {} }
+
+function cloudCfg() {
+  var c = FIREBASE_CONFIG; if (c && c.apiKey && c.projectId) return c;
+  return null;
+}
+function cloudInit() {
+  if (CLOUD.auth) return true;
+  if (typeof firebase === 'undefined') { CLOUD.err = 'sdk'; return false; }
+  var cfg = cloudCfg(); if (!cfg) { CLOUD.err = 'cfg'; return false; }
+  try {
+    if (!firebase.apps || !firebase.apps.length) firebase.initializeApp(cfg);
+    CLOUD.auth = firebase.auth();
+    if (cfg.databaseURL && typeof firebase.database === 'function') { CLOUD.rt = true; CLOUD.db = firebase.database(); }   // Realtime Database (when the config has databaseURL)
+    else { CLOUD.rt = false; CLOUD.db = firebase.firestore(); try { CLOUD.db.settings({ experimentalAutoDetectLongPolling: true, merge: true }); } catch (e) {} }
+    CLOUD.auth.onAuthStateChanged(function (u) { CLOUD.user = u || null; CLOUD.ready = true; var w = CLOUD.waiters; CLOUD.waiters = []; w.forEach(function (f) { f(); }); });
+    return true;
+  } catch (e) { CLOUD.err = 'init'; CLOUD.auth = null; return false; }
+}
+function cloudWhenReady(fn) {
+  if (CLOUD.ready) { fn(); return; }
+  var fired = false, once = function () { if (fired) return; fired = true; fn(); };
+  CLOUD.waiters.push(once); setTimeout(once, 7000);
+}
+
+/* ---------- save bookkeeping (called from saveGame) ---------- */
+function cloudMark() {
+  if (!CLOUD.synced) return;                                   // never touch the timestamp before the login/sync step is finished
+  lsSet(CLOUD_TS_KEY, String(Date.now()));
+  if (CLOUD.user) CLOUD.dirty = true;
+}
+function cloudPeek(raw) {                                       // read a sealed save without touching the anti-cheat flag
+  try { if (!raw) return null; var j = raw; if (raw.slice(0, 4) === 'AC1.') j = raw.slice(raw.indexOf('.', 4) + 1); var s = JSON.parse(j); return (s && typeof s === 'object') ? s : null; } catch (e) { return null; }
+}
+/* storage helpers: Realtime Database (users/{uid}) or Firestore (users/{uid} document) */
+function cloudTimeout(p, ms) { return new Promise(function (res, rej) { var t = setTimeout(function () { rej(new Error('timeout')); }, ms); p.then(function (v) { clearTimeout(t); res(v); }, function (e) { clearTimeout(t); rej(e); }); }); }
+function cloudGet(uid) {
+  if (CLOUD.rt) return CLOUD.db.ref('users/' + uid).once('value').then(function (s) { return s.val() || null; });
+  return CLOUD.db.collection('users').doc(uid).get().then(function (s) { return s.exists ? s.data() : null; });
+}
+function cloudCodeKey(raw) { return String(raw || '').trim().toLowerCase().replace(/[^a-z0-9_-]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 40); }
+function cloudGetCode(key) {                               // redeem codes live in the database: codes/{key}
+  if (!CLOUD.user || !CLOUD.db) return Promise.reject(new Error('offline'));
+  var q = CLOUD.rt ? CLOUD.db.ref('codes/' + key).once('value').then(function (s) { return s.val() || null; })
+                   : CLOUD.db.collection('codes').doc(key).get().then(function (s) { return s.exists ? s.data() : null; });
+  return cloudTimeout(q, 10000);
+}
+/* single-use codes ("single": true): the first account to write codes/{key}/used wins; the database rules refuse a second write */
+function cloudClaimCode(key) {
+  if (!CLOUD.user || !CLOUD.db) return Promise.reject(new Error('offline'));
+  var uid = CLOUD.user.uid;
+  if (CLOUD.rt) return cloudTimeout(CLOUD.db.ref('codes/' + key + '/used').set(uid).then(function () { return true; }, function (e) { if (e && /permission|denied/i.test(String(e.code || e.message))) return false; throw e; }), 10000);
+  var ref = CLOUD.db.collection('codes').doc(key);
+  return cloudTimeout(CLOUD.db.runTransaction(function (t) { return t.get(ref).then(function (d) { if (!d.exists || d.data().used) return false; t.update(ref, { used: uid }); return true; }); }).catch(function (e) { if (e && /permission|denied/i.test(String(e.code || e.message))) return false; throw e; }), 10000);
+}
+/* today's date (Philippine time, UTC+8) taken from the Firebase SERVER clock, so changing the phone's date/time cannot give extra daily rewards */
+function cloudServerDay() {
+  if (!CLOUD.user || !CLOUD.db || !CLOUD.rt) return Promise.reject(new Error('offline'));
+  return cloudTimeout(CLOUD.db.ref('.info/serverTimeOffset').once('value'), 8000).then(function (s) {
+    var off = +s.val(); if (!isFinite(off)) throw new Error('no time');
+    return new Date(Date.now() + off + 8 * 3600 * 1000).toISOString().slice(0, 10);
+  });
+}
+function cloudSet(uid, obj) { return CLOUD.rt ? CLOUD.db.ref('users/' + uid).set(obj) : CLOUD.db.collection('users').doc(uid).set(obj); }
+function cloudPush(force) {
+  if (!CLOUD.user || !CLOUD.db || !CLOUD.synced || CLOUD.conflict) return Promise.resolve(false);
+  if (!force && !CLOUD.dirty) return Promise.resolve(true);
+  var sealed = lsGet(SAVE_KEY); if (!sealed) return Promise.resolve(false);
+  var ts = +lsGet(CLOUD_TS_KEY) || Date.now(), uid = CLOUD.user.uid; CLOUD.dirty = false; CLOUD.pushing = true;
+  return cloudTimeout(cloudGet(uid), 10000).then(function (d) {                          // another device wrote a newer save meanwhile? then do NOT overwrite it with this older state
+    if (d && d.sid && d.sid !== CLOUD.sid && (+d.ts || 0) > CLOUD.baseTs) { CLOUD.conflict = true; CLOUD.pushing = false; CLOUD.status = 'conflict'; try { log('This account is being played on another device. Cloud saving is paused here - log out and log in again.', '#ff9a9a'); } catch (e) {} return false; }
+    return cloudTimeout(cloudSet(uid, { save: sealed, ts: ts, sid: CLOUD.sid, name: String(P.name || ''), lvl: P.lvl | 0, email: String(CLOUD.user.email || '') }), 10000).then(function () { CLOUD.pushing = false; CLOUD.last = Date.now(); CLOUD.baseTs = ts; CLOUD.status = 'ok'; return true; });
+  }).catch(function () { CLOUD.pushing = false; CLOUD.dirty = true; CLOUD.status = 'error'; return false; });
+}
+setInterval(function () { if (CLOUD.dirty && CLOUD.user && !CLOUD.pushing && Date.now() - CLOUD.last > 30000) cloudPush(); }, 10000);
+document.addEventListener('visibilitychange', function () { if (document.hidden) setTimeout(function () { if (CLOUD.dirty) cloudPush(); }, 50); });
+window.addEventListener('pagehide', function () { if (CLOUD.dirty) cloudPush(); });
+function cloudStatusText() {
+  if (!CLOUD.user) return 'Not logged in (offline mode)';
+  if (CLOUD.conflict) return 'PAUSED - account used on another device. Log out and in again.';
+  if (CLOUD.status === 'error') return 'Could not sync - will retry';
+  if (CLOUD.pushing) return 'Saving...';
+  if (CLOUD.dirty) return 'Changes pending (auto-saves every 30s)';
+  return CLOUD.last ? 'Saved to cloud ' + Math.max(0, Math.round((Date.now() - CLOUD.last) / 1000)) + 's ago' : 'Cloud save is up to date';
+}
+function cloudLogout(done) {
+  noSave = true; saveGameRaw();
+  CLOUD.synced = true; CLOUD.dirty = true;
+  cloudPush(true).then(function (ok) {
+    if (!ok && !CLOUD.conflict) { noSave = false; if (done) done(false); return; }
+    lsDel(SAVE_KEY); lsDel(CLOUD_UID_KEY); lsDel(CLOUD_TS_KEY);
+    var fin = function () { location.reload(); };
+    try { CLOUD.auth.signOut().then(fin, fin); } catch (e) { fin(); }
+  });
+}
+function saveGameRaw() { noSave = false; try { saveGame(); } catch (e) {} noSave = true; }
+
+/* ---------- login / sign-up screen ---------- */
+var authUI = null, authStart = null;
+function authMsg(t, bad) { if (!authUI) return; authUI.msg.textContent = t || ''; authUI.msg.className = 'amsg' + (bad ? ' bad' : ''); }
+function authErrText(e) {
+  var c = (e && e.code) || '';
+  var map = {
+    'auth/email-already-in-use': 'That email already has an account. Use Login.', 'auth/invalid-email': 'Please enter a valid email address.', 'auth/weak-password': 'Password must be at least 6 characters.',
+    'auth/user-not-found': 'No account with that email. Use Sign Up.', 'auth/wrong-password': 'Wrong password.', 'auth/invalid-credential': 'Wrong email or password.', 'auth/invalid-login-credentials': 'Wrong email or password.',
+    'auth/too-many-requests': 'Too many attempts. Wait a few minutes and try again.', 'auth/network-request-failed': 'No internet connection.', 'auth/operation-not-allowed': 'Email/Password sign-in is not enabled in Firebase (Authentication > Sign-in method).',
+    'auth/invalid-api-key': 'Online login is misconfigured (API key).', 'auth/api-key-not-valid.-please-pass-a-valid-api-key.': 'Online login is misconfigured (API key).', 'auth/unauthorized-domain': 'This website address is not allowed in Firebase (Authentication > Settings > Authorized domains).',
+    'auth/user-disabled': 'This account is disabled.', 'auth/missing-password': 'Enter your password.', 'auth/missing-email': 'Enter your email.'
+  };
+  return map[c] || ('Error: ' + (c || (e && e.message) || 'unknown'));
+}
+function authBuild() {
+  if (authUI) return;
+  var root = document.createElement('div'); root.id = 'auth-screen'; document.body.appendChild(root);
+  var box = h('div', 'abox', null, root);
+  h('h2', null, 'Realm of RanCraft', box); var sub = h('p', 'asub', 'Log in to save your hero online and play on any device.', box);
+  var tabs = h('div', 'atabs', null, box), tLog = h('button', 'on', 'Login', tabs), tSign = h('button', null, 'Sign Up', tabs);
+  var email = h('input', null, null, box); email.type = 'email'; email.placeholder = 'Email'; email.autocomplete = 'email'; email.autocapitalize = 'off'; email.spellcheck = false;
+  var pw = h('input', null, null, box); pw.type = 'password'; pw.placeholder = 'Password (min 6 characters)'; pw.autocomplete = 'current-password';
+  var pw2 = h('input', null, null, box); pw2.type = 'password'; pw2.placeholder = 'Confirm password'; pw2.autocomplete = 'new-password'; pw2.style.display = 'none';
+  var go = h('button', 'ago', 'LOGIN', box);
+  var msg = h('div', 'amsg', '', box);
+  var links = h('div', 'alinks', null, box), fg = h('a', null, 'Forgot password?', links), off = h('a', null, 'Play offline', links);
+  off.style.display = 'none';
+  var choose = h('div', 'achoose', null, box); choose.style.display = 'none';
+  authUI = { root: root, box: box, msg: msg, tabs: [tLog, tSign], email: email, pw: pw, pw2: pw2, go: go, off: off, choose: choose, mode: 'login', busy: false, sub: sub };
+  function setMode(m) {
+    authUI.mode = m; tLog.className = m === 'login' ? 'on' : ''; tSign.className = m === 'sign' ? 'on' : ''; pw2.style.display = m === 'sign' ? '' : 'none';
+    go.textContent = m === 'sign' ? 'CREATE ACCOUNT' : 'LOGIN'; pw.autocomplete = m === 'sign' ? 'new-password' : 'current-password'; authMsg('');
+  }
+  tLog.addEventListener('click', function () { setMode('login'); }); tSign.addEventListener('click', function () { setMode('sign'); });
+  function busy(b) { authUI.busy = b; go.disabled = b; go.style.opacity = b ? '.6' : '1'; }
+  go.addEventListener('click', function () {
+    if (authUI.busy) return;
+    if (!CLOUD.auth && !cloudInit()) { authMsg(CLOUD.err === 'sdk' ? 'Cannot load the online service (no internet?). You can Play offline.' : 'Online login is not available right now. You can Play offline.', true); return; }
+    var em = email.value.trim(), p = pw.value;
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { authMsg('Please enter a valid email address.', true); return; }
+    if (p.length < 6) { authMsg('Password must be at least 6 characters.', true); return; }
+    if (authUI.mode === 'sign' && p !== pw2.value) { authMsg('Passwords do not match.', true); return; }
+    busy(true); authMsg(authUI.mode === 'sign' ? 'Creating account...' : 'Logging in...');
+    var pr = authUI.mode === 'sign' ? CLOUD.auth.createUserWithEmailAndPassword(em, p) : CLOUD.auth.signInWithEmailAndPassword(em, p);
+    pr.then(function (cred) { var u = (cred && cred.user) || CLOUD.auth.currentUser; CLOUD.user = u; busy(false); authSync(u); }).catch(function (e) { busy(false); authMsg(authErrText(e), true); });
+  });
+  [email, pw, pw2].forEach(function (i) { i.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); go.click(); } }); });
+  fg.addEventListener('click', function () {
+    if (!CLOUD.auth && !cloudInit()) { authMsg('Online login is not available right now.', true); return; }
+    var em = email.value.trim(); if (!em) { authMsg('Type your email above first, then tap Forgot password.', true); return; }
+    CLOUD.auth.sendPasswordResetEmail(em).then(function () { authMsg('Password reset link sent to ' + em + '. Check your inbox (and spam).'); }).catch(function (e) { authMsg(authErrText(e), true); });
+  });
+  off.addEventListener('click', function () { authFinish(); });
+}
+function authShow(mode) {
+  authBuild(); authUI.root.style.display = 'flex'; authInputs(true); authUI.choose.style.display = 'none'; busy0();
+  var offline = !CLOUD.auth; authUI.off.style.display = (offline || CLOUD.err) ? '' : 'none';
+  if (CLOUD.err === 'sdk') authMsg('Cannot load the online service (no internet?). You can Play offline.', true);
+  else if (CLOUD.err === 'cfg' || CLOUD.err === 'init') authMsg('Online login is not available right now. You can Play offline.', true);
+  else authMsg(mode === 'retry' ? 'Could not reach the cloud save. Check your internet and log in again.' : '');
+}
+function busy0() { if (authUI) { authUI.busy = false; authUI.go.disabled = false; authUI.go.style.opacity = '1'; } }
+function authInputs(on) { if (authUI) [authUI.email, authUI.pw, authUI.pw2].forEach(function (i) { if (i) i.disabled = !on; }); }
+function authHide() { if (authUI) { authUI.root.style.display = 'none'; authInputs(false); } }       // disabled while hidden so the browser stops offering your email in game text boxes
+function authFinish() { CLOUD.synced = true; authHide(); var s = authStart; authStart = null; if (s) s(); }
+function authReload() { noSave = true; try { sessionStorage.setItem('moviex_auto', '1'); } catch (e) {} location.reload(); }
+
+/* ---------- decide between the local save and the cloud save ---------- */
+function authSync(user) {
+  authBuild(); authUI.root.style.display = 'flex'; authInputs(true); authUI.choose.style.display = 'none'; authMsg('Syncing your progress...');
+  var fin = false;
+  var to = setTimeout(function () { end('timeout'); }, 9000);
+  function end(err, data) {
+    if (fin) return; fin = true; clearTimeout(to);
+    if (err) {                                                        // cloud unreachable: continue with this device's save when it belongs to this account
+      var lp = cloudPeek(lsGet(SAVE_KEY));
+      if (lp && lp.named && lsGet(CLOUD_UID_KEY) === user.uid) { CLOUD.status = 'error'; CLOUD.dirty = true; CLOUD.baseTs = +lsGet(CLOUD_TS_KEY) || 0; authFinish(); try { log('Offline - progress will sync to the cloud when the connection is back.', '#ffcc88'); } catch (e) {} }
+      else { authShow('retry'); }
+      return;
+    }
+    authResolve(user, data);
+  }
+  cloudGet(user.uid).then(function (d) { end(null, d); }).catch(function (e) { end(e || 'err'); });
+}
+function authResolve(user, cloud) {
+  var sealed = lsGet(SAVE_KEY), luid = lsGet(CLOUD_UID_KEY) || '', lts = +lsGet(CLOUD_TS_KEY) || 0, ls = cloudPeek(sealed), hasLocal = !!(ls && ls.named);
+  var cs = (cloud && cloud.save) ? cloudPeek(cloud.save) : null, cts = cloud ? (+cloud.ts || 0) : 0;
+  CLOUD.baseTs = cts;
+  function takeCloud() { noSave = true; lsSet(SAVE_KEY, cloud.save); lsSet(CLOUD_UID_KEY, user.uid); lsSet(CLOUD_TS_KEY, String(cts)); authReload(); }
+  function keepLocal(pushIt) {
+    lsSet(CLOUD_UID_KEY, user.uid); if (!lsGet(CLOUD_TS_KEY)) lsSet(CLOUD_TS_KEY, String(Date.now()));
+    CLOUD.synced = true; CLOUD.user = user;
+    if (!pushIt) { authFinish(); return; }
+    CLOUD.dirty = true; var done = false, go = function () { if (!done) { done = true; authFinish(); } };
+    cloudPush(true).then(go); setTimeout(go, 4000);
+  }
+  if (!cs) {                                                          // nothing in the cloud yet
+    if (hasLocal && (!luid || luid === user.uid)) { keepLocal(true); return; }   // first login: adopt this device's hero
+    if (hasLocal) { noSave = true; lsDel(SAVE_KEY); lsDel(CLOUD_TS_KEY); lsSet(CLOUD_UID_KEY, user.uid); authReload(); return; }   // another account's hero: start fresh
+    lsSet(CLOUD_UID_KEY, user.uid); CLOUD.synced = true; authFinish(); return;      // brand-new player -> create hero
+  }
+  if (!hasLocal) { takeCloud(); return; }
+  if (luid === user.uid) { if (cts > lts) takeCloud(); else keepLocal(cts !== lts); return; }
+  if (luid) { takeCloud(); return; }                                  // local hero belongs to a different account
+  var c = authUI.choose; c.innerHTML = ''; c.style.display = 'block';   // unknown owner: ask
+  h('div', 'ds', 'A hero already exists on this device AND in your account. Which one do you want to keep?', c);
+  function sum(s) { return (s.name || 'Hero') + ' - Lv ' + (s.lvl | 0) + (s.reb ? ' (R' + s.reb + ')' : '') + ', ' + (s.gold | 0) + ' gold'; }
+  var b1 = h('button', 'ago', 'This device: ' + sum(ls), c), b2 = h('button', 'ago alt', 'Cloud account: ' + sum(cs), c);
+  b1.addEventListener('click', function () { c.style.display = 'none'; lsSet(CLOUD_TS_KEY, String(Date.now())); keepLocal(true); });
+  b2.addEventListener('click', function () { takeCloud(); });
+}
+
+/* called by the Play Now button: login first, then run `start` */
+function cloudGate(start) {
+  authStart = start;
+  if (!cloudInit()) { authShow(); return; }
+  cloudWhenReady(function () { if (CLOUD.user) authSync(CLOUD.user); else authShow(); });
+}

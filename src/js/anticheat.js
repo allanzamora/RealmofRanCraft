@@ -1,1 +1,63 @@
-var _0x2e3020=_0x4af8;(function(_0x4d15cb,_0x109063){var _0x42c95c=_0x4af8,_0x4f8a9e=_0x4d15cb();while(!![]){try{var _0x3e7624=parseInt(_0x42c95c(0xaa))/0x1*(parseInt(_0x42c95c(0x9f))/0x2)+-parseInt(_0x42c95c(0xa7))/0x3+parseInt(_0x42c95c(0xae))/0x4*(parseInt(_0x42c95c(0xa1))/0x5)+-parseInt(_0x42c95c(0x99))/0x6*(parseInt(_0x42c95c(0xa4))/0x7)+parseInt(_0x42c95c(0xb0))/0x8+-parseInt(_0x42c95c(0xad))/0x9+parseInt(_0x42c95c(0xa0))/0xa*(-parseInt(_0x42c95c(0xb9))/0xb);if(_0x3e7624===_0x109063)break;else _0x4f8a9e['push'](_0x4f8a9e['shift']());}catch(_0x2cf8ac){_0x4f8a9e['push'](_0x4f8a9e['shift']());}}}(_0xc3d5,0xc9179));function _0xc3d5(){var _0x5edd46=['CHEAT\x20DETECTED\x20(','speed','lvl','toString','AC1.','textContent','length','569558VCuqkC','floor','reb','memory','rc#Q7vX9!mN2pL4zT','read','1457718yLiykY','ac-banner','appendChild','charCodeAt','slice','style','19300vrolkh','110aLkcpl','5JAtZsn','\x20strikes):\x20Gold\x20and\x20Diamonds\x20reset.\x20Play\x20fair!','max','28kknXCk','Cheat\x20detected\x20(','opacity','3117375frFkOO','imul','body','164opbUmZ','now','gold','1316331EBMDWq','3744180xxiCEU','diamonds','8254256yuyYxq','indexOf'];_0xc3d5=function(){return _0x5edd46;};return _0xc3d5();}var acStrikes=0x0,acTamper=![],acLastMsg=0x0,AC_SALT=_0x2e3020(0xbd);function acHash(_0x5ede1c){var _0x257996=_0x2e3020,_0x18e4e9=0x811c9dc5,_0x4ee6ed=0x1505;for(var _0x5bb967=0x0;_0x5bb967<_0x5ede1c[_0x257996(0xb8)];_0x5bb967++){var _0x79a48c=_0x5ede1c[_0x257996(0x9c)](_0x5bb967);_0x18e4e9^=_0x79a48c,_0x18e4e9=Math[_0x257996(0xa8)](_0x18e4e9,0x1000193),_0x4ee6ed=Math['imul'](_0x4ee6ed,0x21)^_0x79a48c|0x0;}return(_0x18e4e9>>>0x0)[_0x257996(0xb5)](0x24)+(_0x4ee6ed>>>0x0)[_0x257996(0xb5)](0x24);}function acSeal(_0x48d77c){var _0x3d9807=_0x2e3020;return _0x3d9807(0xb6)+acHash(AC_SALT+_0x48d77c)+'.'+_0x48d77c;}function acOpen(_0x3a4137){var _0x35f741=_0x2e3020;if(!_0x3a4137)return _0x3a4137;if(_0x3a4137[_0x35f741(0x9d)](0x0,0x4)!=='AC1.')return _0x3a4137;var _0x2656b4=_0x3a4137[_0x35f741(0xb1)]('.',0x4),_0x76e8a6=_0x3a4137['slice'](0x4,_0x2656b4),_0x9f95f6=_0x3a4137[_0x35f741(0x9d)](_0x2656b4+0x1);if(acHash(AC_SALT+_0x9f95f6)!==_0x76e8a6)acTamper=!![];return _0x9f95f6;}function _0x4af8(_0x537f6c,_0x2235b6){_0x537f6c=_0x537f6c-0x98;var _0xc3d503=_0xc3d5();var _0x4af804=_0xc3d503[_0x537f6c];return _0x4af804;}function acBanner(_0x10fd1e){var _0x3caa8f=_0x2e3020,_0x21e055=Date[_0x3caa8f(0xab)]();if(_0x21e055-acLastMsg<0xfa0)return;acLastMsg=_0x21e055;try{log(_0x10fd1e,'#ff5a5a');var _0x55734a=document['getElementById']('ac-banner');!_0x55734a&&(_0x55734a=document['createElement']('div'),_0x55734a['id']=_0x3caa8f(0x9a),document[_0x3caa8f(0xa9)][_0x3caa8f(0x9b)](_0x55734a)),_0x55734a[_0x3caa8f(0xb7)]=_0x10fd1e,_0x55734a['style'][_0x3caa8f(0xa6)]='1',clearTimeout(_0x55734a['_t']),_0x55734a['_t']=setTimeout(function(){var _0x4b7902=_0x3caa8f;_0x55734a[_0x4b7902(0x9e)][_0x4b7902(0xa6)]='0';},0x1194);}catch(_0x534936){}}function acStrike(_0x6abf67){var _0x4a6a20=_0x2e3020;acStrikes++;if(acStrikes>=0x3&&_0x6abf67!=='speed')P[_0x4a6a20(0xac)]=0x0,P['diamonds']=0x0,acBanner(_0x4a6a20(0xb2)+acStrikes+_0x4a6a20(0xa2));else acBanner(_0x4a6a20(0xa5)+_0x6abf67+').\x20Value\x20restored.\x20Strike\x20'+acStrikes+'/3\x20-\x20Gold\x20&\x20Diamonds\x20are\x20wiped\x20at\x203.');try{saveGame();}catch(_0x4e57d1){}}var acDecoys={},acGuards={};function acGuard(_0x25cccc){var _0x39d4e1=+P[_0x25cccc]||0x0,_0x21035f=0x0,_0x1ef918=0x0,_0x4e8612=0x0,_0x1119ee=_0x39d4e1;function _0x5a982c(_0x17af0a,_0x2a6011){var _0xc646f7=_0x4af8;return(Math['abs'](Math[_0xc646f7(0xba)](_0x17af0a))%0xf4243*0x1eef+_0x2a6011%0x18697*0x19919)%0x7fffffed;}function _0x28e28a(_0xa687fa){var _0x1b086c=_0x4af8;if(!isFinite(_0xa687fa))_0xa687fa=_0x1119ee;_0x1ef918=Math[_0x1b086c(0xba)](Math['random']()*0x3b9aca00)+0x1,_0x21035f=_0xa687fa+_0x1ef918,_0x4e8612=_0x5a982c(_0xa687fa,_0x1ef918),_0x1119ee=_0xa687fa,acDecoys[_0x25cccc]=_0xa687fa;}function _0x3f8362(){var _0x2e9e5d=_0x21035f-_0x1ef918;return(_0x5a982c(_0x2e9e5d,_0x1ef918)!==_0x4e8612||!isFinite(_0x2e9e5d))&&(_0x2e9e5d=_0x1119ee,_0x28e28a(_0x2e9e5d),acStrike('memory')),_0x2e9e5d;}_0x28e28a(_0x39d4e1),Object['defineProperty'](P,_0x25cccc,{'enumerable':!![],'configurable':![],'get':_0x3f8362,'set':_0x28e28a}),acGuards[_0x25cccc]={'read':_0x3f8362,'decoy':function(){return acDecoys[_0x25cccc];}};}['gold',_0x2e3020(0xaf),_0x2e3020(0xb4),'xp','sp',_0x2e3020(0xbb)]['forEach'](acGuard);var acWatch=0x0,acT0=performance[_0x2e3020(0xab)](),acD0=Date[_0x2e3020(0xab)](),acSpeedBad=0x0;function updateAntiCheat(_0x1afeb0){var _0x552e19=_0x2e3020;acWatch+=_0x1afeb0;if(acWatch<0x1)return;acWatch=0x0;for(var _0x2cfd23 in acGuards){var _0x543c37=acGuards[_0x2cfd23][_0x552e19(0x98)]();acDecoys[_0x2cfd23]!==_0x543c37&&(acDecoys[_0x2cfd23]=_0x543c37,acStrike(_0x552e19(0xbc)));}if(!isFinite(P['hp']))P['hp']=maxHp();if(!isFinite(P['mp']))P['mp']=maxMp();P['hp']>maxHp()*1.001+0x1&&(P['hp']=maxHp());P['mp']>maxMp()*1.001+0x1&&(P['mp']=maxMp());var _0x1007e5=performance[_0x552e19(0xab)]()-acT0,_0x5a16ef=Date[_0x552e19(0xab)]()-acD0;if(_0x1007e5>0x1388){var _0x4205fd=_0x1007e5/Math[_0x552e19(0xa3)](0x1,_0x5a16ef);if(_0x4205fd>1.3||_0x4205fd<0.7)++acSpeedBad>=0x2&&(acSpeedBad=0x0,acStrike(_0x552e19(0xb3)));else acSpeedBad=0x0;acT0=performance[_0x552e19(0xab)](),acD0=Date[_0x552e19(0xab)]();}}
+/* anticheat.js - client-side deterrents against Cheat Engine / GameGuardian / Game Killer style memory editing,
+   save-file editing and speed hacks. A browser game can never be 100% cheat-proof, but this stops the common tools:
+   1) key values (gold, diamonds, level, xp, stat points, rebirth) are stored ENCRYPTED with a key that changes on every write,
+      so a memory value-scan finds nothing, plus a plain "decoy" copy that is only a trap (editing it = caught)
+   2) every value carries a checksum: if the stored number is edited, the next read detects it and restores the last valid value
+   3) the save is signed: a hand-edited localStorage save is detected on load
+   4) speed-hack check (game clock vs. real clock) and HP/MP sanity clamp
+   Penalty: warning, value restored; 3 strikes = Gold and Diamonds reset to 0. */
+var acStrikes = 0, acTamper = false, acLastMsg = 0;
+var AC_SALT = 'rc#Q7vX9!mN2pL4zT';
+function acHash(str) { var h1 = 0x811c9dc5, h2 = 5381; for (var i = 0; i < str.length; i++) { var c = str.charCodeAt(i); h1 ^= c; h1 = Math.imul(h1, 16777619); h2 = (Math.imul(h2, 33) ^ c) | 0; } return (h1 >>> 0).toString(36) + (h2 >>> 0).toString(36); }
+function acSeal(json) { return 'AC1.' + acHash(AC_SALT + json) + '.' + json; }
+function acOpen(raw) {          // returns the JSON text; flags acTamper when the signature does not match
+  if (!raw) return raw;
+  if (raw.slice(0, 4) !== 'AC1.') return raw;        // older unsigned save: accepted once, signed on next save
+  var d = raw.indexOf('.', 4), sig = raw.slice(4, d), json = raw.slice(d + 1);
+  if (acHash(AC_SALT + json) !== sig) acTamper = true;
+  return json;
+}
+function acBanner(msg) {
+  var now = Date.now(); if (now - acLastMsg < 4000) return; acLastMsg = now;
+  try { log(msg, '#ff5a5a'); var b = document.getElementById('ac-banner');
+    if (!b) { b = document.createElement('div'); b.id = 'ac-banner'; document.body.appendChild(b); }
+    b.textContent = msg; b.style.opacity = '1'; clearTimeout(b._t); b._t = setTimeout(function () { b.style.opacity = '0'; }, 4500); } catch (e) {}
+}
+function acStrike(kind) {
+  acStrikes++;
+  if (acStrikes >= 3 && kind !== 'speed') { P.gold = 0; P.diamonds = 0; acBanner('CHEAT DETECTED (' + acStrikes + ' strikes): Gold and Diamonds reset. Play fair!'); }
+  else acBanner('Cheat detected (' + kind + '). Value restored. Strike ' + acStrikes + '/3 - Gold & Diamonds are wiped at 3.');
+  try { saveGame(); } catch (e) {}
+}
+var acDecoys = {}, acGuards = {};
+function acGuard(name) {
+  var v0 = +P[name] || 0, a = 0, k = 0, c = 0, last = v0;
+  function chk(v, kk) { return ((Math.abs(Math.floor(v)) % 1000003) * 7919 + (kk % 99991) * 104729) % 2147483629; }
+  function put(v) { if (!isFinite(v)) v = last; k = Math.floor(Math.random() * 1e9) + 1; a = v + k; c = chk(v, k); last = v; acDecoys[name] = v; }
+  function read() {
+    var v = a - k;
+    if (chk(v, k) !== c || !isFinite(v)) { v = last; put(v); acStrike('memory'); }
+    return v;
+  }
+  put(v0);
+  Object.defineProperty(P, name, { enumerable: true, configurable: false, get: read, set: put });
+  acGuards[name] = { read: read, decoy: function () { return acDecoys[name]; } };
+}
+['gold', 'diamonds', 'lvl', 'xp', 'sp', 'reb'].forEach(acGuard);
+/* acDecoys holds a plain, always-current copy of each value. A memory scanner finds THAT number first;
+   the real value is stored encrypted. If the decoy ever differs from the real value, it was edited = caught. */
+var acWatch = 0, acT0 = performance.now(), acD0 = Date.now(), acSpeedBad = 0;
+function updateAntiCheat(dt) {
+  acWatch += dt; if (acWatch < 1) return; acWatch = 0;
+  for (var n in acGuards) {
+    var real = acGuards[n].read();
+    if (acDecoys[n] !== real) { acDecoys[n] = real; acStrike('memory'); }
+  }
+  // HP / MP sanity
+  if (!isFinite(P.hp)) P.hp = maxHp(); if (!isFinite(P.mp)) P.mp = maxMp();
+  if (P.hp > maxHp() * 1.001 + 1) { P.hp = maxHp(); }
+  if (P.mp > maxMp() * 1.001 + 1) { P.mp = maxMp(); }
+  // speed hack: game clock vs. real clock
+  var dp = performance.now() - acT0, dd = Date.now() - acD0;
+  if (dp > 5000) { var ratio = dp / Math.max(1, dd); if (ratio > 1.3 || ratio < 0.7) { if (++acSpeedBad >= 2) { acSpeedBad = 0; acStrike('speed'); } } else acSpeedBad = 0; acT0 = performance.now(); acD0 = Date.now(); }
+}
