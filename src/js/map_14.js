@@ -1,103 +1,55 @@
-/* main.js - map loading / travel, main loop, boot */
-MAPS.forEach(function (m) { if (!m.arena && !m.safe2x) { m.safeR *= 2; m.safe2x = true; } });   // safe zones are 2x bigger
-function mapById(id) { for (var i = 0; i < MAPS.length; i++) if (MAPS[i].id === id) return MAPS[i]; return MAPS[0]; }
-function loadMap(id, quiet) {
-  var m = mapById(id);
-  curMap = m; WORLD_R = m.R; SAFE_R = m.safeR; AREA = 4; P.map = m.id;
-  arenaReset(); mobaClear(); stopAuto(true); pvpClearPeers(); clearPopulation(); clearPickups(); P.target = null;
-  timers.length = 0;
-  clearWorld(); buildEnvironment(m);
-  makePortal(worldGroup, m.portalAt ? m.portalAt[0] : (m.arena ? 0 : 9.5), m.portalAt ? m.portalAt[1] : (m.arena ? 0 : 9.5));   // Blood Arena: only the portal, in the centre
-  P.dest = null;
-  if (!m.arena) populateTown(m); spawnEnemies(m); spawnAIs(m); worldBossOnMap(m);
-  P.pos.set(0, 0, 7); P.c.g.rotation.y = Math.PI;
-  if (m.moba) { mobaStart(m); P.pos.set(MOBA_SPAWN.blue[0], 0, MOBA_SPAWN.blue[1]); P.c.g.rotation.y = -Math.PI * 0.25; }
-  pvpMapEnter(m);
-  camera.position.set(P.pos.x, 4, P.pos.z + 9);
-  lastZone = -1; refreshMarkers(); saveGame();
-  if (!quiet) {
-    if (m.moba) log('5v5 Battle Arena! You + 4 allies (blue) vs 5 enemies (red). Destroy the enemy Nexus - towers must fall first. Stand in your base to heal.', '#9fe3ff');
-    else if (m.arena) log('Welcome to the ARENA! Free PK: every player here can be attacked (and will attack you). No drops.', '#ff9a7a');
-    else if (m.boss) log(ENEMY_TYPES[m.enemies[0]].name + ' (Lv ' + ENEMY_TYPES[m.enemies[0]].lvl + ') waits here. Boss-only rare gear drops here.', '#d08aff');
-    else log('Arrived at ' + m.name + '. Monsters here are Lv ' + ENEMY_TYPES[m.enemies[0]].lvl + '-' + ENEMY_TYPES[m.enemies[m.enemies.length - 1]].lvl + '.', '#9fe3ff');
-  }
-}
-function travelTo(id) {
-  var m = mapById(id);
-  if (!mapLevelOk(m)) { log('You need level ' + m.min + ' to enter ' + m.name + '.', '#ff9a9a'); return; }
-  if (m.key && !hasGoldenPass()) {
-    if ((P.inv.golden_key | 0) <= 0) { log('You need a Golden Key to enter ' + m.name + '. Dark Swordman drops them (10%).', '#ff9a9a'); return; }
-    P.inv.golden_key--; P.inv.golden_pass = nowSec() + GOLD_PASS_MIN * 60; saveGame();
-    log('Used a Golden Key. You may enter ' + m.name + ' freely for ' + GOLD_PASS_MIN + ' minutes.', '#ffd54f');
-  }
-  ringFx(P.pos.x, P.pos.z, 4, 0x66ccff, 0.6); pillarFx(P.pos.x, P.pos.z, 0x66ccff); sfx('level');
-  loadMap(id);
-}
+/* map_14.js - Prison Room B1 (Lv 120 mobs, needs Lv 100) and Prison Room B2 (Lv 140 mobs, needs Lv 115).
+   Square prison: 4 cell rooms around a small central yard, 7-8 mobs per room, no safe zone, no NPCs, no item drops (gold + fixed EXP only). */
+E('inmate', 'Death Row Inmate', 120, 'm', 1.2, W('dagger', 0xb8b8c0), { skin: 0xc9a27e, shirt: 0xe8731c, pants: 0xe8731c, hair: null, bald: true, boots: 0x2a2018, eye: 0xff4422 }, { hpMul: 3 });
+E('warden', 'Prison Warden', 140, 'b', 1.35, W('greatsword', 0x3a3f4a), { skin: 0xd6b08c, shirt: 0x16233f, pants: 0x0e1630, hair: null, bald: true, helmet: true, armor: 0x22345a, pads: true, padColor: 0x9aa3b8, boots: 0x0a0e1c, eye: 0xffcc33, eyeGlow: true, bulk: 1.15 }, { hpMul: 3 });
+(function (a, b) {
+  a.xp = 13600; a.fixedXp = true; a.goldOnly = true; a.gold = [3000, 6000]; a.aggro = 12;
+  b.xp = 14600; b.fixedXp = true; b.goldOnly = true; b.gold = [4000, 8000]; b.aggro = 12;
+})(ENEMY_TYPES.inmate, ENEMY_TYPES.warden);
 
-var last = performance.now(), fpsAcc = 0, fpsN = 0, saveT = 0, hudT = 0, miniT = 0;
-var targetRing = new THREE.Mesh(new THREE.RingGeometry(0.9, 1.1, 32), new THREE.MeshBasicMaterial({ color: 0xff4a4a, side: THREE.DoubleSide, transparent: true, opacity: 0.9, depthWrite: false }));
-targetRing.rotation.x = -Math.PI / 2; targetRing.visible = false; scene.add(targetRing);
-
-var welcomeOn = true;
-cam.dist = 85; cam.pitch = 0.78;      // welcome backdrop: Moviex Plains fully zoomed out
-function frame(now) {
-  requestAnimationFrame(frame);
-  var dt = Math.min(0.05, (now - last) / 1000); last = now;
-  fpsAcc += dt; fpsN++;
-  if (fpsAcc > 1) { $('fpsv').textContent = Math.round(fpsN / fpsAcc) + ' FPS'; fpsAcc = 0; fpsN = 0; var pg = $('ping'), on = PVP.ws && PVP.ws.readyState === 1 && PVP.status === 'online'; pg.textContent = on ? PVP.ping + ' ms  ·  ' : '-- ms  ·  '; pg.style.color = !on ? '#999' : PVP.ping < 90 ? '#7dff9a' : PVP.ping < 180 ? '#ffd66a' : '#ff7a7a'; }
-  updateZoomHold(dt); updateAntiCheat(dt);
-  if (welcomeOn) cam.yaw += dt * 0.05;
-  if (ui.open !== 'name' && !welcomeOn) {      // popups no longer pause the game (only the first-launch name screen does)
-    gameTime += dt; updateTimers(dt); updateAuto(dt); updatePlayer(dt); updatePets(dt); updatePvp(dt); updateLoot(dt); emoUpdate(dt); updateMoba(dt); updateCostumeFx(dt); updateEnemies(dt); updateWorldBoss(dt); updateAIs(dt); updateBots(dt); updatePickups(dt);
-    saveT += dt; if (saveT > 15) { saveT = 0; saveGame(); }
-  }
-  npcs.forEach(function (n) {
-    var d = Math.hypot(n.pos.x - P.pos.x, n.pos.z - P.pos.z);
-    if (d < 6 && !n.sit) faceTo(n.c, P.pos.x, P.pos.z, dt, 5);
-    n.marker.spr.position.y = (n.my || 2.75) + Math.sin(now / 300) * 0.08; animateChar(n.c, dt, 0);
-    if (n.tree) { var tr = n.tree, tt = now / 1000; tr.star.rotation.y = tt * 1.5; tr.glow.material.opacity = 0.18 + 0.08 * Math.sin(tt * 3); tr.lights.forEach(function (l) { var on = Math.sin(tt * 3 + l.ph) > -0.2; l.m.color.setHex(on ? l.c : 0x303030); }); }
-    if (n.sit && !n.tree) { var rg = n.c.rig; rg.legL.hp.rotation.x = rg.legR.hp.rotation.x = -1.5; rg.legL.kn.rotation.x = rg.legR.kn.rotation.x = 1.5; rg.body.position.y = -0.47; }
+function buildPrison(g, m, c) {
+  var H = 30, WH = 6, TH = 1.2, DOOR0 = 17, DOOR1 = 23, YARD = 10;
+  var wall = stdMat(c.wall, { flatShading: true, roughness: 0.9 }), floor = stdMat(c.floor, { roughness: 0.95 }), bars = stdMat(0x2a2d33, { metalness: 0.7, roughness: 0.4 }),
+    cotM = stdMat(c.cot), lamp = new THREE.MeshBasicMaterial({ color: c.lamp }), stain = new THREE.MeshBasicMaterial({ color: c.stain, transparent: true, opacity: 0.55 });
+  function mesh(geo, mat, x, y, z, ry, shadow) { var o = new THREE.Mesh(geo, mat); o.position.set(x, y, z); if (ry) o.rotation.y = ry; o.castShadow = shadow !== false; o.receiveShadow = true; g.add(o); return o; }
+  function wallX(xa, xb, z) { var x0 = Math.min(xa, xb), x1 = Math.max(xa, xb), L = x1 - x0; mesh(new THREE.BoxGeometry(L, WH, TH), wall, (x0 + x1) / 2, WH / 2, z); for (var t = 0; t <= L + 0.01; t += 1.5) addObstacle(x0 + t, z, 1.0); }
+  function wallZ(za, zb, x) { var z0 = Math.min(za, zb), z1 = Math.max(za, zb), L = z1 - z0; mesh(new THREE.BoxGeometry(TH, WH, L), wall, x, WH / 2, (z0 + z1) / 2); for (var t = 0; t <= L + 0.01; t += 1.5) addObstacle(x, z0 + t, 1.0); }
+  mesh(new THREE.BoxGeometry(H * 2 + 2, 0.08, H * 2 + 2), floor, 0, 0.04, 0, 0, false);
+  wallX(-H, H, -H); wallX(-H, H, H); wallZ(-H, H, -H); wallZ(-H, H, H);          // outer walls
+  [-1, 1].forEach(function (s) {                                                    // cross walls with a doorway in every arm
+    wallX(s * YARD, s * DOOR0, 0); wallX(s * DOOR1, s * H, 0); wallZ(s * YARD, s * DOOR0, 0); wallZ(s * DOOR1, s * H, 0);
+    [DOOR0, DOOR1].forEach(function (d) {
+      mesh(new THREE.BoxGeometry(1.6, WH + 1.2, 1.6), bars, s * d, (WH + 1.2) / 2, 0); mesh(new THREE.BoxGeometry(1.6, WH + 1.2, 1.6), bars, 0, (WH + 1.2) / 2, s * d);
+      mesh(new THREE.BoxGeometry(0.5, 0.5, 0.5), lamp, s * d, WH + 1.4, 0, 0, false); mesh(new THREE.BoxGeometry(0.5, 0.5, 0.5), lamp, 0, WH + 1.4, s * d, 0, false);
+    });
   });
-  portals.forEach(function (pt) { pt.ring.rotation.z += dt * 0.8; pt.disc.material.opacity = 0.35 + Math.sin(now / 300) * 0.1; });
-  clouds.forEach(function (cl) { cl.position.x += dt * 1.2; if (cl.position.x > WORLD_R + 120) cl.position.x = -WORLD_R - 120; });
-  updateWeather(dt); updateFx(dt); updateThrown(dt); updateCamera(dt); updateFloaters(dt);
-  if (P.target && P.target.state !== 'dead') {
-    targetRing.visible = true; var s = P.target.T.scale * (1.0 + Math.sin(now / 200) * 0.06);
-    targetRing.position.set(P.target.pos.x, 0.06, P.target.pos.z); targetRing.scale.set(s, s, s);
-  } else targetRing.visible = false;
-  hudT += dt; if (hudT > 0.08) { hudT = 0; updateHud(); updateZone(); }
-  miniT += dt; if (miniT > 0.12) { miniT = 0; drawMini(); }
-  renderer.render(scene, camera);
+  // central yard marking
+  var ring = new THREE.Mesh(new THREE.RingGeometry(YARD - 1.2, YARD - 0.6, 40), new THREE.MeshBasicMaterial({ color: c.lamp, side: THREE.DoubleSide, transparent: true, opacity: 0.6 })); ring.rotation.x = -Math.PI / 2; ring.position.y = 0.12; g.add(ring);
+  // room sign on the north wall
+  var cv = document.createElement('canvas'); cv.width = 512; cv.height = 128; var cx = cv.getContext('2d');
+  cx.fillStyle = '#0a0c12'; cx.fillRect(0, 0, 512, 128); cx.strokeStyle = '#' + ('000000' + c.lamp.toString(16)).slice(-6); cx.lineWidth = 6; cx.strokeRect(6, 6, 500, 116);
+  cx.fillStyle = cx.strokeStyle; cx.font = 'bold 54px sans-serif'; cx.textAlign = 'center'; cx.textBaseline = 'middle'; cx.fillText(m.name.toUpperCase(), 256, 66);
+  var sign = new THREE.Mesh(new THREE.PlaneGeometry(14, 3.5), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(cv) })); sign.position.set(0, 4.2, -H + TH / 2 + 0.05); g.add(sign);
+  // cell furniture in each room: cots along the outer walls, bar windows, wall lamps, floor stains
+  [[1, 1], [-1, 1], [-1, -1], [1, -1]].forEach(function (q) {
+    var sx = q[0], sz = q[1];
+    for (var i = 0; i < 3; i++) {
+      var cxp = sx * (6 + i * 7.5), czp = sz * (H - 2.4);
+      mesh(new THREE.BoxGeometry(3.2, 0.5, 1.5), cotM, cxp, 0.45, czp); mesh(new THREE.BoxGeometry(0.7, 0.2, 1.1), stdMat(0xd8d2c0), cxp - sx * 1.1, 0.8, czp, 0, false); addObstacle(cxp, czp, 1.3);
+      var wxp = sx * (H - 2.4), wzp = sz * (6 + i * 7.5);
+      mesh(new THREE.BoxGeometry(1.5, 0.5, 3.2), cotM, wxp, 0.45, wzp); addObstacle(wxp, wzp, 1.3);
+      mesh(new THREE.BoxGeometry(0.4, 0.4, 0.4), lamp, sx * (H - 0.9), 4.2, wzp, 0, false); mesh(new THREE.BoxGeometry(0.4, 0.4, 0.4), lamp, cxp, 4.2, sz * (H - 0.9), 0, false);
+      for (var b = -2; b <= 2; b++) { mesh(new THREE.BoxGeometry(0.12, 2.2, 0.12), bars, sx * (H - 0.75), 3.2, wzp + b * 0.45, 0, false); mesh(new THREE.BoxGeometry(0.12, 2.2, 0.12), bars, cxp + b * 0.45, 3.2, sz * (H - 0.75), 0, false); }
+      var st = new THREE.Mesh(new THREE.CircleGeometry(0.8 + Math.random() * 0.9, 10), stain); st.rotation.x = -Math.PI / 2; st.position.set(sx * rand(6, 26), 0.1, sz * rand(6, 26)); g.add(st);
+    }
+  });
 }
-window.addEventListener('resize', function () { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
-
-/* ---- start ---- */
-var freshGame = true;
-try { freshGame = !localStorage.getItem(SAVE_KEY); } catch (e) {}
-loadGame(); refreshPetBtn();
-freshGame = !P.named;
-P.c.name = P.name;
-applyEquipVisuals(); P.c.lvl = P.lvl; 
-P.hp = maxHp(); P.mp = maxMp(); refreshPlayerTag(true);
-layoutActions(); refreshSkillButtons();
-(function () { var m = mapById(P.map); loadMap(mapLevelOk(m) && (!m.key || hasGoldenPass()) && !m.online ? m.id : 'plains', true); })();
-updateHud();
-log('Welcome to Realm of RanCraft! Talk to Elder Rowan (!) to begin.', '#ffe066');
-log('Joystick: bottom-left. Pinch or +/- to zoom. Portal ring = World Map.', '#cfd8ff');
-function runBoot() {     // loading bar finishes, then the splash fades out
-  var boot = $('boot'), fill = $('boot-fill'), pct = $('boot-pct'), t0 = performance.now(), DUR = 1600;
-  (function step() {
-    var p = Math.min(1, (performance.now() - t0) / DUR); fill.style.width = (p * 100).toFixed(0) + '%'; pct.textContent = 'Loading... ' + (p * 100).toFixed(0) + '%';
-    if (p < 1) { setTimeout(step, 50); return; }
-    boot.style.opacity = '0'; setTimeout(function () { boot.style.display = 'none'; }, 650);
-    if (freshGame) openNameScreen();
-  })();
-}
-$('w-play').addEventListener('click', function () { cloudGate(startGame); });
-function startGame() {
-  var w = $('welcome'); w.style.opacity = '0'; setTimeout(function () { w.style.display = 'none'; }, 500);
-  cam.dist = 9.5; cam.pitch = 0.42; cam.yaw = 0; welcomeOn = false; document.body.classList.remove('wm');
-  var b = $('boot'); b.style.display = 'block'; b.style.opacity = '1'; runBoot();
-}
-try { if (sessionStorage.getItem('moviex_auto')) { sessionStorage.removeItem('moviex_auto'); setTimeout(function () { $('w-play').click(); }, 400); } } catch (e) {}
-requestAnimationFrame(frame);
+function prisonTheme(a) { return { sky: a.sky, fog: [26, 120], hemi: [a.h1, a.h2, 0.8], sun: a.sun, ground: a.ground, speck: a.speck, mount: a.mount, cloud: a.cloud }; }
+MAPS.push({ id: 'prison1', name: 'Prison Room B1', min: 100, R: 46, safeR: 0, tier: 9, hub: false, prison: true, noNPC: true, noCamp: true, noAI: true,
+  enemies: ['inmate'], perRoom: [7, 8, 7, 8],
+  theme: prisonTheme({ sky: 0x0c1018, h1: 0xb8c8e0, h2: 0x181c28, sun: 0x9fb4d8, ground: '#1a1e28', speck: ['#222836', '#161a24', '#2c3446'], mount: 0x10141e, cloud: 0x20283a }),
+  build: function (g, m) { buildPrison(g, m, { wall: 0x4a5060, floor: 0x2c303c, cot: 0x6a5a48, lamp: 0xffd36a, stain: 0x3a2a20 }); } });
+MAPS.push({ id: 'prison2', name: 'Prison Room B2', min: 115, R: 46, safeR: 0, tier: 9, hub: false, prison: true, noNPC: true, noCamp: true, noAI: true,
+  enemies: ['warden'], perRoom: [8, 7, 8, 7],
+  theme: prisonTheme({ sky: 0x140808, h1: 0xe0a8a0, h2: 0x24100e, sun: 0xd88a7a, ground: '#26110f', speck: ['#341816', '#220e0c', '#4a1e1a'], mount: 0x180a08, cloud: 0x3a1a18 }),
+  build: function (g, m) { buildPrison(g, m, { wall: 0x5a3a38, floor: 0x2e1c1a, cot: 0x4a3a34, lamp: 0xff5a3a, stain: 0x7a0e0e }); } });
